@@ -1,0 +1,17 @@
+{
+  "name": "showfie",
+  "version": "0.0.0",
+  "authors": [
+    "nicholasxjy <yitaqi2011@gmail.com>"
+  ],
+  "description": "An place for people where they can show thier talents",
+  "keywords": [
+    "express",
+    "angular"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "ui-router": "~0.2.13",
+    "bootstrap": "~3.3.2"
+  }
+}

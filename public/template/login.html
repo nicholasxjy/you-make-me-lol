@@ -1,0 +1,37 @@
+<div class="full-page auth jumbotron" ng-controller="LoginCtrl as loginCtrl">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>登录 - SHOWFIE</h1>
+    <p class="st-alert" ng-class="{'st-error': loginCtrl.hasError}">{{loginCtrl.error}}</p>
+    <div class="form-wrap" ng-class="{'error-show': loginCtrl.hasError}">
+      <form name="loginForm" novalidate ng-submit="loginCtrl.login(user)">
+        <div class="form-group">
+          <input type="email" class="form-control" id="email-field" placeholder="Email"
+          ng-model="user.email" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" id="pass-field" placeholder="Password"
+          ng-model="user.password" required>
+        </div>
+        <p class="forget-pass">
+          <a ui-sref="forgetpass" class="pull-right">Forget Password?</a>
+        </p>
+        <button type="submit" class="btn btn-info btn-block" ng-disabled="loginForm.$invalid">Login</button>
+      </form>
+      <div class="third-auth-wrap">
+        <p class="third-auth-tip">使用社交帐号登录</p>
+        <ul class="list-inline">
+          <li class="third-auth-item twitter">
+            <a href="#"><i class="fa fa-twitter"></i></a>
+          </li>
+          <li class="third-auth-item facebook">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+          </li>
+          <li class="third-auth-item google">
+            <a href="#"><i class="fa fa-google-plus"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

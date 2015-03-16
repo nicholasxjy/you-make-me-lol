@@ -1,0 +1,32 @@
+<div class="full-page auth jumbotron" ng-controller="SignupCtrl as signCtrl">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>SHOWFIE - 你的魅力所在</h1>
+    <p class="subtitle">在这里勇敢秀出你的惊人作品，让我们给你欢呼和呐喊。</p>
+
+    <p class="st-alert" ng-class="{'st-error': signCtrl.hasError}"><i class="fa fa-asterisk"></i> {{signCtrl.error}}</p>
+
+    <div class="form-wrap" ng-class="{'error-show': signCtrl.hasError}">
+      <form name="signupForm" novalidate ng-submit="signCtrl.signUp(user)">
+        <div class="form-group">
+          <input type="text" class="form-control" id="username-field" placeholder="Name"
+          ng-model="user.name" required ng-minlength="6" ng-maxlength="20">
+        </div>
+        <div class="form-group">
+          <input type="email" class="form-control" id="email-field" placeholder="Email"
+          ng-model="user.email" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" id="pass-field" placeholder="Password"
+          ng-model="user.password" required ng-minlength="6">
+        </div>
+        <button type="submit" class="btn btn-info btn-block" ng-disabled="signupForm.$invalid || signCtrl.signUping">Sign Up</button>
+        <a class="btn btn-info btn-block btn-outline btn-outline-info" ui-sref="login">Already have an account? Login</a>
+      </form>
+      <p id="terms-and-policy">
+        By using Showfie, you agree to our <a ui-sref="terms">Terms of Use</a> and <a ui-sref="policy">Privacy Policy</a>
+      </p>
+      <div ng-include="'template/spinner.html'" ng-show="signCtrl.spinnerShow"></div>
+    </div>
+  </div>
+</div>
