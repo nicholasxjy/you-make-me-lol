@@ -1,24 +1,39 @@
 <div class="create-bar">
   <div class="create-bar-inner">
-    <ul class="list-inline">
-      <li class="create-list-item">
-        <a href="">
-          <i class="fa fa-file-text"></i>
-          <span>Text</span>
-        </a>
-      </li>
-      <li class="create-list-item">
-        <a href="">
-          <i class="fa fa-camera"></i>
-          <span>Photo</span>
-        </a>
-      </li>
-      <li class="create-list-item">
-        <a href="">
-          <i class="fa fa-video-camera"></i>
-          <span>Media</span>
-        </a>
-      </li>
-    </ul>
+    <div class="user-wrap">
+      <img ng-src="{{homeCtrl.current_user.avatar}}" alt="Avatar" class="im-responsive img-circle">
+    </div>
+    <div class="share-content">
+      <div class="share-words">
+        <textarea id="word" class="sf-textarea"></textarea>
+      </div>
+      <ul class="list-inline share-action-list">
+        <li class="create-list-item">
+          <a href="">
+            <i class="fa fa-camera"></i>
+            <span>Photo</span>
+          </a>
+        </li>
+        <li class="create-list-item">
+          <a href="">
+            <i class="fa fa-video-camera"></i>
+            <span>Video</span>
+          </a>
+        </li>
+        <li class="create-list-item">
+          <a href="">
+            <i class="fa fa-headphones"></i>
+            <span>Audio</span>
+          </a>
+        </li>
+        <li class="create-list-item">
+          <a href="">
+            <i class="fa fa-map-marker"></i>
+            <span>Location</span>
+          </a>
+        </li>
+        <button class="sf-btn sf-btn-success sf-btn-small pull-right">Share</button>
+      </ul>
+    </div>
   </div>
 </div>

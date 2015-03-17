@@ -9,17 +9,19 @@
     </div>
     <div class="form-wrap">
       <div class="form-content">
-        <form novalidate name="loginForm" ng-submit="login(user)">
+        <form novalidate name="loginForm" ng-submit="loginCtrl.login(user)">
           <div class="sf-form-group">
-            <input type="email" class="sf-form-control" placeholder="Email">
+            <input type="email" class="sf-form-control" placeholder="Email"
+            ng-model="user.email" required>
           </div>
           <div class="sf-form-group">
-            <input type="password" class="sf-form-control" placeholder="Password">
+            <input type="password" class="sf-form-control" placeholder="Password"
+            ng-model="user.password" required>
           </div>
           <p class="forget-pass">
             <a ui-sref="forgetpass">Forget Password?</a>
           </p>
-          <button class="sf-btn-primary sf-btn sf-btn-block" type="submit">Login</button>
+          <button class="sf-btn-primary sf-btn sf-btn-block" type="submit" ng-disabled="loginForm.$invalid">Login</button>
         </form>
         <div class="auth-divider">
           <div class="divider-line"></div>

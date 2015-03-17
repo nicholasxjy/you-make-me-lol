@@ -2,7 +2,8 @@
 
 angular
   .module('showfieApp', [
-    'ui.router'
+    'ui.router',
+    'wu.masonry'
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');

@@ -2,7 +2,355 @@
   <div ng-include="'template/partials/navbar.html'"></div>
   <div class="main-content">
     <div class="main-content-inner">
-      <div ng-include="'template/partials/create-bar.html'"></div>
+      <div class="container">
+        <div class="container-content" masonry="{gutter: 30}">
+          <div class="create-bar masonry-brick">
+            <div class="create-bar-inner">
+              <div class="user-wrap">
+                <img ng-src="{{homeCtrl.current_user.avatar}}" alt="Avatar" class="im-responsive img-circle">
+              </div>
+              <div class="share-content">
+                <div class="share-words">
+                  <textarea id="word" class="sf-textarea"></textarea>
+                </div>
+                <ul class="list-inline share-action-list">
+                  <li class="create-list-item">
+                    <a href="">
+                      <i class="fa fa-camera"></i>
+                      <span>Photo</span>
+                    </a>
+                  </li>
+                  <li class="create-list-item">
+                    <a href="">
+                      <i class="fa fa-video-camera"></i>
+                      <span>Video</span>
+                    </a>
+                  </li>
+                  <li class="create-list-item">
+                    <a href="">
+                      <i class="fa fa-headphones"></i>
+                      <span>Audio</span>
+                    </a>
+                  </li>
+                  <li class="create-list-item">
+                    <a href="">
+                      <i class="fa fa-map-marker"></i>
+                      <span>Location</span>
+                    </a>
+                  </li>
+                  <button class="sf-btn sf-btn-success sf-btn-small pull-right">Share</button>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="feed-wrap masonry-brick">
+            <div class="feed-top">
+              <div class="user-avatar">
+                <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle">
+              </div>
+              <div class="user-other">
+                <div class="name">
+                  <a ui-sref="user">Nicholas</a>
+                </div>
+                <div class="feed-time">
+                  分享于 10 mins ago
+                </div>
+              </div>
+            </div>
+            <div class="feed-content">
+              I have struggled to articulate what he is actually like as a candidate
+              ever since I left Iowa last weekend. The best I can come up with is this:
+              Jeb Bush is zen.
+            </div>
+            <div class="feed-other">
+              <div class="actions">
+                <a href="" class="action-icon"><i class="fa fa-heart"></i></a>
+                <a href="" class="action-count">23</a>
+                <a href="" class="action-icon"><i class="fa fa-bookmark"></i></a>
+              </div>
+              <div class="like-users">
+                <ul class="list-inline likes-list">
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="feed-comments">
+              <div class="more-comments">
+                <a href="">查看更多评论...</a>
+              </div>
+              <div class="commet-list">
+                <div class="comment-item">
+                  <div class="comment-author-avatar">
+                    <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+                  </div>
+                  <div class="comment-content">
+                    <div class="comment-other">
+                      <a href="" class="comment-user-name">Nicholas</a>
+                      <span class="comment-time">2 mins ago</span>
+                    </div>
+                    <div class="comment-words">
+                      This is pretty awesome! love it :)
+                    </div>
+                  </div>
+                </div>
+                <div class="comment-item">
+                  <div class="comment-author-avatar">
+                    <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+                  </div>
+                  <div class="comment-content">
+                    <div class="comment-other">
+                      <a href="" class="comment-user-name">Nicholas</a>
+                      <span class="comment-time">2 mins ago</span>
+                    </div>
+                    <div class="comment-words">
+                      HUDSON, N.H. — Being with former Florida governor Jeb Bush
+                      for his first trips to Iowa and New Hampshire last weekend and this one,
+                      I found his demeanor to be completely different from those of the dozens
+                    </div>
+                  </div>
+                </div>
+                <div class="comment-item">
+                  <div class="comment-author-avatar">
+                    <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+                  </div>
+                  <div class="comment-content">
+                    <div class="comment-other">
+                      <a href="" class="comment-user-name">Nicholas</a>
+                      <span class="comment-time">2 mins ago</span>
+                    </div>
+                    <div class="comment-words">
+                      <a href="">@Nicholas</a> This is pretty awesome! love it :)
+                    </div>
+                  </div>
+                </div>
+                <div class="add-comment">
+                  <input type="text" class="sf-form-control" placeholder="添加评论">
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="feed-wrap masonry-brick">
+            <div class="feed-top">
+              <div class="user-avatar">
+                <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle">
+              </div>
+              <div class="user-other">
+                <div class="name">
+                  <a ui-sref="user">Nicholas</a>
+                </div>
+                <div class="feed-time">
+                  分享于 10 mins ago
+                </div>
+              </div>
+            </div>
+            <div class="feed-content">
+              I have struggled to articulate what he is actually like as a candidate
+              ever since I left Iowa last weekend. The best I can come up with is this:
+              Jeb Bush is zen.
+            </div>
+            <div class="feed-other">
+              <div class="actions">
+                <a href="" class="action-icon"><i class="fa fa-heart"></i></a>
+                <a href="" class="action-count">23</a>
+                <a href="" class="action-icon"><i class="fa fa-bookmark"></i></a>
+              </div>
+              <div class="like-users">
+                <ul class="list-inline likes-list">
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="feed-comments">
+              <div class="more-comments">
+                <a href="">查看更多评论...</a>
+              </div>
+              <div class="commet-list">
+                <div class="comment-item">
+                  <div class="comment-author-avatar">
+                    <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+                  </div>
+                  <div class="comment-content">
+                    <div class="comment-other">
+                      <a href="" class="comment-user-name">Nicholas</a>
+                      <span class="comment-time">2 mins ago</span>
+                    </div>
+                    <div class="comment-words">
+                      This is pretty awesome! love it :)
+                    </div>
+                  </div>
+                </div>
+                <div class="comment-item">
+                  <div class="comment-author-avatar">
+                    <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+                  </div>
+                  <div class="comment-content">
+                    <div class="comment-other">
+                      <a href="" class="comment-user-name">Nicholas</a>
+                      <span class="comment-time">2 mins ago</span>
+                    </div>
+                    <div class="comment-words">
+                      HUDSON, N.H. — Being with former Florida governor Jeb Bush
+                      for his first trips to Iowa and New Hampshire last weekend and this one,
+                      I found his demeanor to be completely different from those of the dozens
+                    </div>
+                  </div>
+                </div>
+                <div class="comment-item">
+                  <div class="comment-author-avatar">
+                    <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+                  </div>
+                  <div class="comment-content">
+                    <div class="comment-other">
+                      <a href="" class="comment-user-name">Nicholas</a>
+                      <span class="comment-time">2 mins ago</span>
+                    </div>
+                    <div class="comment-words">
+                      <a href="">@Nicholas</a> This is pretty awesome! love it :)
+                    </div>
+                  </div>
+                </div>
+                <div class="add-comment">
+                  <input type="text" class="sf-form-control" placeholder="添加评论">
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="feed-wrap masonry-brick">
+            <div class="feed-top">
+              <div class="user-avatar">
+                <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle">
+              </div>
+              <div class="user-other">
+                <div class="name">
+                  <a ui-sref="user">Nicholas</a>
+                </div>
+                <div class="feed-time">
+                  分享于 10 mins ago
+                </div>
+              </div>
+            </div>
+            <div class="feed-content">
+              <img src="images/welcome.jpg" alt="" class="img-repsonsive" style="width: 100%">
+            </div>
+            <div class="feed-other">
+              <div class="actions">
+                <a href="" class="action-icon"><i class="fa fa-heart"></i></a>
+                <a href="" class="action-count">23</a>
+                <a href="" class="action-icon"><i class="fa fa-bookmark"></i></a>
+              </div>
+              <div class="like-users">
+                <ul class="list-inline likes-list">
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                  <li class="like-user-item">
+                    <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="feed-comments">
+              <div class="more-comments">
+                <a href="">查看更多评论...</a>
+              </div>
+              <div class="commet-list">
+                <div class="comment-item">
+                  <div class="comment-author-avatar">
+                    <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+                  </div>
+                  <div class="comment-content">
+                    <div class="comment-other">
+                      <a href="" class="comment-user-name">Nicholas</a>
+                      <span class="comment-time">2 mins ago</span>
+                    </div>
+                    <div class="comment-words">
+                      This is pretty awesome! love it :)
+                    </div>
+                  </div>
+                </div>
+                <div class="comment-item">
+                  <div class="comment-author-avatar">
+                    <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+                  </div>
+                  <div class="comment-content">
+                    <div class="comment-other">
+                      <a href="" class="comment-user-name">Nicholas</a>
+                      <span class="comment-time">2 mins ago</span>
+                    </div>
+                    <div class="comment-words">
+                      HUDSON, N.H. — Being with former Florida governor Jeb Bush
+                      for his first trips to Iowa and New Hampshire last weekend and this one,
+                      I found his demeanor to be completely different from those of the dozens
+                    </div>
+                  </div>
+                </div>
+                <div class="comment-item">
+                  <div class="comment-author-avatar">
+                    <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+                  </div>
+                  <div class="comment-content">
+                    <div class="comment-other">
+                      <a href="" class="comment-user-name">Nicholas</a>
+                      <span class="comment-time">2 mins ago</span>
+                    </div>
+                    <div class="comment-words">
+                      <a href="">@Nicholas</a> This is pretty awesome! love it :)
+                    </div>
+                  </div>
+                </div>
+                <div class="add-comment">
+                  <input type="text" class="sf-form-control" placeholder="添加评论">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

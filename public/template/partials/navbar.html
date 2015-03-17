@@ -2,37 +2,24 @@
   <div class="st-navbar-inner">
     <div class="st-navbar-brand">
       <a ui-sref="home" class="brand-link">
-        <img src="images/logo.png" alt="Logo" class="img-responsive">
+        SHOWFIE
       </a>
     </div>
     <div class="st-navbar-item st-navbar-left">
       <ul class="list-inline">
         <li class="navbar-link-item" ui-sref-active="active">
-          <a ui-sref="home">文字</a>
+          <a ui-sref="home">Home</a>
         </li>
         <li class="navbar-link-item" ui-sref-active="active">
-          <a href="">绘画</a>
+          <a href="">Explore</a>
         </li>
         <li class="navbar-link-item" ui-sref-active="active">
-          <a href="">摄影</a>
-        </li>
-        <li class="navbar-link-item" ui-sref-active="active">
-          <a href="">开心一刻</a>
+          <a href="">Messages <span class="badge sf-badge">5</span></a>
         </li>
       </ul>
     </div>
     <div class="st-navbar-item st-navbar-right">
       <ul class="list-inline">
-        <li class="navbar-link-item">
-          <a href="">
-            <i class="fa fa-search"></i>
-          </a>
-        </li>
-        <li class="navbar-link-item">
-          <a href="">
-            <i class="fa fa-bell"></i>
-          </a>
-        </li>
         <li class="dropdown user-dropdown">
           <a class="dropdown-toggle user-dropdown-link" data-toggle="dropdown" role="button" aria-expanded="false">
             <img ng-src="{{homeCtrl.current_user.avatar}}" alt="Avatar" class="img-responsive img-circle">
@@ -52,5 +39,11 @@
         </li>
       </ul>
     </div>
+    <form class="sf-navbar-form navbar-right" role="search">
+      <div class="navbar-form-group">
+        <input type="text" class="sf-form-control" placeholder="Search Something...">
+        <i class="fa fa-search"></i>
+      </div>
+    </form>
   </div>
 </nav>
