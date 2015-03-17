@@ -1,36 +1,45 @@
 <div class="full-page auth jumbotron" ng-controller="LoginCtrl as loginCtrl">
   <div class="overlay"></div>
-  <div class="content">
-    <h1>登录 - SHOWFIE</h1>
-    <p class="st-alert" ng-class="{'st-error': loginCtrl.hasError}">{{loginCtrl.error}}</p>
-    <div class="form-wrap" ng-class="{'error-show': loginCtrl.hasError}">
-      <form name="loginForm" novalidate ng-submit="loginCtrl.login(user)">
-        <div class="form-group">
-          <input type="email" class="form-control" id="email-field" placeholder="Email"
-          ng-model="user.email" required>
+  <div class="auth-content">
+    <div class="header">
+      <h1>SHOWFIE</h1>
+      <div class="subtitle">
+        Around the world, people are waking up to the reality of approaching dangerous temperature rise.
+      </div>
+    </div>
+    <div class="form-wrap">
+      <div class="form-content">
+        <form novalidate name="loginForm" ng-submit="login(user)">
+          <div class="sf-form-group">
+            <input type="email" class="sf-form-control" placeholder="Email">
+          </div>
+          <div class="sf-form-group">
+            <input type="password" class="sf-form-control" placeholder="Password">
+          </div>
+          <p class="forget-pass">
+            <a ui-sref="forgetpass">Forget Password?</a>
+          </p>
+          <button class="sf-btn-primary sf-btn sf-btn-block" type="submit">Login</button>
+        </form>
+        <div class="auth-divider">
+          <div class="divider-line"></div>
+          <div class="divider-content">or login with below</div>
+          <div class="divider-line"></div>
         </div>
-        <div class="form-group">
-          <input type="password" class="form-control" id="pass-field" placeholder="Password"
-          ng-model="user.password" required>
-        </div>
-        <p class="forget-pass">
-          <a ui-sref="forgetpass" class="pull-right">Forget Password?</a>
-        </p>
-        <button type="submit" class="btn btn-info btn-block" ng-disabled="loginForm.$invalid">Login</button>
-      </form>
-      <div class="third-auth-wrap">
-        <p class="third-auth-tip">使用社交帐号登录</p>
-        <ul class="list-inline">
-          <li class="third-auth-item twitter">
-            <a href="#"><i class="fa fa-twitter"></i></a>
-          </li>
+        <ul class="list-inline third-auth-list">
           <li class="third-auth-item facebook">
-            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href=""><i class="fa fa-facebook"></i></a>
+          </li>
+          <li class="third-auth-item twitter">
+            <a href=""><i class="fa fa-twitter"></i></a>
           </li>
           <li class="third-auth-item google">
-            <a href="#"><i class="fa fa-google-plus"></i></a>
+            <a href=""><i class="fa fa-google-plus"></i></a>
           </li>
         </ul>
+        <div class="no-account-tip">
+          Don’t have an account? <a ui-sref="signup">Sign up free now</a>
+        </div>
       </div>
     </div>
   </div>
