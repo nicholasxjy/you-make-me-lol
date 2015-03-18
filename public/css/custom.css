@@ -553,6 +553,87 @@ a.drop-user-link {
   font-size: 12px;
   font-weight: 700; }
 
+.sf-card {
+  background-color: #ffffff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background-clip: padding-box;
+  margin-top: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+.user-card .card-top {
+  margin-bottom: 40px; }
+.user-card .user-avatar {
+  position: relative;
+  height: 120px;
+  width: 100%; }
+  .user-card .user-avatar img {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    top: 10px;
+    margin-left: -50px; }
+.user-card .user-link {
+  text-align: center; }
+  .user-card .user-link a {
+    font-size: 24px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.8); }
+.user-card .user-other {
+  padding: 8px 10px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.3); }
+  .user-card .user-other i {
+    font-size: 14px; }
+  .user-card .user-other i.fa-map-marker {
+    padding-left: 10px; }
+  .user-card .user-other span {
+    font-size: 12px;
+    font-weight: 700;
+    padding-left: 5px; }
+.user-card .user-profile {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.4);
+  padding: 5px 15px;
+  text-align: center;
+  margin-bottom: 20px; }
+.user-card .user-info-list {
+  padding: 5px 0 0 0;
+  margin: 0;
+  height: 50px;
+  text-align: center;
+  border-top: 1px solid #f6f6f6;
+  border-bottom: 1px solid #f6f6f6; }
+  .user-card .user-info-list .info-item {
+    padding: 0 10px; }
+  .user-card .user-info-list .info-item-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.6); }
+  .user-card .user-info-list .info-item-count {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.8); }
+.user-card .recent-photo-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 15px; }
+.user-card .photos-wrap {
+  margin-bottom: 30px; }
+.user-card .photo-item {
+  overflow: hidden;
+  width: 100%;
+  font-size: 0; }
+  .user-card .photo-item img {
+    display: inline-block;
+    border: none; }
+
 .welcome {
   background: url("../images/welcome.jpg");
   background-size: cover;
