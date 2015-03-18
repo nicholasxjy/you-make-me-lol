@@ -26,15 +26,22 @@
           </a>
           <ul class="dropdown-menu" role="menu">
             <li>
-              <a href="#">
+              <a ui-sref="user(name: homeCtrl.current_user.name)" class="drop-user-name">
                 <b>{{homeCtrl.current_user.name}}</b>
-                <div>View profile</div>
+                <div class="view-profile">View Profile</div>
               </a>
             </li>
-            <li><a href="#">Lists</a></li>
-            <li><a href="#">Settings</a></li>
             <li class="divider"></li>
-            <li><a href="#">Log out</a></li>
+            <li>
+              <a ui-sref="bookmarks" class="drop-user-link">Bookmarks</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a ui-sref="setting" class="drop-user-link">Settings</a>
+            </li>
+            <li>
+              <a ng-click="homeCtrl.logout()" class="drop-user-link">Log out</a>
+            </li>
           </ul>
         </li>
       </ul>

@@ -63,10 +63,25 @@
           return deferred.promise;
         }
 
+        function logout() {
+          var deferred = $q.defer();
+          $http({
+            method: 'GET',
+            url: '/user/logout',
+          }).success(function(data, status, headers, config) {
+            current_user = null;
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
         return {
           signUp: signUp,
           currentUser: currentUser,
-          login: login
+          login: login,
+          logout: logout
         }
       }
     ])

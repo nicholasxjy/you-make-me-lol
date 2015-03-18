@@ -2,8 +2,7 @@
 
 angular
   .module('showfieApp', [
-    'ui.router',
-    'wu.masonry'
+    'ui.router'
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
@@ -27,5 +26,17 @@ angular
       .state('home', {
         url: '/home',
         templateUrl: 'template/home.html'
+      })
+      .state('user', {
+        url: '/:name',
+        templateUrl: 'template/user.html'
+      })
+      .state('setting', {
+        url: '/setting',
+        templateUrl: 'template/setting.html'
+      })
+      .state('bookmarks', {
+        url: '/bookmarks',
+        templateUrl: 'template/bookmarks.html'
       })
   })

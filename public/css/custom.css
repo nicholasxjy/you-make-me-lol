@@ -123,6 +123,9 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1100; }
 
+a {
+  cursor: pointer; }
+
 /****** button ************/
 button[disabled=disabled], button:disabled {
   -ms-filter: "progid:DXImageTransform@mixin Microsoft@mixin Alpha(Opacity=${iefactor})";
@@ -259,7 +262,6 @@ button[disabled=disabled], button:disabled {
 .create-bar {
   margin-top: 30px;
   padding: 20px 20px 0 20px;
-  width: 460px;
   background-color: #F5F5F5;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -270,16 +272,17 @@ button[disabled=disabled], button:disabled {
   box-shadow: 0 0 5px rbga(0, 0, 0, 0.7); }
   .create-bar .user-wrap {
     display: inline-block;
-    width: 45px;
+    width: 9%;
     vertical-align: top; }
     .create-bar .user-wrap img {
       width: 40px;
       height: 40px; }
   .create-bar .share-content {
     display: inline-block;
-    vertical-align: top; }
+    vertical-align: top;
+    width: 90%; }
   .create-bar .share-words textarea {
-    width: 365px;
+    width: 100%;
     height: 107px;
     padding: 10px;
     border: none;
@@ -307,7 +310,6 @@ button[disabled=disabled], button:disabled {
 
 .feed-wrap {
   margin-top: 30px;
-  width: 460px;
   background-color: #ffffff;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -393,14 +395,14 @@ button[disabled=disabled], button:disabled {
   .feed-comments .commet-list .comment-author-avatar {
     display: inline-block;
     vertical-align: top;
-    width: 40px; }
+    width: 9%; }
     .feed-comments .commet-list .comment-author-avatar img {
       width: 34px;
       height: 34px; }
   .feed-comments .commet-list .comment-content {
     display: inline-block;
     vertical-align: top;
-    width: 370px; }
+    width: 90%; }
     .feed-comments .commet-list .comment-content .comment-user-name {
       font-size: 14px;
       font-weight: 700;
@@ -434,12 +436,9 @@ body {
   background-color: #E5E5E5; }
 
 .main-content-inner {
-  padding-top: 65px;
-  padding-left: 30px;
-  padding-right: 30px; }
+  padding-top: 65px; }
 
 .main-content-inner .container {
-  padding-left: 100px;
   padding-bottom: 30px; }
 
 .st-navbar {
@@ -544,6 +543,15 @@ body {
       right: 10px;
       color: rgba(0, 0, 0, 0.15);
       cursor: pointer; }
+
+.drop-user-name b {
+  font-size: 16px; }
+.drop-user-name .view-profile {
+  font-size: 12px; }
+
+a.drop-user-link {
+  font-size: 12px;
+  font-weight: 700; }
 
 .welcome {
   background: url("../images/welcome.jpg");

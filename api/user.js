@@ -155,5 +155,18 @@ module.exports = {
         user: user
       })
     })
+  },
+  logout: function(req, res, next) {
+    var sess = req.session;
+    if (!sess || !sess.user) {
+      return res.sendStatus(403);
+    }
+    sess.destroy(function(err) {
+      if (err) return next(err);
+      res.clearCookie(config.cookie.name, {path: '/'});
+      res.json({
+        status: 'success'
+      });
+    });
   }
 }
