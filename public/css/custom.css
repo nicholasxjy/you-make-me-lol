@@ -158,6 +158,11 @@ button[disabled=disabled], button:disabled {
   .sf-btn-primary:hover {
     background-color: #2196F3; }
 
+.sf-btn-teal {
+  background-color: #009688; }
+  .sf-btn-teal:hover {
+    background-color: #00796B; }
+
 .sf-btn-success {
   background-color: #8BC34A; }
   .sf-btn-success:hover {
@@ -168,6 +173,9 @@ button[disabled=disabled], button:disabled {
 
 .sf-btn-success[disabled], .sf-btn-success:disabled {
   background-color: #8BC34A; }
+
+.sf-btn-teal[disabled], .sf-btn-teal:disabled {
+  background-color: #009688; }
 
 /***** placeholder ********/
 ::-webkit-input-placeholder {
@@ -553,6 +561,13 @@ a.drop-user-link {
   font-size: 12px;
   font-weight: 700; }
 
+.billborad-card {
+  min-height: 200px; }
+
+.hottest-card {
+  min-height: 300px;
+  margin-top: 30px; }
+
 .sf-card {
   background-color: #ffffff;
   -webkit-border-radius: 5px;
@@ -633,6 +648,79 @@ a.drop-user-link {
   .user-card .photo-item img {
     display: inline-block;
     border: none; }
+
+.sf-banner {
+  height: 465px;
+  background-color: #ffffff;
+  background-image: url("../images/auth-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center; }
+
+.user-page .user-info {
+  position: relative;
+  height: 60px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ffffff; }
+  .user-page .user-info .user-info-list {
+    width: 300px;
+    position: absolute;
+    left: 50%;
+    margin: 0 0 0 -200px;
+    padding: 0; }
+    .user-page .user-info .user-info-list .info-item {
+      padding: 10px 20px 0 20px;
+      height: 60px;
+      text-align: center; }
+      .user-page .user-info .user-info-list .info-item a {
+        text-decoration: none; }
+    .user-page .user-info .user-info-list .info-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff; }
+    .user-page .user-info .user-info-list .info-item-count {
+      font-size: 12px;
+      margin-top: 3px;
+      color: rgba(255, 255, 255, 0.8); }
+  .user-page .user-info .sf-follow-btn {
+    position: absolute;
+    right: 20%;
+    top: 13px; }
+.user-page .user-profile-wrap .avatar-wrap {
+  margin-top: -100px;
+  height: 150px;
+  width: 150px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  background-clip: padding-box;
+  border: 1px solid #DDE5EE;
+  padding: 4px;
+  font-size: 0;
+  background-color: #ffffff; }
+  .user-page .user-profile-wrap .avatar-wrap img {
+    width: 140px;
+    height: 140px; }
+.user-page .gender-location {
+  margin-top: 20px; }
+  .user-page .gender-location i {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.6);
+    padding-right: 6px; }
+  .user-page .gender-location i.fa-map-marker {
+    padding-left: 15px; }
+  .user-page .gender-location span {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.6); }
+.user-page .profile-wrap {
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 22px;
+  letter-spacing: .01em; }
 
 .welcome {
   background: url("../images/welcome.jpg");

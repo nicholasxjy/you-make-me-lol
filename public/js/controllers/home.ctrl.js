@@ -10,9 +10,8 @@
         var self = this;
 
         UserService.currentUser()
-          .then(function(data) {
-            self.current_user = data;
-            console.log(data);
+          .then(function(user) {
+            self.current_user = user;
           })
 
         self.logout = function() {

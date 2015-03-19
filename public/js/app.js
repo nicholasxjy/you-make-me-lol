@@ -29,7 +29,7 @@ angular
       })
       .state('user', {
         url: '/:name',
-        templateUrl: 'template/user.html'
+        templateUrl: 'template/user_page.html'
       })
       .state('setting', {
         url: '/setting',
