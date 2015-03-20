@@ -9,19 +9,19 @@
       </div>
       <ul class="list-inline share-action-list">
         <li class="create-list-item">
-          <a href="">
+          <a ng-file-select ng-model="photos" ng-multiple="true" accept="image/*" sf-photo-upload>
             <i class="fa fa-camera"></i>
             <span>Photo</span>
           </a>
         </li>
         <li class="create-list-item">
-          <a href="">
+          <a ng-file-select ng-model="videos" accept="video/*" sf-video-upload>
             <i class="fa fa-video-camera"></i>
             <span>Video</span>
           </a>
         </li>
         <li class="create-list-item">
-          <a href="">
+          <a ng-file-select ng-model="audios" accept="audio/*" sf-audio-upload>
             <i class="fa fa-headphones"></i>
             <span>Audio</span>
           </a>

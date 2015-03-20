@@ -13,7 +13,6 @@
   "dependencies": {
     "ui-router": "~0.2.13",
     "bootstrap": "~3.3.2",
-    "angular-masonry": "~0.11.0",
-    "jquery-bridget": "~1.1.0"
+    "ng-file-upload": "~3.2.4"
   }
 }

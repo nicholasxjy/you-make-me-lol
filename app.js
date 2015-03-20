@@ -12,6 +12,7 @@ var multer = require('multer');
 
 var routes = require('./routes/index');
 var user = require('./routes/user');
+var feed = require('./routes/feed');
 
 var config = require('./config');
 
@@ -40,13 +41,13 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
-
+app.use(multer());
 
 // api routes
 
 app.use('/', routes);
 app.use('/user', user);
-
+app.use('/feed', feed);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

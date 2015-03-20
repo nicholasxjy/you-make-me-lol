@@ -12,7 +12,9 @@ mongoose.connect(config.db.url, function(err) {
 
 require('./user');
 require('./feed');
+require('./file');
 require('./comment');
 exports.User = mongoose.model('User');
 exports.Feed = mongoose.model('Feed');
+exports.File = mongoose.model('File');
 exports.Comment = mongoose.model('Comment');
