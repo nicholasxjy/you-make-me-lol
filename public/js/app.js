@@ -28,6 +28,14 @@ angular
         url: '/home',
         templateUrl: 'template/home.html'
       })
+      .state('explore', {
+        url: '/explore',
+        templateUrl: 'template/explore.html'
+      })
+      .state('messages', {
+        url: 'messages',
+        templateUrl: 'template/messages.html'
+      })
       .state('user', {
         url: '/:name',
         templateUrl: 'template/user_page.html'

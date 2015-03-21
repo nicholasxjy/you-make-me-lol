@@ -72,5 +72,10 @@ module.exports = {
         status: 'success'
       })
     })
+  },
+  create: function(req, res, next) {
+    var data = req.body.data;
+    var userId = req.session.user;
+
   }
 }

@@ -10,6 +10,10 @@ var File = new Schema({
     type: ObjectId,
     ref: 'User'
   },
+  caption: {
+    type: String,
+    default: ''
+  },
   hash: String,
   mimeType: String,
   category: {

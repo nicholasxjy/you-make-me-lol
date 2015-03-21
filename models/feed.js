@@ -13,8 +13,9 @@ var Feed = new Schema({
     type: String,
     default: ''
   },
-  attach_urls: [{
-    type: String
+  attach_files: [{
+    type: ObjectId,
+    ref: 'File'
   }],
   creator: {
     type: ObjectId,
