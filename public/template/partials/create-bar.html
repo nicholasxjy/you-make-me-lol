@@ -1,11 +1,11 @@
 <div class="create-bar">
   <div class="create-bar-inner">
     <div class="user-wrap">
-      <img ng-src="{{homeCtrl.current_user.avatar}}" alt="Avatar" class="im-responsive img-circle">
+      <img ng-src="{{ctrl.current_user.avatar}}" alt="Avatar" class="im-responsive img-circle">
     </div>
     <div class="share-content">
       <div class="share-words">
-        <textarea id="word" class="sf-textarea"></textarea>
+        <textarea id="word" class="sf-textarea" ng-model="feed_content"></textarea>
       </div>
       <ul class="list-inline share-action-list">
         <li class="create-list-item">
@@ -32,7 +32,7 @@
             <span>Location</span>
           </a>
         </li>
-        <button class="sf-btn sf-btn-success sf-btn-small pull-right">Share</button>
+        <button class="sf-btn sf-btn-success sf-btn-small pull-right" ng-click="ctrl.postFeed(feed_content)">Share</button>
       </ul>
     </div>
   </div>

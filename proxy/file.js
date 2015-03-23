@@ -15,5 +15,11 @@ module.exports = {
   },
   findFileByQuery: function(query, opt, cb) {
     File.find(query, null, opt, cb);
+  },
+  removeFileById: function(id, cb) {
+    File.remove({_id: id}, cb);
+  },
+  updateCaptionById: function(id, caption, cb) {
+    File.update({_id: id}, {caption: caption}, cb);
   }
 }

@@ -22,8 +22,8 @@
       '$q',
       '$compile',
       '$timeout',
-      function($document, $upload, $http, $q, $compile, $timeout) {
-
+      'FeedService',
+      function($document, $upload, $http, $q, $compile, $timeout, FeedService) {
         return {
           restrict: 'A',
           link: function(scope, ele, attrs) {
@@ -126,7 +126,6 @@
             };
 
             scope.removeFile = function(file, index) {
-              console.log(file);
               if (!file) {
                 alert('No file!');
                 return;
@@ -144,16 +143,52 @@
                 scope.files = scope.files.filter(function(file, i) {
                   return i !== index;
                 });
+
+                if (scope.files.length === 0) {
+                  $('.sf-upload-wrap').remove();
+                  scope.isDelete = false;
+                }
+
               }).error(function(data, status, headers, config) {
                 console.log('Something goes wrong.');
               })
             }
             scope.cancel = function() {
-              scope.isDelete = false;
+              if (scope.files && scope.files.length > 0) {
+                var all = [];
+                angular.forEach(scope.files, function(file) {
+                  var filePromise = $http({
+                    method: 'POST',
+                    url: '/feed/remove_photo',
+                    data: {
+                      fileId: file.fileId,
+                      key: file.key,
+                      hash: file.hash
+                    }
+                  });
+                  all.push(filePromise);
+                });
+                $q.all(all)
+                  .then(function(res) {
+                    $('.sf-upload-wrap').remove();
+                    scope.isDelete = false;
+                  }, function(err) {
+                    console.log('Something goes wrong!');
+                  })
+              }
             };
 
             scope.createFeed = function() {
-              scope.isDelete = false;
+              //here only upload images
+              var data = {
+                category: 'image',
+                files: scope.files
+              }
+              FeedService.create(data)
+                .then(function(data) {
+                  $('.sf-upload-wrap').remove();
+                  scope.isDelete = false;
+                })
             }
           }
         }

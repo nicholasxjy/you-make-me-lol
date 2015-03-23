@@ -13,7 +13,9 @@ module.exports = {
     if (category === 'text') {
       feed.content = data.content;
     } else {
-      feed.attach_files = data.files;
+      feed.attach_files = data.files.map(function(file) {
+        return file.fileId;
+      });
     }
     feed.save(cb);
   }

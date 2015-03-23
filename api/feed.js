@@ -1,6 +1,7 @@
 var async = require('async');
 var qiniuService = require('../services/qiniu');
 var fileProxy = require('../proxy/file');
+var feedProxy = require('../proxy/feed');
 
 module.exports = {
   uploadPhoto: function(req, res, next) {
@@ -68,14 +69,59 @@ module.exports = {
       }
     ], function(err) {
       if (err) return next(err);
-      res.json({
-        status: 'success'
+      fileProxy.removeFileById(fileId, function(err) {
+        if (err) return next(err);
+        res.json({
+          status: 'success'
+        })
       })
     })
   },
   create: function(req, res, next) {
-    var data = req.body.data;
+    var category = req.body.category;
     var userId = req.session.user;
+    //first update every file caption if category is image
 
+    if (category === 'image') {
+
+      var files = req.body.files;
+
+
+      async.waterfall([
+        function(cb1) {
+          async.map(files, function(file, cb) {
+            fileProxy.updateCaptionById(file.fileId, file.caption, function(err) {
+              if (err) cb(err);
+              cb(null)
+            })
+          }, function(err) {
+            if (err) cb1(err)
+            cb1(null)
+          })
+        },
+        function(cb2) {
+          feedProxy.create(userId, {files: files, category: category}, function(err, newFeed) {
+            if (err) return cb2(err);
+            cb2(null, newFeed);
+          })
+        }
+      ], function(err, result) {
+        if (err) return next(err);
+        res.json({
+          status: 'success',
+          new_feed: result
+        })
+      })
+    } else {
+      var content = req.body.content;
+
+      feedProxy.create(userId, {content: content, category: category}, function(err, newFeed) {
+        if (err) return next(err);
+        res.json({
+          status: 'success',
+          new_feed: newFeed
+        })
+      })
+    }
   }
 }

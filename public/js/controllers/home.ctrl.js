@@ -5,8 +5,9 @@
     .module('showfieApp')
     .controller('HomeCtrl', [
       'UserService',
+      'FeedService',
       '$state',
-      function(UserService, $state) {
+      function(UserService, FeedService, $state) {
         var self = this;
 
         UserService.currentUser()
@@ -24,6 +25,20 @@
               }
             }, function(err) {
               console.log(err);
+            })
+        };
+
+        self.postFeed = function(content) {
+          if (!content || content === '') {
+            return;
+          }
+          var data = {
+            category: 'text',
+            content: content
+          };
+          FeedService.create(data)
+            .then(function(data) {
+              console.log(data);
             })
         }
       }
