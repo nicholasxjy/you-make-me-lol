@@ -10,10 +10,19 @@
       function(UserService, FeedService, $state) {
         var self = this;
 
+        var loadFeeds = function() {
+          FeedService.getFeeds()
+            .then(function(data) {
+              self.feeds = data.feeds;
+            })
+        }
+
         UserService.currentUser()
           .then(function(user) {
             self.current_user = user;
           })
+
+        loadFeeds();
 
         self.logout = function() {
           UserService.logout()
@@ -38,7 +47,7 @@
           };
           FeedService.create(data)
             .then(function(data) {
-              console.log(data);
+              content = '';
             })
         }
       }

@@ -576,7 +576,7 @@ button[disabled=disabled], button:disabled {
       font-size: 12px;
       color: rgba(0, 0, 0, 0.8);
       line-height: 18px; }
-  .feed-comments .commet-list .add-comment .sf-form-control {
+  .feed-comments .add-comment .sf-form-control {
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0.3);
     background-color: #f5f5f5;
@@ -589,7 +589,7 @@ button[disabled=disabled], button:disabled {
     padding: 8px 10px;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.8); }
-    .feed-comments .commet-list .add-comment .sf-form-control:focus {
+    .feed-comments .add-comment .sf-form-control:focus {
       background-color: #ffffff; }
 
 body {

@@ -20,8 +20,25 @@
           });
           return deferred.promise;
         }
+
+        function getFeeds() {
+          var deferred = $q.defer();
+          $http({
+            method: 'GET',
+            url: '/feed/getfeeds',
+            params: {
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
         return {
-          create: create
+          create: create,
+          getFeeds: getFeeds
         }
       }
     ])

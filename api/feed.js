@@ -123,5 +123,14 @@ module.exports = {
         })
       })
     }
+  },
+  getFeeds: function(req, res, next) {
+    feedProxy.getFeeds(null, null, function(err, feeds) {
+      if (err) return next(err);
+      res.json({
+        status: 'success',
+        feeds: feeds
+      })
+    })
   }
 }
