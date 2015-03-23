@@ -9,6 +9,7 @@ module.exports = {
     file.hash = file_obj.hash;
     file.mimeType = file_obj.mimeType;
     file.category = file_obj.category;
+    file.poster_url = file_obj.poster_url;
     file.width = file_obj.width;
     file.height = file_obj.height;
     file.save(cb);

@@ -6,6 +6,6 @@ var middleware = require('../middleware');
 router.post('/upload_photo', middleware.checkUser, feed.uploadPhoto);
 router.post('/remove_photo', middleware.checkUser, feed.removePhoto);
 router.post('/create', middleware.checkUser, feed.create);
-
+router.post('/upload_video', middleware.checkUser, feed.uploadVideo);
 router.get('/getfeeds', feed.getFeeds);
 module.exports = router;

@@ -2,6 +2,7 @@ var qiniu = require('qiniu');
 var config = require('../config');
 var async = require('async');
 var request = require('request');
+var CryptService = require('./crypt');
 
 qiniu.conf.ACCESS_KEY = config.qiniu.ACCESS_KEY;
 qiniu.conf.SECRET_KEY = config.qiniu.SECRET_KEY;
@@ -13,7 +14,7 @@ module.exports = {
     var policy = new qiniu.rs.PutPolicy(BUCKET_NAME);
     return policy.token();
   },
-  uploadFileLocalFile: function(localFile, key, uptoken, extra, cb) {
+  uploadFileLocalFile: function(fileType, localFile, key, uptoken, extra, cb) {
     var myExtra = extra || new qiniu.io.PutExtra();
     async.waterfall([
       function(cb1) {
@@ -26,17 +27,41 @@ module.exports = {
         });
       },
       function(ret, cb2) {
-        var image_info_url = ret.url+'?imageInfo';
-        request({url: image_info_url, json: true}, function(err, res, info) {
-          if (err) return cb2(err);
-          var file_info = {
-            url: ret.url,
+        if (fileType === 'image') {
+          var image_info_url = ret.url+'?imageInfo';
+          request({url: image_info_url, json: true}, function(err, res, info) {
+            if (err) return cb2(err);
+            var file_info = {
+              url: ret.url,
+              key: ret.key,
+              hash: ret.hash,
+              image_info: info
+            };
+            cb2(null, file_info);
+          })
+        } else {
+          var poster_url = ret.url + '?vframe/png/offset/1/w/200/height/200';
+          var sign_str = ret.key + '?vframe/png/offset/1/w/200/height/200';
+          var accessToken = CryptService.hamacCrypt('sha1', config.qiniu.SECRET_KEY, sign_str);
+          request({url: 'http://api.qiniu.com/pfop/', method: 'POST', formData: {
+            bucket: BUCKET_NAME,
             key: ret.key,
-            hash: ret.hash,
-            image_info: info
-          };
-          cb2(null, file_info);
-        })
+            fops: 'vframe/png/offset/1/w/200/height/200'
+          }, headers: {
+            host: 'api.qiniu.com',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: 'QBox ' + accessToken
+          }}, function(err, res, info) {
+            if (err) return cb2(err);
+            var file_info = {
+              url: ret.url,
+              key: ret.key,
+              hash: ret.hash,
+              poster_url: poster_url
+            };
+            cb2(null, file_info);
+          })
+        }
       }
     ], function(err, result) {
       if (err) return cb(err);

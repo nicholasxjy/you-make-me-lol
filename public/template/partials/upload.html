@@ -9,7 +9,7 @@
       <div class="preview-inner">
         <div class="preview-item" ng-repeat="file in files">
           <div class="item-container">
-            <img ng-if="file.url" ng-src="{{file.url}}" alt="photo" width="{{file.width}}" height="{{file.height}}">
+            <img ng-if="file.url && file.category == 'image'" ng-src="{{file.url}}" alt="photo" width="{{file.width}}" height="{{file.height}}">
             <div class="spinner" ng-show="file.spinnerShow">
               <div class="bounce1"></div>
               <div class="bounce2"></div>

@@ -13,10 +13,11 @@ module.exports = {
         msg: 'No file found!'
       });
     }
+    var fileType = 'image';
     async.waterfall([
       function(cb1) {
         var uptoken = qiniuService.generateUpToken();
-        qiniuService.uploadFileLocalFile(file.path, file.name, uptoken, null, function(err, file_info) {
+        qiniuService.uploadFileLocalFile(fileType, file.path, file.name, uptoken, null, function(err, file_info) {
           if (err) return cb1(err);
           cb1(null, file_info);
         });
@@ -36,6 +37,49 @@ module.exports = {
           if (err) return cb2(err);
           file_info.fileId = newFile._id;
           cb2(null, file_info);
+        })
+      }
+    ], function(err, result) {
+      if (err) return next(err);
+      res.json({
+        status: 'success',
+        file_info: result
+      })
+    })
+  },
+  uploadVideo: function(req, res, next) {
+    var userId = req.session.user;
+    var file = req.files.file;
+    if (!file) {
+      return res.json({
+        status: 'fail',
+        msg: 'File not found!'
+      });
+    }
+    var fileType = 'video';
+    async.waterfall([
+      function(cb1) {
+        var uptoken = qiniuService.generateUpToken();
+        qiniuService.uploadFileLocalFile(fileType, file.path, file.name, uptoken, null, function(err, file_info) {
+          if (err) return cb1(err);
+          cb1(null, file_info);
+        });
+      },
+      function(file_info, cb2) {
+        var file_obj = {
+          key: file_info.key,
+          url: file_info.url,
+          poster_url: file_info.poster_url,
+          hash: file_info.hash,
+          author: userId,
+          mimeType: file.mimetype,
+          category: 'video',
+          width: 200,
+          height: 200
+        };
+        fileProxy.create(file_obj, function(err, newFile) {
+          if (err) return cb2(err);
+          cb2(null, newFile);
         })
       }
     ], function(err, result) {

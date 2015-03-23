@@ -8,6 +8,12 @@ module.exports = {
     _str = hash.digest('hex');
     return _str;
   },
+  hamacCrypt: function(type, key, str) {
+    var hash = crypto.createHmac(type, key);
+    hash.update(str);
+    _str = hash.digest('base64');
+    return _str;
+  },
   enCrypt: function(str, secret) {
     var cipher = crypto.createCipher('aes192', secret);
     var enstr = cipher.update(str, 'utf8', 'hex');

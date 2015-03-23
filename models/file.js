@@ -14,6 +14,10 @@ var File = new Schema({
     type: String,
     default: ''
   },
+  poster_url: {
+    type: String,
+    default: ''
+  },
   hash: String,
   mimeType: String,
   category: {
