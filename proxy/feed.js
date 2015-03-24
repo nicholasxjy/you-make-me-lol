@@ -44,5 +44,8 @@ module.exports = {
       if (err) cb(err);
       cb(null, feeds);
     })
+  },
+  getFeedById: function(id, cb) {
+    Feed.findById(id, cb);
   }
 }

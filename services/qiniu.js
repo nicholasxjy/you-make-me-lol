@@ -42,7 +42,8 @@ module.exports = {
         } else {
           var poster_url = ret.url + '?vframe/png/offset/1/w/200/height/200';
           var sign_str = ret.key + '?vframe/png/offset/1/w/200/height/200';
-          var accessToken = CryptService.hamacCrypt('sha1', config.qiniu.SECRET_KEY, sign_str);
+          var tempToken = CryptService.hamacCrypt('sha1', config.qiniu.SECRET_KEY, sign_str);
+          var accessToken = config.qiniu.ACCESS_KEY + ':' + tempToken;
           request({url: 'http://api.qiniu.com/pfop/', method: 'POST', formData: {
             bucket: BUCKET_NAME,
             key: ret.key,
@@ -53,6 +54,8 @@ module.exports = {
             Authorization: 'QBox ' + accessToken
           }}, function(err, res, info) {
             if (err) return cb2(err);
+            console.log(res);
+            console.log(info);
             var file_info = {
               url: ret.url,
               key: ret.key,
