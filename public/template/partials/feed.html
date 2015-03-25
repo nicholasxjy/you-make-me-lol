@@ -19,6 +19,11 @@
         <img ng-src="{{photo.url}}" alt="{{photo.key}}" class="img-responsive">
       </div>
     </div>
+    <div ng-if="feed.category == 'video'">
+      <video src="{{feed.attach_files[0].url}}" controls>
+        Your browser needs to be upgrade! :)
+      </video>
+    </div>
   </div>
   <div class="feed-other">
     <div class="actions">

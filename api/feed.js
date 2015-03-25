@@ -90,7 +90,7 @@ module.exports = {
       })
     })
   },
-  removePhoto: function(req, res, next) {
+  removeFile: function(req, res, next) {
     //should check the authority
     var key = req.body.key;
     var userId = req.session.user;
@@ -126,8 +126,18 @@ module.exports = {
     var userId = req.session.user;
     //first update every file caption if category is image
 
-    if (category === 'image') {
+    if (category === 'text') {
+      var content = req.body.content;
 
+      feedProxy.create(userId, {content: content, category: category}, function(err, newFeed) {
+        if (err) return next(err);
+        res.json({
+          status: 'success',
+          new_feed: newFeed
+        })
+      })
+
+    } else {
       var files = req.body.files;
 
 
@@ -135,12 +145,12 @@ module.exports = {
         function(cb1) {
           async.map(files, function(file, cb) {
             fileProxy.updateCaptionById(file.fileId, file.caption, function(err) {
-              if (err) cb(err);
-              cb(null)
+              if (err) return cb(err);
+              cb(null);
             })
           }, function(err) {
-            if (err) cb1(err)
-            cb1(null)
+            if (err) return cb1(err);
+            cb1(null);
           })
         },
         function(cb2) {
@@ -154,16 +164,6 @@ module.exports = {
         res.json({
           status: 'success',
           new_feed: result
-        })
-      })
-    } else {
-      var content = req.body.content;
-
-      feedProxy.create(userId, {content: content, category: category}, function(err, newFeed) {
-        if (err) return next(err);
-        res.json({
-          status: 'success',
-          new_feed: newFeed
         })
       })
     }

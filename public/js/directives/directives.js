@@ -136,6 +136,7 @@
                         width: data.file_info.image_info.width,
                         height: data.file_info.image_info.height
                       };
+                      file.category = 'image';
                       file.url = data.file_info.url;
                       file.fileId = data.file_info.fileId;
                       file.key = data.file_info.key;
@@ -156,7 +157,7 @@
               }
               $http({
                 method: 'POST',
-                url: '/feed/remove_photo',
+                url: '/feed/remove_file',
                 data: {
                   fileId: file.fileId,
                   key: file.key,
@@ -183,7 +184,7 @@
                 angular.forEach(scope.files, function(file) {
                   var filePromise = $http({
                     method: 'POST',
-                    url: '/feed/remove_photo',
+                    url: '/feed/remove_file',
                     data: {
                       fileId: file.fileId,
                       key: file.key,
@@ -226,7 +227,8 @@
       '$compile',
       '$timeout',
       'FeedService',
-      function($document, $upload, $http, $q, $compile, $timeout, FeedService) {
+      '$sce',
+      function($document, $upload, $http, $q, $compile, $timeout, FeedService, $sce) {
         return {
           restrict: 'A',
           link: function(scope, ele, attrs) {
@@ -252,13 +254,13 @@
               .css('width', '100%');
             };
 
-            var template = $http.get('template/partials/upload.html');
+            var template = $http.get('template/partials/upload_video.html');
 
             scope.isDelete = false;
 
             scope.$watch('videos', function(files) {
               if (!scope.isDelete && files && files.length > 0) {
-                scope.files = files;
+                scope.file = files[0];
                 template.then(function(res) {
                   $compile(res.data)(scope, function(uploadHtml, scope) {
                     $timeout(function() {
@@ -266,7 +268,7 @@
                       setStyle();
                       //set style of the template
 
-                      scope.upload(scope.files);
+                      scope.upload(scope.file);
                     });
                   });
                 });
@@ -274,28 +276,71 @@
               }
             });
 
-            scope.upload = function(files) {
-              angular.forEach(files, function(file) {
-                file.spinnerShow = true;
-                $upload.upload({
-                  url: '/feed/upload_video',
-                  file: file
-                }).success(function(data, status, headers, config) {
-                  console.log(data);
-                  if (data.status === 'fail') {
-                    console.log(data.msg);
-                  } else {
-                    //get the file info, update ui
-                    file.spinnerShow = false;
-                    //calculate the image size for the best display
-                    //fuck ya all!
+            scope.upload = function(file) {
+              file.spinnerShow = true;
+              $upload.upload({
+                url: '/feed/upload_video',
+                file: file
+              }).success(function(data, status, headers, config) {
+                console.log(data);
+                if (data.status === 'fail') {
+                  console.log(data.msg);
+                } else {
+                  //get the file info, update ui
+                  file.spinnerShow = false;
+                  //calculate the image size for the best display
+                  //fuck ya all!
+                  $timeout(function() {
+                    file.fileId = data.file_info._id;
+                    file.url = data.file_info.url;
+                    file.key = data.file_info.key;
+                    file.hash = data.file_info.hash;
+                    file.width = '100%';
+                    file.height = '100%';
+                    file.category = 'video';
                     $timeout(function() {
-
-                    });
-                  }
-                })
+                      var _uploadpreview = $('.upload-preview');
+                      _uploadpreview.find('video').attr('src', file.url);
+                    }, 500);
+                  });
+                }
               })
             };
+
+            scope.cancel = function() {
+              if (scope.file) {
+                $http({
+                  method: 'POST',
+                  url: '/feed/remove_file',
+                  data: {
+                    fileId: scope.file.fileId,
+                    key: scope.file.key,
+                    hash: scope.file.hash
+                  }
+                }).success(function(data, status, headers, config) {
+                  $('.sf-upload-wrap').remove();
+                  scope.isDelete = false;
+                }).error(function(data, status, headers, config) {
+                  console.log('Something goes wrong!');
+                });
+              }
+            };
+
+            scope.createFeed = function() {
+              //here only upload video
+              scope.file.caption = 'Video Show';
+              var files = [];
+              files.push(scope.file);
+              var data = {
+                category: 'video',
+                files: files
+              }
+              FeedService.create(data)
+                .then(function(data) {
+                  $('.sf-upload-wrap').remove();
+                  scope.isDelete = false;
+                })
+            }
           }
         }
       }

@@ -13,6 +13,7 @@
   "dependencies": {
     "ui-router": "~0.2.13",
     "bootstrap": "~3.3.2",
-    "ng-file-upload": "~3.2.4"
+    "ng-file-upload": "~3.2.4",
+    "ngvideo": "~0.4.13"
   }
 }

@@ -1,0 +1,26 @@
+<div class="sf-upload-wrap">
+  <div class="upload-overlay"></div>
+  <div class="upload-wrap">
+    <div class="upload-top">
+      <div class="title">Upload Photos</div>
+      <div class="subtitle">You can edit your photos below :)</div>
+    </div>
+    <div class="upload-preview">
+      <div class="preview-inner">
+        <video ng-if="file.url && file.category == 'video'" width="{{file.width}}" height="{{file.height}}" controls>
+          Sorry, your browser doesn't support embedded videos, maybe you should upgrade your browser first :)
+        </video>
+        <div class="spinner" ng-show="file.spinnerShow">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="upload-bottom">
+      <button class="sf-btn sf-btn-primary sf-btn-small" ng-click="createFeed()">Add</button>
+      <button class="sf-btn sf-btn-default sf-btn-small" ng-click="cancel()">Cancel</button>
+    </div>
+  </div>
+</div>

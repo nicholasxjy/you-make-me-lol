@@ -10,6 +10,11 @@
         <div class="preview-item" ng-repeat="file in files">
           <div class="item-container">
             <img ng-if="file.url && file.category == 'image'" ng-src="{{file.url}}" alt="photo" width="{{file.width}}" height="{{file.height}}">
+
+            <video ng-if="file.url && file.category == 'video'" src="{{file.url}}" width="{{file.width}}" height="{{file.height}}">
+              Sorry, your browser doesn't support embedded videos, maybe you should upgrade your browser first :)
+            </video>
+
             <div class="spinner" ng-show="file.spinnerShow">
               <div class="bounce1"></div>
               <div class="bounce2"></div>
