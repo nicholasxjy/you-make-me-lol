@@ -7,7 +7,8 @@
       'UserService',
       'FeedService',
       '$state',
-      function(UserService, FeedService, $state) {
+      'ngCoolNoti',
+      function(UserService, FeedService, $state, ngCoolNoti) {
         var self = this;
 
         var loadFeeds = function() {
@@ -38,6 +39,16 @@
         };
 
         self.postFeed = function(content) {
+
+          // ngCoolNoti.create({
+          //   type: 'success',
+          //   message: 'This is sort of convincing to me!',
+          //   animation: 'jelly',
+          //   position: 'top-right'
+          // })
+
+          // return;
+
           if (!content || content === '') {
             return;
           }

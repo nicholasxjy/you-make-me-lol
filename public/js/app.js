@@ -3,7 +3,8 @@
 angular
   .module('showfieApp', [
     'ui.router',
-    'angularFileUpload'
+    'angularFileUpload',
+    'ngCoolNoti'
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
