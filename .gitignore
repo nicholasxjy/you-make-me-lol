@@ -4,6 +4,7 @@ public/scss
 public/images
 public/dist
 public/lib
+public/media
 .sass-cache
 config.js
 .git

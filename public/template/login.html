@@ -1,10 +1,11 @@
-<div class="full-page auth jumbotron" ng-controller="LoginCtrl as loginCtrl">
+<div class="full-page login-page jumbotron" ng-controller="LoginCtrl as loginCtrl">
   <div class="overlay"></div>
   <div class="auth-content">
     <div class="header">
-      <h1>SHOWFIE</h1>
+      <h1>Welcome to Friendfies.</h1>
       <div class="subtitle">
-        Around the world, people are waking up to the reality of approaching dangerous temperature rise.
+        Connect with your friends — and other fascinating people. Get in-the-moment
+        updates on the things that interest you. And watch events unfold, in real time, from every angle.
       </div>
     </div>
     <div class="form-wrap">
@@ -21,12 +22,10 @@
           <p class="forget-pass">
             <a ui-sref="forgetpass">Forget Password?</a>
           </p>
-          <button class="sf-btn-primary sf-btn sf-btn-block" type="submit" ng-disabled="loginForm.$invalid">Login</button>
+          <button class="sf-btn-success sf-btn sf-btn-block" type="submit" ng-disabled="loginForm.$invalid">Login</button>
         </form>
         <div class="auth-divider">
-          <div class="divider-line"></div>
-          <div class="divider-content">or login with below</div>
-          <div class="divider-line"></div>
+          Login with social accounts below
         </div>
         <ul class="list-inline third-auth-list">
           <li class="third-auth-item facebook">

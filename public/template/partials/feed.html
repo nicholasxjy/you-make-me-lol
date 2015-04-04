@@ -1,108 +1,616 @@
-<div class="feed-wrap" ng-repeat="feed in ctrl.feeds">
-  <div class="feed-top">
-    <div class="user-avatar">
-      <img ng-src="{{feed.creator.avatar}}" alt="Avatar" class="img-responsive img-circle">
-    </div>
-    <div class="user-other">
-      <div class="name">
-        <a ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
+<div class="sf-feed feed-image masonry-brick">
+  <div class="sf-feed-inner">
+    <div class="feed-top">
+      <div class="user-avatar">
+        <img src="./images/user1.png" class="sf-img-circle feed-avatar">
       </div>
-      <div class="feed-time">
-        分享于 {{feed.createdAt | date: 'yyyy-MM-dd'}}
-      </div>
-    </div>
-  </div>
-  <div class="feed-content">
-    <div ng-if="feed.category === 'text'">{{feed.content}}</div>
-    <div ng-if="feed.category === 'image'">
-      <div class="attach-photo-item" ng-repeat="photo in feed.attach_files">
-        <img ng-src="{{photo.url}}" alt="{{photo.key}}" class="img-responsive">
-      </div>
-    </div>
-    <div ng-if="feed.category == 'video'">
-      <video src="{{feed.attach_files[0].url}}" controls>
-        Your browser needs to be upgrade! :)
-      </video>
-    </div>
-  </div>
-  <div class="feed-other">
-    <div class="actions">
-      <a href="" class="action-icon"><i class="fa fa-heart"></i></a>
-      <a href="" class="action-count" ng-if="feed.likes.length > 0">23</a>
-      <a href="" class="action-icon"><i class="fa fa-bookmark"></i></a>
-    </div>
-    <div class="like-users" ng-if="feed.likes.length > 0">
-      <ul class="list-inline likes-list">
-        <li class="like-user-item">
-          <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
-        </li>
-        <li class="like-user-item">
-          <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
-        </li>
-        <li class="like-user-item">
-          <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
-        </li>
-        <li class="like-user-item">
-          <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
-        </li>
-        <li class="like-user-item">
-          <a href=""><img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle"></a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="feed-comments">
-    <div class="more-comments" ng-if="feed.comments.length > 3">
-      <a href="">查看更多评论...</a>
-    </div>
-    <div class="commet-list" ng-if="feed.comments.length > 0">
-      <div class="comment-item">
-        <div class="comment-author-avatar">
-          <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+      <div class="user-other">
+        <div class="user-name">
+          <a href="">Nicholas</a>
         </div>
+        <div class="feed-time-location">
+          <span class="time">2 mins ago</span>
+          <span class="location">
+            <i class="fa fa-map-marker"></i>
+            New York
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="feed-content">
+      <div class="feed-images">
+        <div class="feed-image-container">
+          <img src="./images/background.jpg" alt="">
+        </div>
+        <div class="feed-image-container">
+          <img src="./images/auth-form-bg.jpg" alt="">
+        </div>
+      </div>
+    </div>
+
+    <div class="feed-tags">
+      <span class="tag-item">Image</span>
+      <span class="tag-item">Selfie</span>
+      <span class="tag-item">Mountain</span>
+    </div>
+
+    <div class="feed-actions">
+      <div class="like-comment">
+        <i class="fa fa-heart-o"></i><span class="feed-count like-count">123</span>
+        <i class="fa fa-comment-o"></i><span class="feed-count comment-count">20</span>
+      </div>
+
+      <div class="like-users">
+        <ul class="list-inline">
+          <li class="like-user-item">
+            <a><img src="./images/user1.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user2.jpeg" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user3.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/avatar-default.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feed-comments">
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user1.png" alt="" class="sf-img-circle"></a>
+        </div>
+
         <div class="comment-content">
-          <div class="comment-other">
-            <a href="" class="comment-user-name">Nicholas</a>
-            <span class="comment-time">2 mins ago</span>
+          <div class="top">
+            <a class="comment-user-name">Michelle</a><span class="comment-time">10 mins ago</span>
           </div>
           <div class="comment-words">
-            This is pretty awesome! love it :)
+            Sometimes i feel  i  just wanna be somebody s work...even for a day....﻿
           </div>
         </div>
       </div>
-      <div class="comment-item">
-        <div class="comment-author-avatar">
-          <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user2.jpeg" alt="" class="sf-img-circle"></a>
         </div>
+
         <div class="comment-content">
-          <div class="comment-other">
-            <a href="" class="comment-user-name">Nicholas</a>
-            <span class="comment-time">2 mins ago</span>
+          <div class="top">
+            <a class="comment-user-name">Peter</a><span class="comment-time">1 hour ago</span>
           </div>
           <div class="comment-words">
-            HUDSON, N.H. — Being with former Florida governor Jeb Bush
-            for his first trips to Iowa and New Hampshire last weekend and this one,
-            I found his demeanor to be completely different from those of the dozens
+            <a href="">@Michelle</a> Yeah man, you got it :)
           </div>
         </div>
       </div>
-      <div class="comment-item">
-        <div class="comment-author-avatar">
-          <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-rounded">
+
+      <div class="comments-more">
+        <a href="">More Comments</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div class="sf-feed feed-text masonry-brick">
+  <div class="sf-feed-inner">
+    <div class="feed-top">
+      <div class="user-avatar">
+        <img src="./images/user1.png" class="sf-img-circle feed-avatar">
+      </div>
+      <div class="user-other">
+        <div class="user-name">
+          <a href="">Nicholas</a>
         </div>
-        <div class="comment-content">
-          <div class="comment-other">
-            <a href="" class="comment-user-name">Nicholas</a>
-            <span class="comment-time">2 mins ago</span>
-          </div>
-          <div class="comment-words">
-            <a href="">@Nicholas</a> This is pretty awesome! love it :)
-          </div>
+        <div class="feed-time-location">
+          <span class="time">2 mins ago</span>
+          <span class="location">
+            <i class="fa fa-map-marker"></i>
+            New York
+          </span>
         </div>
       </div>
     </div>
-    <div class="add-comment">
-      <input type="text" class="sf-form-control" placeholder="添加评论">
+
+    <div class="feed-content">
+      <div class="feed-text-words">
+        Although I really wanted to try Sketch out, I didn’t want to get out of my comfort zone.
+        And everyone at my job used Adobe Photoshop and Illustrator, so I told myself that I would try it out later.
+      </div>
     </div>
+
+    <div class="feed-tags">
+      <span class="tag-item">Video</span>
+      <span class="tag-item">Selfie</span>
+      <span class="tag-item">Mountain</span>
+    </div>
+
+    <div class="feed-actions">
+      <div class="like-comment">
+        <i class="fa fa-heart-o"></i><span class="feed-count like-count">123</span>
+        <i class="fa fa-comment-o"></i><span class="feed-count comment-count">20</span>
+      </div>
+
+      <div class="like-users">
+        <ul class="list-inline">
+          <li class="like-user-item">
+            <a><img src="./images/user1.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user2.jpeg" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user3.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/avatar-default.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feed-comments">
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user1.png" alt="" class="sf-img-circle"></a>
+        </div>
+
+        <div class="comment-content">
+          <div class="top">
+            <a class="comment-user-name">Michelle</a><span class="comment-time">10 mins ago</span>
+          </div>
+          <div class="comment-words">
+            Sometimes i feel  i  just wanna be somebody s work...even for a day....﻿
+          </div>
+        </div>
+      </div>
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user2.jpeg" alt="" class="sf-img-circle"></a>
+        </div>
+
+        <div class="comment-content">
+          <div class="top">
+            <a class="comment-user-name">Peter</a><span class="comment-time">1 hour ago</span>
+          </div>
+          <div class="comment-words">
+            <a href="">@Michelle</a> Yeah man, you got it :)
+          </div>
+        </div>
+      </div>
+
+      <div class="comments-more">
+        <a href="">More Comments</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+<div class="sf-feed feed-image masonry-brick">
+  <div class="sf-feed-inner">
+    <div class="feed-top">
+      <div class="user-avatar">
+        <img src="./images/user1.png" class="sf-img-circle feed-avatar">
+      </div>
+      <div class="user-other">
+        <div class="user-name">
+          <a href="">Nicholas</a>
+        </div>
+        <div class="feed-time-location">
+          <span class="time">2 mins ago</span>
+          <span class="location">
+            <i class="fa fa-map-marker"></i>
+            New York
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="feed-content">
+      <div class="feed-images">
+        <div class="feed-image-container">
+          <img src="./images/background.jpg" alt="">
+        </div>
+        <div class="feed-image-container">
+          <img src="./images/auth-form-bg.jpg" alt="">
+        </div>
+      </div>
+    </div>
+
+    <div class="feed-tags">
+      <span class="tag-item">Image</span>
+      <span class="tag-item">Selfie</span>
+      <span class="tag-item">Mountain</span>
+    </div>
+
+    <div class="feed-actions">
+      <div class="like-comment">
+        <i class="fa fa-heart-o"></i><span class="feed-count like-count">123</span>
+        <i class="fa fa-comment-o"></i><span class="feed-count comment-count">20</span>
+      </div>
+
+      <div class="like-users">
+        <ul class="list-inline">
+          <li class="like-user-item">
+            <a><img src="./images/user1.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user2.jpeg" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user3.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/avatar-default.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feed-comments">
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user1.png" alt="" class="sf-img-circle"></a>
+        </div>
+
+        <div class="comment-content">
+          <div class="top">
+            <a class="comment-user-name">Michelle</a><span class="comment-time">10 mins ago</span>
+          </div>
+          <div class="comment-words">
+            Sometimes i feel  i  just wanna be somebody s work...even for a day....﻿
+          </div>
+        </div>
+      </div>
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user2.jpeg" alt="" class="sf-img-circle"></a>
+        </div>
+
+        <div class="comment-content">
+          <div class="top">
+            <a class="comment-user-name">Peter</a><span class="comment-time">1 hour ago</span>
+          </div>
+          <div class="comment-words">
+            <a href="">@Michelle</a> Yeah man, you got it :)
+          </div>
+        </div>
+      </div>
+
+      <div class="comments-more">
+        <a href="">More Comments</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div class="sf-feed feed-video masonry-brick">
+  <div class="sf-feed-inner">
+    <div class="feed-top">
+      <div class="user-avatar">
+        <img src="./images/user1.png" class="sf-img-circle feed-avatar">
+      </div>
+      <div class="user-other">
+        <div class="user-name">
+          <a href="">Nicholas</a>
+        </div>
+        <div class="feed-time-location">
+          <span class="time">2 mins ago</span>
+          <span class="location">
+            <i class="fa fa-map-marker"></i>
+            New York
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="feed-content">
+      <div class="feed-video-container">
+        <ng-cool-video source="ctrl.videoSource"></ng-cool-video>
+      </div>
+    </div>
+
+    <div class="feed-tags">
+      <span class="tag-item">Video</span>
+      <span class="tag-item">Selfie</span>
+      <span class="tag-item">Mountain</span>
+    </div>
+
+    <div class="feed-actions">
+      <div class="like-comment">
+        <i class="fa fa-heart-o"></i><span class="feed-count like-count">123</span>
+        <i class="fa fa-comment-o"></i><span class="feed-count comment-count">20</span>
+      </div>
+
+      <div class="like-users">
+        <ul class="list-inline">
+          <li class="like-user-item">
+            <a><img src="./images/user1.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user2.jpeg" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user3.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/avatar-default.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feed-comments">
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user1.png" alt="" class="sf-img-circle"></a>
+        </div>
+
+        <div class="comment-content">
+          <div class="top">
+            <a class="comment-user-name">Michelle</a><span class="comment-time">10 mins ago</span>
+          </div>
+          <div class="comment-words">
+            Sometimes i feel  i  just wanna be somebody s work...even for a day....﻿
+          </div>
+        </div>
+      </div>
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user2.jpeg" alt="" class="sf-img-circle"></a>
+        </div>
+
+        <div class="comment-content">
+          <div class="top">
+            <a class="comment-user-name">Peter</a><span class="comment-time">1 hour ago</span>
+          </div>
+          <div class="comment-words">
+            <a href="">@Michelle</a> Yeah man, you got it :)
+          </div>
+        </div>
+      </div>
+
+      <div class="comments-more">
+        <a href="">More Comments</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="sf-feed feed-audio masonry-brick">
+  <div class="sf-feed-inner">
+    <div class="feed-top">
+      <div class="user-avatar">
+        <img src="./images/user1.png" class="sf-img-circle feed-avatar">
+      </div>
+      <div class="user-other">
+        <div class="user-name">
+          <a href="">Nicholas</a>
+        </div>
+        <div class="feed-time-location">
+          <span class="time">2 mins ago</span>
+          <span class="location">
+            <i class="fa fa-map-marker"></i>
+            New York
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="feed-content">
+      <div class="feed-text-words">
+        Although I really wanted to try Sketch out, I didn’t want to get out of my comfort zone.
+        And everyone at my job used Adobe Photoshop and Illustrator, so I told myself that I would try it out later.
+      </div>
+    </div>
+
+    <div class="feed-tags">
+      <span class="tag-item">Video</span>
+      <span class="tag-item">Selfie</span>
+      <span class="tag-item">Mountain</span>
+    </div>
+
+    <div class="feed-actions">
+      <div class="like-comment">
+        <i class="fa fa-heart-o"></i><span class="feed-count like-count">123</span>
+        <i class="fa fa-comment-o"></i><span class="feed-count comment-count">20</span>
+      </div>
+
+      <div class="like-users">
+        <ul class="list-inline">
+          <li class="like-user-item">
+            <a><img src="./images/user1.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user2.jpeg" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user3.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/avatar-default.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feed-comments">
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user1.png" alt="" class="sf-img-circle"></a>
+        </div>
+
+        <div class="comment-content">
+          <div class="top">
+            <a class="comment-user-name">Michelle</a><span class="comment-time">10 mins ago</span>
+          </div>
+          <div class="comment-words">
+            Sometimes i feel  i  just wanna be somebody s work...even for a day....﻿
+          </div>
+        </div>
+      </div>
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user2.jpeg" alt="" class="sf-img-circle"></a>
+        </div>
+
+        <div class="comment-content">
+          <div class="top">
+            <a class="comment-user-name">Peter</a><span class="comment-time">1 hour ago</span>
+          </div>
+          <div class="comment-words">
+            <a href="">@Michelle</a> Yeah man, you got it :)
+          </div>
+        </div>
+      </div>
+
+      <div class="comments-more">
+        <a href="">More Comments</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+<div class="sf-feed feed-image masonry-brick">
+  <div class="sf-feed-inner">
+    <div class="feed-top">
+      <div class="user-avatar">
+        <img src="./images/user1.png" class="sf-img-circle feed-avatar">
+      </div>
+      <div class="user-other">
+        <div class="user-name">
+          <a href="">Nicholas</a>
+        </div>
+        <div class="feed-time-location">
+          <span class="time">2 mins ago</span>
+          <span class="location">
+            <i class="fa fa-map-marker"></i>
+            New York
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="feed-content">
+      <div class="feed-images">
+        <div class="feed-image-container">
+          <img src="./images/background.jpg" alt="">
+        </div>
+        <div class="feed-image-container">
+          <img src="./images/auth-form-bg.jpg" alt="">
+        </div>
+      </div>
+    </div>
+
+    <div class="feed-tags">
+      <span class="tag-item">Image</span>
+      <span class="tag-item">Selfie</span>
+      <span class="tag-item">Mountain</span>
+    </div>
+
+    <div class="feed-actions">
+      <div class="like-comment">
+        <i class="fa fa-heart-o"></i><span class="feed-count like-count">123</span>
+        <i class="fa fa-comment-o"></i><span class="feed-count comment-count">20</span>
+      </div>
+
+      <div class="like-users">
+        <ul class="list-inline">
+          <li class="like-user-item">
+            <a><img src="./images/user1.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user2.jpeg" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/user3.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+          <li class="like-user-item">
+            <a><img src="./images/avatar-default.png" alt="" class="sf-img-circle like-user-avatar"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feed-comments">
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user1.png" alt="" class="sf-img-circle"></a>
+        </div>
+
+        <div class="comment-content">
+          <div class="top">
+            <a class="comment-user-name">Michelle</a><span class="comment-time">10 mins ago</span>
+          </div>
+          <div class="comment-words">
+            Sometimes i feel  i  just wanna be somebody s work...even for a day....﻿
+          </div>
+        </div>
+      </div>
+
+      <div class="feed-comment-item">
+
+        <div class="comment-user-avatar">
+          <a href=""><img src="./images/user2.jpeg" alt="" class="sf-img-circle"></a>
+        </div>
+
+        <div class="comment-content">
+          <div class="top">
+            <a class="comment-user-name">Peter</a><span class="comment-time">1 hour ago</span>
+          </div>
+          <div class="comment-words">
+            <a href="">@Michelle</a> Yeah man, you got it :)
+          </div>
+        </div>
+      </div>
+
+      <div class="comments-more">
+        <a href="">More Comments</a>
+      </div>
+
+    </div>
+
   </div>
 </div>

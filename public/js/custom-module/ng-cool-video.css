@@ -1,0 +1,108 @@
+
+/***** controls style ******/
+
+.ng-cool-video-controls {
+  float: left;
+  width: 100%;
+  height: 30px;
+  background-color: #ffffff;
+}
+.ncv-actions {
+  float: left;
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 105px;
+}
+.ncv-actions i {
+  font-size: 18px;
+  color: rgba(0,0,0,.8);
+  padding-right: 20px;
+  cursor: pointer;
+}
+.ncv-actions i:hover {
+  color: rgba(0,0,0,.6);
+}
+.ncv-actions i.fa-backward, .ncv-actions i.fa-forward {
+  font-size: 14px;
+}
+.ncv-actions i.fa-play, .ncv-actions i.fa-pause {
+  width: 16px;
+}
+.ncv-progress {
+  float: left;
+  padding-top: 4px;
+}
+.ncv-progress progress[value] {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: 10px;
+  width: 200px;
+  cursor: pointer;
+}
+.ncv-progress progress[value]::-webkit-progress-bar {
+  background-color: #e6e6e6;
+}
+.ncv-progress progress[value]::-webkit-progress-value {
+  background-color: #009CDF;
+}
+.ncv-progress progress[value]::-moz-progress-bar {
+  background-color: #009CDF;
+}
+
+.ncv-current-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(0,0,0,.6);
+  float: left;
+  padding-left: 10px;
+  padding-right: 15px;
+  padding-top: 8px;
+}
+.ncv-mute {
+  float: right;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+.ncv-mute i {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(0,0,0,.6);
+  cursor: pointer;
+}
+.ncv-mute i:hover {
+  color: rgba(0,0,0,.4);
+}
+
+.ncv-sound-range {
+  float: right;
+  padding-top: 3px;
+}
+.ncv-sound-range input[type='range'] {
+  -webkit-appearance: none;
+  height: 4px;
+  width: 70px;
+  margin-top: 8px;
+  background-color: #E6E6E6;
+  outline:none;
+}
+.ncv-sound-range input[type='range']:focus::-webkit-slider-thumb {
+  outline: 1px #999 dotted;
+}
+.ncv-sound-range input[type='range']::-moz-range-track {
+  -moz-appearance: none;
+  height: 4px;
+  background-color: #E6E6E6;
+  border: none;
+}
+.ncv-sound-range input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  height: 10px;
+  width: 6px;
+  background-color: #666;
+}
+.ncv-sound-range input[type='range']::-moz-range-thumb {
+  height: 12px;
+  width: 8px;
+}

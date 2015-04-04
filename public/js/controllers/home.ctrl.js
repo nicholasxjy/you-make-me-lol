@@ -11,9 +11,27 @@
       function(UserService, FeedService, $state, ngCoolNoti) {
         var self = this;
 
+        self.isAuthticated = true;
+
+        self.videoSource = {
+          src: './media/codeschool_1403.mp4',
+          poster: './images/poster_PayPal_Austin2.jpg'
+        }
+
         var loadFeeds = function() {
           FeedService.getFeeds()
             .then(function(data) {
+              // self.feeds = data.feeds;
+              angular.forEach(data.feeds, function(feed) {
+                if (feed.category === 'video') {
+                  var attach_file = feed.attach_files[0];
+                  var source = {
+                    src: attach_file.url,
+                    poster: attach_file.poster_url
+                  };
+                  feed.source = source;
+                }
+              });
               self.feeds = data.feeds;
             })
         }

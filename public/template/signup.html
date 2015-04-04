@@ -1,25 +1,29 @@
-<div class="full-page auth jumbotron" ng-controller="SignupCtrl as signCtrl">
+<div class="full-page signup-page jumbotron" ng-controller="SignupCtrl as signCtrl">
   <div class="overlay"></div>
   <div class="auth-content">
     <div class="header">
-      <h1>SHOWFIE</h1>
+      <h1>Welcome to Friendfies.</h1>
       <div class="subtitle">
-        Around the world, people are waking up to the reality of approaching dangerous temperature rise.
+        Connect with your friends — and other fascinating people. Get in-the-moment
+        updates on the things that interest you. And watch events unfold, in real time, from every angle.
       </div>
     </div>
     <div class="form-wrap">
       <div class="form-content">
         <form novalidate name="signForm" ng-submit="signUp(user)">
           <div class="sf-form-group">
-            <input type="text" class="sf-form-control" placeholder="Name">
+            <input type="text" class="sf-form-control" placeholder="Name"
+            ng-model="user.name" ng-maxlength="20" ng-minlength="6" required>
           </div>
           <div class="sf-form-group">
-            <input type="email" class="sf-form-control" placeholder="Email">
+            <input type="email" class="sf-form-control" placeholder="Email"
+            ng-model="user.eamil" required>
           </div>
           <div class="sf-form-group">
-            <input type="password" class="sf-form-control" placeholder="Password">
+            <input type="password" class="sf-form-control" placeholder="Password"
+            ng-model="user.password" ng-minlength="6" ng-maxlength="30" required>
           </div>
-          <button class="sf-btn-primary sf-btn sf-btn-block" type="submit">Sign Up</button>
+          <button class="sf-btn-primary sf-btn sf-btn-block" type="submit" ng-disabled="signForm.$invalid">Sign Up</button>
         </form>
         <p class="account-tip">Already have an account? <a ui-sref="login" class="sf-auth-link">Login Now</a></p>
       </div>

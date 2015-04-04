@@ -8,6 +8,7 @@ var Feed = new Schema({
   category: {
     type: String,
     emnu: config.feed_default.categories,
+    index: true
   },
   content: {
     type: String,
