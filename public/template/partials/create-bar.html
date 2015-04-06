@@ -1,39 +1,146 @@
-<div class="create-bar">
-  <div class="create-bar-inner">
+<div class="sf-create-container" sf-upload-feed>
+  <div class="sf-overlay">
+  </div>
+  <div class="sf-create-wrap">
     <div class="user-wrap">
-      <img ng-src="{{ctrl.current_user.avatar}}" alt="Avatar" class="im-responsive img-circle">
+      <img src="./images/user1.png" class="sf-img-circle create-avatar">
     </div>
-    <div class="share-content">
-      <div class="share-words">
-        <textarea id="word" class="sf-textarea" ng-model="feed_content"></textarea>
+    <div class="create-content">
+      <div class="create-words-input">
+        <div class="word-input-arrow"></div>
+        <div class="create-placeholder">What's new...</div>
+        <div class="input-edit" contentEditable="true"></div>
       </div>
-      <ul class="list-inline share-action-list">
-        <li class="create-list-item">
-          <a ng-file-select ng-model="photos" ng-multiple="true" accept="image/*" sf-photo-upload>
-            <i class="fa fa-camera"></i>
-            <span>Photo</span>
-          </a>
-        </li>
-        <li class="create-list-item">
-          <a ng-file-select ng-model="videos" accept="video/*" sf-video-upload>
-            <i class="fa fa-video-camera"></i>
-            <span>Video</span>
-          </a>
-        </li>
-        <li class="create-list-item">
-          <a ng-file-select ng-model="audios" accept="audio/*" sf-audio-upload>
-            <i class="fa fa-headphones"></i>
-            <span>Audio</span>
-          </a>
-        </li>
-        <li class="create-list-item">
-          <a href="">
-            <i class="fa fa-map-marker"></i>
-            <span>Location</span>
-          </a>
-        </li>
-        <button class="sf-btn sf-btn-success sf-btn-small pull-right" ng-click="ctrl.postFeed(feed_content)">Share</button>
-      </ul>
+
+      <div class="create-add-actions" ng-hide="(images && images.length && images.length<=5) || audio || video">
+        <div class="add-actions-inner" ng-hide="spinnerShow">
+          <ul class="list-inline actions-list">
+            <li class="action-item">
+              <div class="add-button add-photo-button"
+              ng-file-select
+              ng-model="images"
+              ng-multiple="true"
+              accept="image/*"
+              ng-accept="validateFile($file)">
+                <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                <svg width="40px" height="36px" viewBox="0 0 40 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                    <defs></defs>
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                        <g id="components" sketch:type="MSArtboardGroup" transform="translate(-150.000000, -299.000000)" fill="#979797">
+                            <g id="Group" sketch:type="MSLayerGroup" transform="translate(40.000000, 140.000000)">
+                                <g transform="translate(80.000000, 132.000000)" id="camera-alt-+-Photos" sketch:type="MSShapeGroup">
+                                    <g transform="translate(13.000000, 27.000000)">
+                                        <g id="camera-alt" transform="translate(17.000000, 0.000000)">
+                                            <circle id="Oval" cx="20.4" cy="20.4" r="6.4"></circle>
+                                            <path d="M14,0 L10.4,4 L4,4 C1.8,4 0,5.8 0,8 L0,32 C0,34.2 1.8,36 4,36 L36,36 C38.2,36 40,34.2 40,32 L40,8 C40,5.8 38.2,4 36,4 L29.6,4 L26,0 L14,0 L14,0 Z M20,30 C14.4,30 10,25.6 10,20 C10,14.4 14.4,10 20,10 C25.6,10 30,14.4 30,20 C30,25.6 25.6,30 20,30 L20,30 Z" id="Shape"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+              </div>
+              <div class="action-item-tip">Photos</div>
+            </li>
+            <li class="action-item audio">
+              <div class="add-button add-audio-button" ng-file-select
+              ng-model="audio"
+              ng-multiple="false"
+              accept="audio/*"
+              ng-accept="validateFile($file)">
+                <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                  <svg width="37px" height="40px" viewBox="0 0 37 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                      <defs></defs>
+                      <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                          <g id="components" sketch:type="MSArtboardGroup" transform="translate(-280.000000, -295.000000)" fill="#979797">
+                              <g id="Group" sketch:type="MSLayerGroup" transform="translate(40.000000, 140.000000)">
+                                  <g transform="translate(80.000000, 132.000000)" id="headset-+-Audio" sketch:type="MSShapeGroup">
+                                      <g transform="translate(142.000000, 23.000000)">
+                                          <g id="headset" transform="translate(18.000000, 0.000000)">
+                                              <path d="M18.5,0 C8.22222222,0 0,8.42105263 0,18.9473684 L0,33.6842105 C0,37.2631579 2.67222222,40 6.16666667,40 L12.3333333,40 L12.3333333,23.1578947 L4.11111111,23.1578947 L4.11111111,18.9473684 C4.11111111,10.7368421 10.4833333,4.21052632 18.5,4.21052632 C26.5166667,4.21052632 32.8888889,10.7368421 32.8888889,18.9473684 L32.8888889,23.1578947 L24.6666667,23.1578947 L24.6666667,40 L30.8333333,40 C34.3277778,40 37,37.2631579 37,33.6842105 L37,18.9473684 C37,8.42105263 28.7777778,0 18.5,0 L18.5,0 Z" id="Shape"></path>
+                                          </g>
+                                      </g>
+                                  </g>
+                              </g>
+                          </g>
+                      </g>
+                  </svg>
+              </div>
+              <div class="action-item-tip">Audio</div>
+            </li>
+            <li class="action-item video">
+              <div class="add-button add-video-button"
+              ng-file-select
+              ng-model="video"
+              ng-multiple="false"
+              accept="video/*"
+              ng-accept="validateFile($file)">
+                <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                <svg width="40px" height="32px" viewBox="0 0 40 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                    <defs></defs>
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                        <g id="components" sketch:type="MSArtboardGroup" transform="translate(-402.000000, -299.000000)" fill="#979797">
+                            <g id="Group" sketch:type="MSLayerGroup" transform="translate(40.000000, 140.000000)">
+                                <g transform="translate(80.000000, 132.000000)" id="movie-+-Video" sketch:type="MSShapeGroup">
+                                    <g transform="translate(265.000000, 27.000000)">
+                                        <g id="movie" transform="translate(17.000000, 0.000000)">
+                                            <path d="M32,0 L36,8 L30,8 L26,0 L22,0 L26,8 L20,8 L16,0 L12,0 L16,8 L10,8 L6,0 L4,0 C1.8,0 0,1.8 0,4 L0,28 C0,30.2 1.8,32 4,32 L36,32 C38.2,32 40,30.2 40,28 L40,0 L32,0 L32,0 Z" id="Shape"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+              </div>
+              <div class="action-item-tip">Video</div>
+            </li>
+
+          </ul>
+          <div class="add-tip">
+            Choose something to share :)
+          </div>
+        </div>
+      </div>
+
+      <div class="upload-file-preview">
+        <div class="photos-container" ng-if="images && images.length && images.length<=5">
+          <div class="photo-preveiw-item" ng-repeat="image in images">
+            <div ng-include="'template/spinner.html'" ng-show="!image.url"></div>
+            <div class="photo-uploaded" ng-show="image.url">
+              <img ng-src="{{image.url}}" alt="" width="100%">
+              <div class="photo-caption">
+                <input type="text" ng-model="image.caption" placeholder="Add a caption">
+              </div>
+              <a href="" class="delete-link" ng-click="removeImage($index)">
+                <i class="fa fa-close"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="audio-video-uploaded-tip" ng-if="mediaUploading">
+          <div class="media-uploaded" ng-if="mediaUploaded">
+            <p>Cool, your file <strong>{{media.name}}</strong> has been uploaded!</p>
+            <i class="fa fa-trash" ng-click="removeMedia(media)"></i>
+          </div>
+          <div ng-include="'template/spinner.html'" ng-show="!mediaUploaded"></div>
+        </div>
+
+      </div>
+
+      <div class="add-tags">
+        <tags-input ng-model="tags">
+          <!-- <auto-complete ></auto-complete> -->
+        </tags-input>
+      </div>
+
+      <div class="create-submit">
+        <button class="sf-btn sf-btn-default sf-btn-small cancel-create" ng-click="cancel()">Cancel</button>
+        <button class="sf-btn sf-btn-primary sf-btn-small post-create" ng-click="postShare()">Share</button>
+      </div>
+
     </div>
   </div>
 </div>

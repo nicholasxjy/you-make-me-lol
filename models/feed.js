@@ -30,6 +30,10 @@ var Feed = new Schema({
     type: ObjectId,
     ref: 'User'
   }],
+  tags: [{
+    type: ObjectId,
+    ref: 'Tag'
+  }],
   createdAt: {
     type: Date,
     default: Date.now

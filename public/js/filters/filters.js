@@ -1,1 +1,1 @@
-
+(function() {  'use strict';  angular    .module('showfieApp')})();

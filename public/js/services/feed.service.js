@@ -36,9 +36,27 @@
           return deferred.promise;
         }
 
+        function removeFile(file) {
+          var deferred = $q.defer();
+          $http({
+            method: 'POST',
+            url: '/feed/remove_file',
+            data: {
+              fileId: file.fileId,
+              key: file.key
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
         return {
           create: create,
-          getFeeds: getFeeds
+          getFeeds: getFeeds,
+          removeFile: removeFile
         }
       }
     ])

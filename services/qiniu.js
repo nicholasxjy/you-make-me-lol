@@ -25,28 +25,6 @@ module.exports = {
           ret.url = DOMAIN + '/' + ret.key;
           cb1(null, ret);
         });
-      },
-      function(ret, cb2) {
-        if (fileType === 'image') {
-          var image_info_url = ret.url+'?imageInfo';
-          request({url: image_info_url, json: true}, function(err, res, info) {
-            if (err) return cb2(err);
-            var file_info = {
-              url: ret.url,
-              key: ret.key,
-              hash: ret.hash,
-              image_info: info
-            };
-            cb2(null, file_info);
-          })
-        } else {
-          var file_info = {
-            url: ret.url,
-            key: ret.key,
-            hash: ret.hash
-          };
-          cb2(null, file_info);
-        }
       }
     ], function(err, result) {
       if (err) return cb(err);

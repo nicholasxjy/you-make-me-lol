@@ -2,6 +2,270 @@
   'use strict';
   angular
     .module('showfieApp')
+    .directive('sfCreateFeed', [
+      '$document',
+      '$timeout',
+      '$http',
+      '$compile',
+      function($document, $timeout, $http, $compile) {
+        return {
+          restrict: 'AE',
+          link: function(scope, ele, attrs) {
+            var body = $document.find('body')[0];
+            var $body = angular.element(body);
+
+            ele.on('click', function() {
+              //append dom to body
+              var template = $http.get('template/partials/create-bar.html');
+              template.success(function(data) {
+                var tpl = $compile(data)(scope);
+                $timeout(function() {
+                  $body.append(tpl);
+                });
+              })
+            })
+          }
+        }
+      }
+    ])
+    .directive('sfUploadFeed', [
+      '$document',
+      '$timeout',
+      '$http',
+      '$rootScope',
+      '$q',
+      '$upload',
+      'ngCoolNoti',
+      'FeedService',
+      function($document, $timeout, $http, $rootScope, $q, $upload, ngCoolNoti, FeedService) {
+        return {
+          restrict: 'AE',
+          controller: ['$scope', '$element', function($scope, $element) {
+
+
+            $scope.mediaUploading = false;
+            $scope.mediaUploaded = false;
+
+            $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
+
+            $scope.$watch('images', function(images) {
+              if (images && images.length > 5) {
+                ngCoolNoti.create({
+                  message: 'Your files length should not be more than 5',
+                  position: 'top-right',
+                  animation: 'jelly',
+                  type: 'warning'
+                });
+                $scope.images = null;
+                return;
+              }
+              if (images && images.length > 0 && images.length <= 5) {
+                $scope.upload($scope.images, 'image');
+              }
+            });
+
+            $scope.$watch('audio', function(audio) {
+              if (audio && audio.length) {
+                $scope.upload(audio, 'audio');
+              }
+            });
+            $scope.$watch('video', function(video) {
+              if (video && video.length) {
+                $scope.upload(video, 'video');
+              }
+            });
+            $scope.upload = function(files, type) {
+              if (type === 'audio' || type === 'video') {
+                $scope.mediaUploading = true;
+              }
+              angular.forEach(files, function(file) {
+                if (file) {
+                  $upload.upload({
+                    url: '/feed/upload_file',
+                    file: file,
+                    fields: {category: type}
+                  }).success(function(data, status, headers, config) {
+                    console.log(data);
+                    if (data.status === 'fail') {
+                      ngCoolNoti.create({
+                        message: data.msg,
+                        position: 'top-right',
+                        animation: 'jelly',
+                        type: 'danger'
+                      });
+                    } else {
+                      file.url = data.file_info.url;
+                      file.fileId = data.file_info.fileId;
+                      file.key = data.file_info.key;
+
+                      if (type === 'audio' || type === 'video') {
+                        $scope.mediaUploaded = true;
+                        $scope.media = file;
+                        if (type === 'audio') {
+                          $scope.audio = file;
+                        }
+                        if (type === 'video') {
+                          $scope.video = file;
+                        }
+                      }
+                    }
+                  })
+                }
+              });
+            };
+
+            $scope.removeImage = function(index) {
+              FeedService.removeFile($scope.images[index])
+                .then(function(data) {
+                  $scope.images = $scope.images.filter(function(image, i) {
+                    return i !== index;
+                  });
+                }, function(err) {
+                  console.log(err);
+                });
+            };
+
+            $scope.removeMedia = function(media) {
+              FeedService.removeFile(media)
+                .then(function(data) {
+                  if (media.type.indexOf('audio')>-1) {
+                    $scope.audio = null;
+                  }
+                  if (media.type.indexOf('video')>-1) {
+                    $scope.video = null;
+                  }
+                  $scope.mediaUploading = false;
+                  $scope.mediaUploaded = false;
+                  $scope.media = null;
+                }, function(err) {
+                  console.log(err);
+                })
+            }
+
+            $scope.validateFile = function(file, type) {
+              if (file.size > 10485760) {
+                ngCoolNoti.create({
+                  message: 'Your file size should be less than 10MB',
+                  position: 'top-right',
+                  animation: 'jelly',
+                  type: 'warning'
+                });
+
+                if (type === 'image') {
+                  $scope.images = null;
+                }
+                if (type === 'audio') {
+                  $scope.audio = null;
+                }
+                if (type === 'video') {
+                  $scope.video = null;
+                }
+                return false;
+              }
+            };
+
+          }],
+          link: function(scope, ele, attrs) {
+
+            var textPlaceholder = ele[0].querySelector('.create-placeholder');
+            var inputEdit = ele[0].querySelector('.input-edit');
+
+            var $textPlaceholder = $(textPlaceholder);
+            var $inputEdit = $(inputEdit);
+
+            $inputEdit.on('keyup', function(e) {
+              var val = $(this).html();
+              if (val !== '') {
+                $textPlaceholder.hide();
+              } else {
+                $textPlaceholder.show();
+              }
+            });
+
+            var checkContents = function() {
+              console.log(scope.images);
+              console.log(scope.audio);
+              console.log(scope.video);
+              var text = $inputEdit.html();
+              text = text.trim();
+              if (text !== '') {
+                return true;
+              }
+              if (scope.images && scope.images.length >0) {
+                scoep.images = scope.images.map(function(item) {
+                  var image = {
+                    fileId: item.fileId,
+                    url: item.url,
+                    caption: item.caption || '',
+                  }
+                  return image;
+                });
+                return true;
+              }
+              if (scope.audio && scope.audio.length >0) {
+                scope.audio = scope.audio.map(function(item) {
+                  var audio = {
+                    fileId: item.fileId,
+                    url: item.url
+                  }
+                });
+                return true;
+              }
+              if (scope.video && scope.video.length >0) {
+                scope.video = scope.video.map(function(item) {
+                  var video = {
+                    fileId: item.fileId,
+                    url: item.url
+                  }
+                });
+                return true;
+              }
+              return false;
+            }
+
+            scope.postShare = function() {
+              var text = $inputEdit.html();
+              text = text.trim();
+              if (!checkContents()) {
+                ngCoolNoti.create({
+                  message: 'You add nothing to share :(',
+                  position: 'top-right',
+                  animation: 'jelly',
+                  type: 'danger'
+                });
+                return false;
+              } else {
+                var feed = {
+                  text: text,
+                  images: scope.images,
+                  audio: scope.audio,
+                  video: scope.video,
+                  tags: scope.tags
+                };
+                FeedService.create(feed)
+                  .then(function(data) {
+                    scope.cancel();
+                  }, function(err) {
+                    console.log(err);
+                  })
+              }
+            };
+
+            scope.cancel = function() {
+              scope.spinnerShow = false;
+              scope.mediaReady = false;
+              scope.images = null;
+              scope.audio = null;
+              scope.video = null;
+              $(ele).find('.sf-create-wrap').addClass('zoomOut');
+              $timeout(function() {
+                ele.remove();
+              }, 750);
+            }
+          }
+        }
+      }
+    ])
     .directive('photoDisplay', function() {
       return {
         restrict: 'A',
