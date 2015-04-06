@@ -183,9 +183,6 @@
             });
 
             var checkContents = function() {
-              console.log(scope.images);
-              console.log(scope.audio);
-              console.log(scope.video);
               var text = $inputEdit.html();
               text = text.trim();
               if (text !== '') {
@@ -202,22 +199,18 @@
                 });
                 return true;
               }
-              if (scope.audio && scope.audio.length >0) {
-                scope.audio = scope.audio.map(function(item) {
-                  var audio = {
-                    fileId: item.fileId,
-                    url: item.url
-                  }
-                });
+              if (scope.audio) {
+                scope.audio = {
+                  fileId: scope.audio.fileId,
+                  url: scope.audio.url
+                }
                 return true;
               }
-              if (scope.video && scope.video.length >0) {
-                scope.video = scope.video.map(function(item) {
-                  var video = {
-                    fileId: item.fileId,
-                    url: item.url
-                  }
-                });
+              if (scope.video) {
+                scope.video = {
+                  fileId: scope.video.fileId,
+                  url: scope.video.url
+                }
                 return true;
               }
               return false;
@@ -257,6 +250,7 @@
               scope.images = null;
               scope.audio = null;
               scope.video = null;
+              scope.tags = [];
               $(ele).find('.sf-create-wrap').addClass('zoomOut');
               $timeout(function() {
                 ele.remove();
