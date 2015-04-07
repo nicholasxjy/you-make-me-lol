@@ -9,6 +9,7 @@ module.exports = {
     file.hash = file_obj.hash;
     file.mimeType = file_obj.mimeType;
     file.category = file_obj.category;
+    file.caption = '';
     file.save(cb);
   },
   findFileByQuery: function(query, opt, cb) {

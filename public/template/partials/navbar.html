@@ -14,7 +14,7 @@
           <a ui-sref="explore">EXPLORE</a>
         </li>
         <li class="navbar-link-item" ui-sref-active="active">
-          <a ui-sref="messages">MESSAGES <span class="badge sf-badge">5</span></a>
+          <a ng-cool-popover="noti" source="ctrl.unReadNotis">MESSAGES <span class="badge sf-badge">5</span></a>
         </li>
       </ul>
     </div>
@@ -63,7 +63,7 @@
           </a>
         </li>
         <li class="navbar-action-item">
-          <a sf-create-feed>
+          <a sf-create-feed="{{ctrl.current_user.avatar}}">
             <?xml version="1.0" encoding="UTF-8" standalone="no"?>
             <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
                 <defs></defs>
@@ -86,8 +86,8 @@
           </a>
         </li>
         <li class="navbar-action-item">
-          <a href="">
-            <img src="./images/avatar-default.png" class="sf-img-circle navbar-dropdown-img">
+          <a ui-sref="user({name: ctrl.current_user.name})">
+            <img ng-src="{{ctrl.current_user.avatar}}" class="sf-img-circle navbar-dropdown-img">
           </a>
         </li>
       </ul>

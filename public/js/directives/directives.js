@@ -13,7 +13,9 @@
           link: function(scope, ele, attrs) {
             var body = $document.find('body')[0];
             var $body = angular.element(body);
-
+            attrs.$observe('sfCreateFeed', function(val) {
+              scope.current_user_avatar = val;
+            });
             ele.on('click', function() {
               //append dom to body
               var template = $http.get('template/partials/create-bar.html');
@@ -40,52 +42,62 @@
       function($document, $timeout, $http, $rootScope, $q, $upload, ngCoolNoti, FeedService) {
         return {
           restrict: 'AE',
+          scope: false,
           controller: ['$scope', '$element', function($scope, $element) {
-
-
             $scope.mediaUploading = false;
             $scope.mediaUploaded = false;
-
+            $scope.canPosted = false;
+            $scope.upload_funs = [];
             $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
 
-            $scope.$watch('images', function(images) {
-              if (images && images.length > 5) {
-                ngCoolNoti.create({
-                  message: 'Your files length should not be more than 5',
-                  position: 'top-right',
-                  animation: 'jelly',
-                  type: 'warning'
-                });
-                $scope.images = null;
-                return;
-              }
-              if (images && images.length > 0 && images.length <= 5) {
-                $scope.upload($scope.images, 'image');
-              }
-            });
-
-            $scope.$watch('audio', function(audio) {
-              if (audio && audio.length) {
-                $scope.upload(audio, 'audio');
-              }
-            });
-            $scope.$watch('video', function(video) {
-              if (video && video.length) {
-                $scope.upload(video, 'video');
+            $scope.$watch('file_count', function(val) {
+              if ($scope.selectedFiles && $scope.selectedFiles.length) {
+                if (val === $scope.selectedFiles.length) {
+                  $scope.canPosted = true;
+                } else {
+                  $scope.canPosted = false;
+                }
               }
             });
             $scope.upload = function(files, type) {
+              $scope.selectedFiles = files;
+              $scope.file_count = 0;
+              if (files && files.length > 0) {
+                if (type === 'image') {
+                  if (files && files.length > 5) {
+                    ngCoolNoti.create({
+                      message: 'Images length should not be more than 5',
+                      position: 'top-right',
+                      animation: 'jelly',
+                      type: 'warning'
+                    });
+                    return false;
+                  }
+                  $scope.images = files;
+                }
+                if (type === 'audio') {
+                  $scope.audio = files;
+                }
+                if (type === 'video') {
+                  $scope.video = files;
+                }
+              } else {
+                return false;
+              }
               if (type === 'audio' || type === 'video') {
                 $scope.mediaUploading = true;
               }
+
               angular.forEach(files, function(file) {
                 if (file) {
-                  $upload.upload({
+                  var fun = $upload.upload({
                     url: '/feed/upload_file',
                     file: file,
-                    fields: {category: type}
+                    fields: {
+                      category: type
+                    }
                   }).success(function(data, status, headers, config) {
-                    console.log(data);
+
                     if (data.status === 'fail') {
                       ngCoolNoti.create({
                         message: data.msg,
@@ -94,22 +106,17 @@
                         type: 'danger'
                       });
                     } else {
+                      $scope.file_count += 1;
                       file.url = data.file_info.url;
                       file.fileId = data.file_info.fileId;
                       file.key = data.file_info.key;
-
                       if (type === 'audio' || type === 'video') {
                         $scope.mediaUploaded = true;
                         $scope.media = file;
-                        if (type === 'audio') {
-                          $scope.audio = file;
-                        }
-                        if (type === 'video') {
-                          $scope.video = file;
-                        }
                       }
                     }
                   })
+                  $scope.upload_funs.push(fun);
                 }
               });
             };
@@ -128,10 +135,10 @@
             $scope.removeMedia = function(media) {
               FeedService.removeFile(media)
                 .then(function(data) {
-                  if (media.type.indexOf('audio')>-1) {
+                  if (media.type.indexOf('audio') > -1) {
                     $scope.audio = null;
                   }
-                  if (media.type.indexOf('video')>-1) {
+                  if (media.type.indexOf('video') > -1) {
                     $scope.video = null;
                   }
                   $scope.mediaUploading = false;
@@ -183,40 +190,44 @@
             });
 
             var checkContents = function() {
+              var hasContents = false;
               var text = $inputEdit.html();
               text = text.trim();
               if (text !== '') {
-                return true;
+                hasContents = true;
               }
-              if (scope.images && scope.images.length >0) {
-                scoep.images = scope.images.map(function(item) {
+              if (scope.images && scope.images.length > 0) {
+                scope.category = 'image';
+                scope.share_files = scope.images.map(function(item) {
                   var image = {
                     fileId: item.fileId,
                     url: item.url,
                     caption: item.caption || '',
+                    key: item.key
                   }
                   return image;
                 });
-                return true;
+                hasContents = true;
               }
-              if (scope.audio) {
-                scope.audio = {
-                  fileId: scope.audio.fileId,
-                  url: scope.audio.url
-                }
-                return true;
+              if (scope.audio && scope.audio.length>0) {
+                scope.category = 'audio';
+                scope.share_files = scope.audio.map(function(item) {
+                  return {fileId: item.fileId,url: item.url, key:item.key}
+                })
+                hasContents = true;
               }
-              if (scope.video) {
-                scope.video = {
-                  fileId: scope.video.fileId,
-                  url: scope.video.url
-                }
-                return true;
+              if (scope.video && scope.video.length>0) {
+                scope.category = 'video';
+                scope.share_files = scope.video.map(function(item) {
+                  return {fileId: item.fileId,url: item.url, key:item.key}
+                })
+                hasContents = true;
               }
-              return false;
+              return hasContents;
             }
 
             scope.postShare = function() {
+
               var text = $inputEdit.html();
               text = text.trim();
               if (!checkContents()) {
@@ -230,374 +241,59 @@
               } else {
                 var feed = {
                   text: text,
-                  images: scope.images,
-                  audio: scope.audio,
-                  video: scope.video,
+                  category: scope.category,
+                  share_files: scope.share_files,
                   tags: scope.tags
                 };
                 FeedService.create(feed)
                   .then(function(data) {
-                    scope.cancel();
+                    scope.cancel(true);
+                    scope.$emit('feed:new', {new_feed_id: data.new_feed_id});
                   }, function(err) {
                     console.log(err);
                   })
               }
             };
 
-            scope.cancel = function() {
+            scope.cancel = function(isPostDone) {
+              if (!isPostDone) {
+                //abort upload
+                scope.upload_funs.forEach(function(fun) {
+                  fun.abort();
+                });
+
+                checkContents();
+
+                if(scope.share_files && scope.share_files.length > 0) {
+                  scope.share_files.forEach(function(file) {
+                    if (file.fileId && file.key) {
+                      FeedService.removeFile(file)
+                        .then(function(data) {
+                          console.log(data);
+                        })
+                    }
+                  })
+                }
+              }
+
               scope.spinnerShow = false;
               scope.mediaReady = false;
+              scope.mediaUploading = false;
+              scope.mediaUploaded = false;
+              scope.file_count = null;
+              scope.selectedFiles = null;
+              scope.canPosted = false;
               scope.images = null;
               scope.audio = null;
               scope.video = null;
-              scope.tags = [];
+              scope.category = null;
+              scope.share_files = null;
+              scope.tags = null;
+
               $(ele).find('.sf-create-wrap').addClass('zoomOut');
               $timeout(function() {
                 ele.remove();
               }, 750);
-            }
-          }
-        }
-      }
-    ])
-    .directive('photoDisplay', function() {
-      return {
-        restrict: 'A',
-        link: function(scope, ele, attrs) {
-          var fullWidth = $(ele).width();
-          var _perWidth = fullWidth / 3;
-          $(ele).css('height', _perWidth+'px');
-          $(ele).find('img')
-          .css('width', _perWidth+'px')
-          .css('height', _perWidth+'px');
-        }
-      }
-    })
-    .directive('sfPhotoUpload', [
-      '$document',
-      '$upload',
-      '$http',
-      '$q',
-      '$compile',
-      '$timeout',
-      'FeedService',
-      function($document, $upload, $http, $q, $compile, $timeout, FeedService) {
-        return {
-          restrict: 'A',
-          link: function(scope, ele, attrs) {
-            var body = $document.find('body');
-            scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
-            var setStyle = function() {
-              var fullWidth = $(document).width();
-              var fullHeight = $(document).height();
-              var windowHeight = $(window).height();
-              var MARGIN = 40;
-              var PREVIEW_OFFSET = 70;
-              var _overlay = $('.upload-overlay');
-              var _uploadwrap = $('.upload-wrap');
-              var _uploadpreview = $('.upload-preview');
-              _overlay.css('width', fullWidth+'px')
-              .css('height', fullHeight+'px');
-
-              _uploadwrap.css('width', (fullWidth-MARGIN*2) + 'px')
-              .css('height', (windowHeight - MARGIN) + 'px')
-              .css('top', 0).css('left', '40px');
-
-              _uploadpreview.css('height',(windowHeight - MARGIN - 2*PREVIEW_OFFSET) + 'px')
-              .css('width', '100%');
-            };
-
-            var calculateImageSize = function(size) {
-              var finalSize = {};
-              // the parent container 348 * 300
-              // remove the padding, so left 308 * 280
-              var imageWidth = size.width;
-              var imageHeight = size.height;
-
-              var ratioWidth = 308/imageWidth;
-              var _tempHeight = imageHeight * ratioWidth;
-              if (_tempHeight > 280) {
-                //here should as height ratio
-                var ratioHeight = 280/imageHeight;
-                finalSize.width = imageWidth * ratioHeight;
-                finalSize.height = 280;
-              } else {
-                finalSize.width = 308;
-                finalSize.height = _tempHeight;
-              }
-              return finalSize;
-            }
-
-            var template = $http.get('template/partials/upload.html');
-
-            scope.isDelete = false;
-
-            scope.$watch('photos', function(files) {
-              if (!scope.isDelete && files && files.length > 0) {
-                scope.files = files;
-                template.then(function(res) {
-                  $compile(res.data)(scope, function(uploadHtml, scope) {
-                    $timeout(function() {
-                      body.append(uploadHtml);
-                      setStyle();
-                      //set style of the template
-
-                      scope.upload(scope.files);
-                    });
-                  });
-                });
-
-              }
-            });
-
-            scope.upload = function(files) {
-              angular.forEach(files, function(file) {
-                // if (scope.fileReaderSupported && file.type.indexOf('image') > -1) {
-                //   $timeout(function() {
-                //     var fileReader = new FileReader();
-                //     fileReader.readAsDataURL(file);
-                //     var image = new Image();
-                //     fileReader.onload = function(e) {
-                //       $timeout(function() {
-                //         image.src = e.target.result;
-                //         image.onload = function() {
-                //           console.log('width', this.width);
-                //           console.log('height', this.height);
-
-                //           var size = {
-                //             width: this.width,
-                //             height: this.height
-                //           };
-
-                //         }
-                //       })
-                //     }
-                //   })
-                // }
-
-
-                file.spinnerShow = true;
-                $upload.upload({
-                  url: '/feed/upload_photo',
-                  file: file
-                }).success(function(data, status, headers, config) {
-                  console.log(data);
-                  if (data.status === 'fail') {
-                    console.log(data.msg);
-                  } else {
-                    //get the file info, update ui
-                    file.spinnerShow = false;
-                    //calculate the image size for the best display
-                    //fuck ya all!
-                    $timeout(function() {
-                      var size = {
-                        width: data.file_info.image_info.width,
-                        height: data.file_info.image_info.height
-                      };
-                      file.category = 'image';
-                      file.url = data.file_info.url;
-                      file.fileId = data.file_info.fileId;
-                      file.key = data.file_info.key;
-                      file.hash = data.file_info.hash;
-                      var newSize = calculateImageSize(size);
-                      file.width = newSize.width;
-                      file.height = newSize.height;
-                    });
-                  }
-                })
-              })
-            };
-
-            scope.removeFile = function(file, index) {
-              if (!file) {
-                alert('No file!');
-                return;
-              }
-              $http({
-                method: 'POST',
-                url: '/feed/remove_file',
-                data: {
-                  fileId: file.fileId,
-                  key: file.key,
-                  hash: file.hash
-                }
-              }).success(function(data, status, headers, config) {
-                scope.isDelete = true;
-                scope.files = scope.files.filter(function(file, i) {
-                  return i !== index;
-                });
-
-                if (scope.files.length === 0) {
-                  $('.sf-upload-wrap').remove();
-                  scope.isDelete = false;
-                }
-
-              }).error(function(data, status, headers, config) {
-                console.log('Something goes wrong.');
-              })
-            }
-            scope.cancel = function() {
-              if (scope.files && scope.files.length > 0) {
-                var all = [];
-                angular.forEach(scope.files, function(file) {
-                  var filePromise = $http({
-                    method: 'POST',
-                    url: '/feed/remove_file',
-                    data: {
-                      fileId: file.fileId,
-                      key: file.key,
-                      hash: file.hash
-                    }
-                  });
-                  all.push(filePromise);
-                });
-                $q.all(all)
-                  .then(function(res) {
-                    $('.sf-upload-wrap').remove();
-                    scope.isDelete = false;
-                  }, function(err) {
-                    console.log('Something goes wrong!');
-                  })
-              }
-            };
-
-            scope.createFeed = function() {
-              //here only upload images
-              var data = {
-                category: 'image',
-                files: scope.files
-              }
-              FeedService.create(data)
-                .then(function(data) {
-                  $('.sf-upload-wrap').remove();
-                  scope.isDelete = false;
-                })
-            }
-          }
-        }
-      }
-    ])
-    .directive('sfVideoUpload', [
-      '$document',
-      '$upload',
-      '$http',
-      '$q',
-      '$compile',
-      '$timeout',
-      'FeedService',
-      '$sce',
-      function($document, $upload, $http, $q, $compile, $timeout, FeedService, $sce) {
-        return {
-          restrict: 'A',
-          link: function(scope, ele, attrs) {
-            var body = $document.find('body');
-            scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
-            var setStyle = function() {
-              var fullWidth = $(document).width();
-              var fullHeight = $(document).height();
-              var windowHeight = $(window).height();
-              var MARGIN = 40;
-              var PREVIEW_OFFSET = 70;
-              var _overlay = $('.upload-overlay');
-              var _uploadwrap = $('.upload-wrap');
-              var _uploadpreview = $('.upload-preview');
-              _overlay.css('width', fullWidth+'px')
-              .css('height', fullHeight+'px');
-
-              _uploadwrap.css('width', (fullWidth-MARGIN*2) + 'px')
-              .css('height', (windowHeight - MARGIN) + 'px')
-              .css('top', 0).css('left', '40px');
-
-              _uploadpreview.css('height',(windowHeight - MARGIN - 2*PREVIEW_OFFSET) + 'px')
-              .css('width', '100%');
-            };
-
-            var template = $http.get('template/partials/upload_video.html');
-
-            scope.isDelete = false;
-
-            scope.$watch('videos', function(files) {
-              if (!scope.isDelete && files && files.length > 0) {
-                scope.file = files[0];
-                template.then(function(res) {
-                  $compile(res.data)(scope, function(uploadHtml, scope) {
-                    $timeout(function() {
-                      body.append(uploadHtml);
-                      setStyle();
-                      //set style of the template
-
-                      scope.upload(scope.file);
-                    });
-                  });
-                });
-
-              }
-            });
-
-            scope.upload = function(file) {
-              file.spinnerShow = true;
-              $upload.upload({
-                url: '/feed/upload_video',
-                file: file
-              }).success(function(data, status, headers, config) {
-                console.log(data);
-                if (data.status === 'fail') {
-                  console.log(data.msg);
-                } else {
-                  //get the file info, update ui
-                  file.spinnerShow = false;
-                  //calculate the image size for the best display
-                  //fuck ya all!
-                  $timeout(function() {
-                    file.fileId = data.file_info._id;
-                    file.url = data.file_info.url;
-                    file.key = data.file_info.key;
-                    file.hash = data.file_info.hash;
-                    file.width = '100%';
-                    file.height = '100%';
-                    file.category = 'video';
-                    $timeout(function() {
-                      var _uploadpreview = $('.upload-preview');
-                      _uploadpreview.find('video').attr('src', file.url);
-                    }, 500);
-                  });
-                }
-              })
-            };
-
-            scope.cancel = function() {
-              if (scope.file) {
-                $http({
-                  method: 'POST',
-                  url: '/feed/remove_file',
-                  data: {
-                    fileId: scope.file.fileId,
-                    key: scope.file.key,
-                    hash: scope.file.hash
-                  }
-                }).success(function(data, status, headers, config) {
-                  $('.sf-upload-wrap').remove();
-                  scope.isDelete = false;
-                }).error(function(data, status, headers, config) {
-                  console.log('Something goes wrong!');
-                });
-              }
-            };
-
-            scope.createFeed = function() {
-              //here only upload video
-              scope.file.caption = 'Video Show';
-              var files = [];
-              files.push(scope.file);
-              var data = {
-                category: 'video',
-                files: files
-              }
-              FeedService.create(data)
-                .then(function(data) {
-                  $('.sf-upload-wrap').remove();
-                  scope.isDelete = false;
-                })
             }
           }
         }

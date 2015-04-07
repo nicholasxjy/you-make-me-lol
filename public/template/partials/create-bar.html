@@ -3,7 +3,7 @@
   </div>
   <div class="sf-create-wrap">
     <div class="user-wrap">
-      <img src="./images/user1.png" class="sf-img-circle create-avatar">
+      <img ng-src="{{current_user_avatar}}" class="sf-img-circle create-avatar">
     </div>
     <div class="create-content">
       <div class="create-words-input">
@@ -18,9 +18,9 @@
             <li class="action-item">
               <div class="add-button add-photo-button"
               ng-file-select
-              ng-model="images"
               ng-multiple="true"
               accept="image/*"
+              ng-file-change="upload($files, 'image')"
               ng-accept="validateFile($file)">
                 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
                 <svg width="40px" height="36px" viewBox="0 0 40 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
@@ -45,7 +45,7 @@
             </li>
             <li class="action-item audio">
               <div class="add-button add-audio-button" ng-file-select
-              ng-model="audio"
+              ng-file-change="upload($files, 'audio')"
               ng-multiple="false"
               accept="audio/*"
               ng-accept="validateFile($file)">
@@ -72,7 +72,7 @@
             <li class="action-item video">
               <div class="add-button add-video-button"
               ng-file-select
-              ng-model="video"
+              ng-file-change="upload($files, 'video')"
               ng-multiple="false"
               accept="video/*"
               ng-accept="validateFile($file)">
@@ -131,14 +131,14 @@
       </div>
 
       <div class="add-tags">
-        <tags-input ng-model="tags">
+        <tags-input ng-model="tags" max-length="6" max-tags="5">
           <!-- <auto-complete ></auto-complete> -->
         </tags-input>
       </div>
 
       <div class="create-submit">
-        <button class="sf-btn sf-btn-default sf-btn-small cancel-create" ng-click="cancel()">Cancel</button>
-        <button class="sf-btn sf-btn-primary sf-btn-small post-create" ng-click="postShare()">Share</button>
+        <button class="sf-btn sf-btn-default sf-btn-small cancel-create" ng-click="cancel(false)">Cancel</button>
+        <button class="sf-btn sf-btn-primary sf-btn-small post-create" ng-disabled="!canPosted" ng-click="postShare()">Share</button>
       </div>
 
     </div>

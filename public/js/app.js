@@ -2,12 +2,15 @@
 
 angular
   .module('showfieApp', [
+    'ngSanitize',
     'ui.router',
     'angularFileUpload',
     'wu.masonry',
     'ngTagsInput',
     'ngCoolNoti',
-    'ngCoolVideo'
+    'ngCoolVideo',
+    'ngCoolAudio',
+    'ngCoolComponents'
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
@@ -37,7 +40,7 @@ angular
         templateUrl: 'template/explore.html'
       })
       .state('messages', {
-        url: 'messages',
+        url: '/messages',
         templateUrl: 'template/messages.html'
       })
       .state('user', {

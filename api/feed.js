@@ -3,13 +3,15 @@ var qiniuService = require('../services/qiniu');
 var fileProxy = require('../proxy/file');
 var feedProxy = require('../proxy/feed');
 var tagProxy = require('../proxy/tag');
+var utils = require('../services/utils');
 
 module.exports = {
   uploadFile: function(req, res, next) {
     var userId = req.session.user;
     var file = req.files.file;
     var category = req.body.category;
-    if (!file) {
+    console.log(file)
+    if (file === null || file === undefined) {
       return res.json({
         status: 'fail',
         msg: 'No file found!'
@@ -89,17 +91,16 @@ module.exports = {
     var userId = req.session.user;
     //first update every file caption if category is image
 
-    var images = req.body.images;
-    var audio = req.body.audio;
-    var video = req.body.video;
+    var category = req.body.category;
+    var files = req.body.share_files;
     var text = req.body.text;
     var tags = req.body.tags;
 
-    if (images && images.length > 0) {
-      var category = 'image';
+
+    if (category === 'image') {
       async.parallel({
         images: function(cb1) {
-          async.map(images, function(image, callback) {
+          async.map(files, function(image, callback) {
             if (image.caption && image.caption !== '') {
               fileProxy.updateCaptionById(image.fileId, image.caption, function(err) {
                 if (err) return callback(err);
@@ -131,10 +132,9 @@ module.exports = {
         }
       }, function(err, result) {
         if (err) return next(err);
-        console.log(result);
         var data = {};
         data.content = text;
-        data.files = images.map(function(image) {
+        data.files = files.map(function(image) {
           return image.fileId;
         });
         data.tags = result.tags.map(function(tag) {
@@ -171,17 +171,20 @@ module.exports = {
       ], function(err, tags) {
         if (err) return next(err);
         var data = {};
-        data.category = 'text';
         data.content = text;
-        if (audio) {
+        data.category = 'text';
+        if (category === 'audio') {
           data.category = 'audio';
-          data.files = [];
-          data.files.push(audio.fileId);
         }
-        if (video && video.length > 0) {
+        if (category === 'video') {
           data.category = 'video';
+        }
+        if (files && files.length) {
+          data.files = files.map(function(item) {
+            return item.fileId;
+          })
+        } else {
           data.files = [];
-          data.files.push(video.fileId);
         }
 
         data.tags = tags.map(function(tag) {
@@ -202,9 +205,12 @@ module.exports = {
   getFeeds: function(req, res, next) {
     feedProxy.getFeeds(null, null, function(err, feeds) {
       if (err) return next(err);
+
+      //add filter properties response to
+      _feeds = utils.homeFeedsFilter(feeds);
       res.json({
         status: 'success',
-        feeds: feeds
+        feeds: _feeds
       })
     })
   }

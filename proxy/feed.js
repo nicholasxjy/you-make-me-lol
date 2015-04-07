@@ -26,7 +26,8 @@ module.exports = {
           {path: 'attach_files', model: 'File'},
           {path: 'creator', model: 'User'},
           {path: 'comments', model: 'Comment'},
-          {path: 'likes', model: 'User'}
+          {path: 'likes', model: 'User'},
+          {path: 'tags', model: 'Tag'}
         ];
         Feed.populate(feeds, options, function(err, pfeeds) {
           if (err) cb2(err);
