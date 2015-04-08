@@ -3,6 +3,7 @@ var qiniuService = require('../services/qiniu');
 var fileProxy = require('../proxy/file');
 var feedProxy = require('../proxy/feed');
 var tagProxy = require('../proxy/tag');
+var commentProxy = require('../proxy/comment');
 var utils = require('../services/utils');
 
 module.exports = {
@@ -206,16 +207,14 @@ module.exports = {
     feedProxy.getFeeds(null, null, function(err, feeds) {
       if (err) return next(err);
 
-      //add filter properties response to
-      var _feeds = utils.homeFeedsFilter(feeds);
       if (req.session && req.session.user) {
         var userId = req.session.user;
-        // check user like feed or not
-        _feeds = utils.checkFeedsLike(_feeds, userId);
+        // check user like feed or not and slice likes 5 : slice(-5) for display
+        feeds = utils.checkFeedsLike(feeds, userId);
       }
       res.json({
         status: 'success',
-        feeds: _feeds
+        feeds: feeds
       })
     })
   },
@@ -229,6 +228,7 @@ module.exports = {
       if (!feed) {
         res.sendStatus(404);
       }
+      feed.likes = feed.likes.slice(-10);
       res.json(feed);
     })
   },
@@ -271,9 +271,7 @@ module.exports = {
     var touser = req.body.touser;
     var content = req.body.content;
     var userId = req.session.user;
-    console.log(feedId)
-    console.log(touser)
-    console.log(content)
+
     if (!feedId) {
       return res.sendStatus(404);
     }

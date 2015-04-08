@@ -387,9 +387,7 @@
               FeedService.addComment(feed.id, comment_words, scope.touser)
                 .then(function(data) {
                   if (data.status === 'success') {
-                    if (!touser) {
-                      touser = feed.creator;
-                    }
+
                     var comment = data.new_comment;
                     comment.content = comment_words;
 

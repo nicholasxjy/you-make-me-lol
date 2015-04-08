@@ -59,7 +59,7 @@
             method: 'POST',
             url: '/feed/toggle_like',
             data: {
-              feedId: feed.id,
+              feedId: feed._id,
               isLike: feed.isLike
             }
           }).success(function(data, status, headers, config) {

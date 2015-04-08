@@ -149,12 +149,13 @@ module.exports = {
     if (!sess || !sess.user) {
       return res.sendStatus(404);
     }
-    UserProxy.getUserById(sess.user, function(err, user) {
+    var fields = '_id name avatar';
+    UserProxy.getUserById(sess.user, fields,function(err, user) {
       if (err) return next(err);
-      var _user = utils.homeCurrentUserFilter(user);
+      // var _user = utils.homeCurrentUserFilter(user);
       return res.json({
         status: 'success',
-        user: _user
+        user: user
       })
     })
   },

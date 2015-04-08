@@ -48,7 +48,7 @@ ng-class="{'feed-video': feed.category=='video', 'feed-normal': feed.category!='
     <div class="feed-actions">
       <div class="like-comment">
         <i class="fa fa-heart" ng-class="{'is-like': feed.isLike}" ng-click="ctrl.toggleFeedLike(feed)"></i><span class="feed-count like-count">{{feed.likes.length}}</span>
-        <i class="fa fa-comment" sf-feed-detail-show feedid="feed.id"></i><span class="feed-count comment-count">{{feed.comments.length}}</span>
+        <i class="fa fa-comment" sf-feed-detail-show feedid="feed._id"></i><span class="feed-count comment-count">{{feed.comments.length}}</span>
       </div>
 
       <div class="like-users">
@@ -72,7 +72,7 @@ ng-class="{'feed-video': feed.category=='video', 'feed-normal': feed.category!='
 
         <div class="comment-content">
           <div class="top">
-            <a class="comment-user-name">Michelle</a><span class="comment-time">10 mins ago</span>
+            <a class="comment-user-name" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a><span class="comment-time">{{comment.createdAt | sinceTime}}</span>
           </div>
           <div class="comment-words">
             {{comment.content}}

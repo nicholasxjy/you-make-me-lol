@@ -7,7 +7,7 @@ module.exports = {
     if (!sess || !sess.user) {
       return res.sendStatus(403);
     }
-    userProxy.getUserById(sess.user, function(err, user) {
+    userProxy.getUserById(sess.user, null, function(err, user) {
       if (err) return next(err);
       if (!user) return res.sendStatus(403);
       next();

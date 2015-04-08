@@ -1,6 +1,6 @@
 var Comment = require('../models').Comment;
 
-module.exports = function() {
+module.exports = {
   create: function(feedId, userId, touser, content, cb) {
     var comment = new Comment();
     comment.to_feed = feedId;

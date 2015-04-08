@@ -17,7 +17,8 @@ module.exports = {
   getUserByEmail: function(email, cb) {
     User.findOne({email: email}).select('+password').exec(cb);
   },
-  getUserById: function(id, cb) {
-    User.findById(id, cb);
+  getUserById: function(id, fields, cb) {
+    fields = fields || null;
+    User.findById(id, fields, cb);
   }
 }
