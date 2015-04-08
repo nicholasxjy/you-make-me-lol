@@ -47,8 +47,8 @@ ng-class="{'feed-video': feed.category=='video', 'feed-normal': feed.category!='
 
     <div class="feed-actions">
       <div class="like-comment">
-        <i class="fa fa-heart-o"></i><span class="feed-count like-count">{{feed.likes.length}}</span>
-        <i class="fa fa-comment-o"></i><span class="feed-count comment-count">{{feed.comments.length}}</span>
+        <i class="fa fa-heart" ng-class="{'is-like': feed.isLike}" ng-click="ctrl.toggleFeedLike(feed)"></i><span class="feed-count like-count">{{feed.likes.length}}</span>
+        <i class="fa fa-comment" sf-feed-detail-show feedid="feed.id"></i><span class="feed-count comment-count">{{feed.comments.length}}</span>
       </div>
 
       <div class="like-users">

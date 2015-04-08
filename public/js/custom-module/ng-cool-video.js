@@ -80,7 +80,7 @@
             //here set preload false
             video.preload = false;
             // set video dimension
-            video.width = 800;
+            video.width = 790;
             video.height = 455;
             if ($scope.source.config) {
               if ($scope.source.config.autoplay) {

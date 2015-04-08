@@ -55,7 +55,7 @@
                       src: attach_file.url,
                       name: 'Sunday Morning',
                       author: 'Maroon Five',
-                      cover: 'images/welcome.jpg'  
+                      cover: 'images/welcome.jpg'
                     }
                   }
                   feed.source = source;
@@ -72,6 +72,32 @@
           })
 
         loadFeeds();
+
+        //toggle feed like
+        self.toggleFeedLike = function(feed) {
+          if (feed) {
+            FeedService.toggleLike(feed)
+              .then(function(data) {
+                if (data.status === 'success') {
+                  //dom
+                  if (feed.isLike) {
+                    feed.likes = feed.likes.filter(function(liker) {
+                      return liker.id !== self.current_user.id;
+                    })
+                  } else {
+                    feed.likes.push({
+                      id: self.current_user.id,
+                      name: self.current_user.name,
+                      avatar: self.current_user.avatar
+                    });
+                  }
+                  feed.isLike = !feed.isLike;
+                }
+              }, function(err) {
+                console.log(err);
+              })
+          }
+        }
 
         self.logout = function() {
           UserService.logout()

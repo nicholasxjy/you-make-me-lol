@@ -11,7 +11,7 @@ var Comment = new Schema({
     type: ObjectId,
     ref: 'User'
   },
-  author: {
+  creator: {
     type: ObjectId,
     ref: 'User'
   },

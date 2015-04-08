@@ -4,6 +4,7 @@ var async = require('async');
 var CryptService = require('../services/crypt');
 var EmailService = require('../services/email');
 var config = require('../config');
+var utils = require('../services/utils');
 
 module.exports = {
   create: function(req, res, next) {
@@ -150,9 +151,10 @@ module.exports = {
     }
     UserProxy.getUserById(sess.user, function(err, user) {
       if (err) return next(err);
+      var _user = utils.homeCurrentUserFilter(user);
       return res.json({
         status: 'success',
-        user: user
+        user: _user
       })
     })
   },

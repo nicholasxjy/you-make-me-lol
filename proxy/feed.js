@@ -41,5 +41,34 @@ module.exports = {
   },
   getFeedById: function(id, cb) {
     Feed.findById(id, cb);
+  },
+  getDetail: function(id, cb) {
+    async.waterfall([
+      function(cb1) {
+        Feed.findById(id, function(err, feed) {
+          if (err) return cb1(err);
+          if (!feed) {
+            return cb1(new Error('Feed not found'));
+          }
+          return cb1(null, feed);
+        })
+      },
+      function(feed, cb2) {
+        var options = [
+          {path: 'attach_files', model: 'File'},
+          {path: 'creator', model: 'User'},
+          {path: 'comments', model: 'Comment'},
+          {path: 'likes', model: 'User'},
+          {path: 'tags', model: 'Tag'}
+        ];
+        Feed.populate(feed, options, function(err, pfeed) {
+          if (err) return cb2(err);
+          return cb2(null, pfeed);
+        })
+      }
+    ], function(err, feed) {
+      if (err) return cb(err);
+      return cb(null, feed);
+    })
   }
 }

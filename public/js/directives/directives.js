@@ -299,4 +299,143 @@
         }
       }
     ])
+    .directive('sfFeedDetailShow', [
+      '$document',
+      '$compile',
+      '$http',
+      '$q',
+      '$timeout',
+      function($document, $compile, $http, $q, $timeout) {
+        return {
+          restrict: 'AE',
+          scope: {
+            feedId: '=feedid'
+          },
+          link: function(scope, ele, attrs) {
+            var body = $document.find('body');
+
+            ele.on('click', function() {
+              var all = [];
+              var feedPromise = $http({
+                method: 'GET',
+                url: '/feed/detail',
+                params: {feedId: scope.feedId}
+              });
+
+              var tplPromise = $http.get('template/partials/feed-detail.html');
+
+              all.push(feedPromise);
+              all.push(tplPromise);
+              $q.all(all)
+                .then(function(res) {
+                  if (res && res.length === 2) {
+                    scope.feed = res[0].data;
+                    var tpl = $compile(res[1].data)(scope);
+                    $timeout(function() {
+                      body.append(angular.element(tpl));
+
+                      var detail_con = body[0].querySelector('.sf-feed-detail');
+
+                      var rect = detail_con.getBoundingClientRect();
+                      console.log(rect);
+                      var $container = $('.feed-detail-container');
+                      $container.css('width', (rect.width - 200)+'px');
+                      $container.css('height', (rect.height - 100)+'px');
+
+                      body.addClass('sf-feed-detail-open');
+                    })
+                  }
+                }, function(err) {
+                  console.log(err);
+                })
+            })
+          }
+        }
+      }
+    ])
+    .directive('sfFeedDetail', [
+      '$document',
+      '$timeout',
+      'FeedService',
+      'ngCoolNoti',
+      function($document, $timeout, FeedService, ngCoolNoti) {
+        return {
+          restrict: 'AE',
+          controller: ['$scope', function($scope) {
+            $scope.isCommenting = false;
+            $scope.canPostComment = false;
+            $scope.touser = $scope.feed.creator.id;
+          }],
+          link: function(scope, ele, attrs) {
+            var body = $document.find('body');
+            var $comment_input = $(ele).find('.comment-input');
+            var $comment_fake_input = $(ele).find('.comment-fake-input');
+            scope.closeFeedDetail = function() {
+              ele.remove();
+              body.removeClass('sf-feed-detail-open');
+            };
+
+            scope.cancelComment = function() {
+              $comment_input.html('');
+              scope.isCommenting = false;
+            };
+
+            scope.postComment = function(feed) {
+              var comment_words = $comment_input.html();
+              console.log(feed)
+              console.log(scope)
+              FeedService.addComment(feed.id, comment_words, scope.touser)
+                .then(function(data) {
+                  if (data.status === 'success') {
+                    if (!touser) {
+                      touser = feed.creator;
+                    }
+                    var comment = data.new_comment;
+                    comment.content = comment_words;
+
+                    feed.comments.push(comment);
+
+                    $comment_input.html('');
+                    scope.isCommenting = false;
+
+                  } else {
+                    ngCoolNoti.create({
+                      message: data.msg,
+                      position: 'top-right',
+                      timeout: 4000,
+                      type: 'danger'
+                    });
+                  }
+                }, function(err) {
+                  console.log(err);
+                })
+            }
+
+            $comment_input.on('keyup', function(e) {
+              var val = $(this).html();
+              if (val !== '') {
+                scope.canPostComment = true;
+              } else {
+                scope.canPostComment = false;
+              }
+              scope.$apply();
+            });
+
+            $comment_fake_input.on('focus', function() {
+              scope.isCommenting = true;
+              var input = ele[0].querySelector('.comment-input');
+              var s = window.getSelection();
+              var r = document.createRange();
+              r.collapse(false);
+              r.setStart(input, 0);
+              r.setEnd(input, 0);
+              s.removeAllRanges();
+              s.addRange(r);
+              scope.$apply();
+            });
+
+          }
+        }
+      }
+    ])
 })();

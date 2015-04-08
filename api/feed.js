@@ -10,7 +10,7 @@ module.exports = {
     var userId = req.session.user;
     var file = req.files.file;
     var category = req.body.category;
-    console.log(file)
+
     if (file === null || file === undefined) {
       return res.json({
         status: 'fail',
@@ -207,10 +207,117 @@ module.exports = {
       if (err) return next(err);
 
       //add filter properties response to
-      _feeds = utils.homeFeedsFilter(feeds);
+      var _feeds = utils.homeFeedsFilter(feeds);
+      if (req.session && req.session.user) {
+        var userId = req.session.user;
+        // check user like feed or not
+        _feeds = utils.checkFeedsLike(_feeds, userId);
+      }
       res.json({
         status: 'success',
         feeds: _feeds
+      })
+    })
+  },
+  getDetail: function(req, res, next) {
+    var feedId = req.query.feedId;
+    if (!feedId) {
+      return res.sendStatus(404);
+    }
+    feedProxy.getDetail(feedId, function(err, feed) {
+      if (err) return next(err);
+      if (!feed) {
+        res.sendStatus(404);
+      }
+      res.json(feed);
+    })
+  },
+  toggleLike: function(req, res, next) {
+    var userId = req.session.user;
+    var feedId = req.body.feedId;
+    var isLike = req.body.isLike;
+
+    if (!feedId) {
+      return res.sendStatus(403);
+    }
+    async.waterfall([
+      function(cb1) {
+        feedProxy.getFeedById(feedId, function(err, feed) {
+          if (err) return cb1(err);
+          return cb1(null, feed);
+        })
+      },
+      function(feed, cb2) {
+        var likeUsers = [];
+        if (isLike) {
+          feed.likes.pull(userId);
+        } else {
+          feed.likes.push(userId);
+        }
+        feed.save(function(err) {
+          if (err) return cb2(err);
+          return cb2(null);
+        });
+      }
+    ], function(err) {
+      if (err) return next(err);
+      return res.json({
+        status: 'success'
+      });
+    })
+  },
+  addComment: function(req, res, next) {
+    var feedId = req.body.feedId;
+    var touser = req.body.touser;
+    var content = req.body.content;
+    var userId = req.session.user;
+    console.log(feedId)
+    console.log(touser)
+    console.log(content)
+    if (!feedId) {
+      return res.sendStatus(404);
+    }
+
+    if (!content) {
+      return res.json({
+        status: 'fail',
+        msg: 'Nothing to comment!'
+      })
+    }
+
+    async.waterfall([
+      function(cb1) {
+        feedProxy.getFeedById(feedId, function(err, feed) {
+          if (err) return cb1(err);
+          if (!feed) return res.sendStatus(404);
+          return cb1(null, feed);
+        })
+      },
+      function(feed, cb2) {
+        if (!touser) {
+          touser = userId;
+        }
+        commentProxy.create(feed._id, userId, touser, content, function(err, comment) {
+          if (err) return cb2(err);
+
+          feed.comments.push(comment._id);
+          var _comment = {
+            id: comment._id,
+            creator: comment.creator,
+            to_user: comment.to_user,
+            createdAt: comment.createdAt
+          }
+          feed.save(function(err) {
+            if (err) return cb2(err);
+            return cb2(null, _comment);
+          })
+        })
+      }
+    ], function(err, result) {
+      if (err) return next(err);
+      return res.json({
+        status: 'success',
+        new_comment: result
       })
     })
   }

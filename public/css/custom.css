@@ -780,6 +780,166 @@ button[disabled=disabled], button:disabled {
     background-image: linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
 }
  */
+body.sf-feed-detail-open {
+  overflow: hidden; }
+
+.sf-feed-detail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 4000; }
+
+.feed-detail-container {
+  position: relative;
+  z-index: 4100;
+  margin: 50px auto;
+  background-color: #ffffff;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background-clip: padding-box; }
+  .feed-detail-container i.fa-close {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 18px;
+    z-index: 4000;
+    cursor: pointer; }
+
+.feed-detail-inner {
+  background-color: #ffffff; }
+
+.feed-detail-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 320px;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9); }
+
+.feed-detail-intro {
+  position: absolute;
+  width: 320px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  overflow-x: hidden;
+  overflow-y: auto; }
+  .feed-detail-intro .feed-intro-inner {
+    padding: 15px; }
+    .feed-detail-intro .feed-intro-inner .feed-top .user-other {
+      width: 200px; }
+  .feed-detail-intro .feed-detail-text-content {
+    font-size: 13px;
+    margin-top: 20px; }
+  .feed-detail-intro .feed-detail-likes {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 8px;
+    border: 1px solid #dedede;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background-clip: padding-box; }
+    .feed-detail-intro .feed-detail-likes .like-user-item img {
+      width: 24px;
+      height: 24px; }
+  .feed-detail-intro .feed-detail-likes-tip p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.6); }
+  .feed-detail-intro .comment-fake-input {
+    height: 20px;
+    padding: 5px 10px;
+    font-size: 12px;
+    width: 269px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background-clip: padding-box;
+    outline: none;
+    border: 1px solid #dedede; }
+  .feed-detail-intro .add-comment-wrap {
+    position: relative;
+    width: 290px;
+    height: 120px; }
+  .feed-detail-intro .add-comment-tip {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.4);
+    z-index: 1000; }
+  .feed-detail-intro .comment-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1100;
+    border: 1px solid #d3d3d3;
+    height: 60px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-clip: padding-box;
+    font-size: 12px;
+    padding: 5px 10px;
+    width: 269px;
+    outline: none;
+    overflow: auto; }
+  .feed-detail-intro .comment-actions {
+    position: absolute;
+    left: 0;
+    bottom: 10px; }
+    .feed-detail-intro .comment-actions button.sf-btn {
+      height: 30px; }
+    .feed-detail-intro .comment-actions button.sf-btn-success {
+      margin-right: 20px; }
+
+/* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
+    background-color: $default;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3));
+    background-image: -webkit-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -moz-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -ms-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -o-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+}
+@mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3,$color4,$stop4) {
+    background-color: $default;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3), color-stop($stop4 $color4));
+    background-image: -webkit-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -moz-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -ms-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -o-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+} */
+/* @mixin linear-gradient-left($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
+    background-color: $default;
+    background-image: -webkit-gradient(linear, left top, left top, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3));
+    background-image: -webkit-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -moz-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -ms-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -o-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+}
+@mixin linear-gradient-left($default,$color1,$stop1,$color2,$stop2,$color3,$stop3,$color4,$stop4) {
+    background-color: $default;
+    background-image: -webkit-gradient(linear, left top, left top, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3), color-stop($stop4 $color4));
+    background-image: -webkit-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -moz-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -ms-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -o-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+}
+ */
 .sf-feed {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -791,7 +951,7 @@ button[disabled=disabled], button:disabled {
   border-bottom-width: 2px; }
 
 .sf-feed-inner {
-  padding: 15px 10px; }
+  padding: 15px; }
 
 .feed-top {
   height: 40px; }
@@ -863,16 +1023,19 @@ button[disabled=disabled], button:disabled {
   position: relative;
   height: 30px; }
   .feed-actions .like-comment {
-    width: 150px; }
+    width: 150px;
+    padding-left: 10px; }
     .feed-actions .like-comment i {
       font-size: 20px;
       line-height: 30px;
-      color: rgba(0, 0, 0, 0.4);
+      color: rgba(0, 0, 0, 0.25);
       cursor: pointer; }
-    .feed-actions .like-comment i.fa-heart-o {
+    .feed-actions .like-comment i.fa-heart {
       position: relative;
       top: 2px; }
-    .feed-actions .like-comment i.fa-comment-o {
+    .feed-actions .like-comment i.fa-heart.is-like {
+      color: #F1392E; }
+    .feed-actions .like-comment i.fa-comment {
       padding-left: 15px; }
     .feed-actions .like-comment span {
       font-size: 12px;
@@ -1180,7 +1343,7 @@ body {
 .ncv-audio-progress {
   display: inline-block;
   vertical-align: top;
-  width: 130px; }
+  width: 115px; }
 
 .ncv-audio-progress progress[value] {
   /* Reset the default appearance */
@@ -1188,7 +1351,7 @@ body {
   -moz-appearance: none;
   appearance: none;
   height: 2px;
-  width: 130px;
+  width: 115px;
   cursor: pointer; }
 
 .ncv-audio-progress progress[value]::-webkit-progress-bar {
@@ -2333,7 +2496,7 @@ body {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 770px;
+  width: 760px;
   display: none;
   padding: 10px 15px;
   background-color: rgba(0, 0, 0, 0.5);
