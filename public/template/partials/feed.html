@@ -42,7 +42,7 @@ ng-class="{'feed-video': feed.category=='video', 'feed-normal': feed.category!='
     </div>
 
     <div class="feed-tags">
-      <span class="tag-item" ng-repeat="tag in feed.tags">{{tag}}</span>
+      <span class="tag-item" ng-repeat="tag in feed.tags">{{tag.text}}</span>
     </div>
 
     <div class="feed-actions">
