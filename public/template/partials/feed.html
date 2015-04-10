@@ -27,7 +27,8 @@
 
       <div class="feed-images" ng-if="feed.category =='image'">
         <div class="feed-image-container" ng-repeat="image in feed.attach_files">
-          <img ng-src="{{image.url}}" alt="" class="img-responsive" width="100%">
+          <img ng-src="{{image.url}}" alt="" class="img-responsive" width="100%"
+          sf-feed-detail-show feed-id="feed._id" current-image-index="{{$index}}">
         </div>
       </div>
 
@@ -47,7 +48,7 @@
     <div class="feed-actions">
       <div class="like-comment">
         <i class="fa fa-heart" ng-class="{'is-like': feed.isLike}" ng-click="ctrl.toggleFeedLike(feed)"></i><span class="feed-count like-count">{{feed.likes.length}}</span>
-        <i class="fa fa-comment" sf-feed-detail-show feedid="feed._id"></i><span class="feed-count comment-count">{{feed.comments.length}}</span>
+        <i class="fa fa-comment"></i><span class="feed-count comment-count">{{feed.comments.length}}</span>
       </div>
 
       <div class="like-users">

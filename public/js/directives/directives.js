@@ -309,11 +309,15 @@
         return {
           restrict: 'AE',
           scope: {
-            feedId: '=feedid'
+            feedId: '=feedId'
           },
           link: function(scope, ele, attrs) {
             var body = $document.find('body');
-
+            attrs.$observe('currentImageIndex', function(val) {
+              if (val) {
+                scope.current_image_index = parseInt(val, 10);
+              }
+            });
             ele.on('click', function() {
               var all = [];
               var feedPromise = $http({
@@ -337,10 +341,14 @@
                       var detail_con = body[0].querySelector('.sf-feed-detail');
 
                       var rect = detail_con.getBoundingClientRect();
-                      console.log(rect);
                       var $container = $('.feed-detail-container');
                       $container.css('width', (rect.width - 200)+'px');
                       $container.css('height', (rect.height - 100)+'px');
+
+                      var $content = $('.feed-gallery');
+
+                      $content.css('width', (rect.width - 200 -320)+'px');
+                      $content.css('height', (rect.height - 100)+'px');
 
                       body.addClass('sf-feed-detail-open');
                     })
@@ -382,8 +390,6 @@
 
             scope.postComment = function(feed) {
               var comment_words = $comment_input.html();
-              console.log(feed)
-              console.log(scope)
               FeedService.addComment(feed.id, comment_words, scope.touser)
                 .then(function(data) {
                   if (data.status === 'success') {
@@ -501,15 +507,83 @@
     ])
     .directive('sfFeedGallery', [
       '$timeout',
-      function($timeout) {
+      '$document',
+      function($timeout, $document) {
         return {
           restrict: 'AE',
           scope: {
-            feed: '=feed'
+            feed: '=feed',
+            current_image_index: '@currentImageIndex'
           },
-          template: '',
+          template: '<div class="feed-detail-image-preview"><img ng-show="imageReady" ng-src="{{current_image.url}}" alt="Photo"><i class="fa fa-chevron-left" ng-click="preImage()"></i><i class="fa fa-chevron-right" ng-click="nextImage()"></i><div class="image-caption">{{current_image.caption || \'When he asked me to move in with him, we had only been dating a few months. It was a romantic proposition, but a practical one too.\'}}</div><div ng-show="!imageReady" ng-include="\'template/spinner.html\'"></div></div>',
           link: function(scope, ele, attrs) {
-            
+            //calculate image for displaying
+            scope.imageReady = false;
+            var $img = ele.find('img');
+            var setImageDimension = function(rect) {
+              var image = new Image();
+              image.src = scope.current_image.url;
+              image.onload = function() {
+                var real = {};
+                var img_width = image.width;
+                var img_height = image.height;
+
+                var width_radio = rect.width/img_width;
+                var height_radio = rect.height/img_height;
+
+                if (width_radio >= height_radio) {
+                  real.width = img_width * height_radio;
+                  real.height = img_height * height_radio;
+                } else {
+                  real.width = img_width * width_radio;
+                  real.height = img_height * width_radio;
+                }
+                $img.css('width', real.width + 'px');
+                $img.css('height', real.height + 'px');
+                $img.css('margin-top', (-real.height/2)+'px');
+                $img.css('margin-left', (-real.width/2)+'px');
+              }
+            }
+
+            scope.current_image = scope.feed.attach_files[scope.current_image_index];
+            $timeout(function() {
+              var rect = scope.rect = ele[0].getBoundingClientRect();
+              setImageDimension(rect);
+              scope.imageReady = true;
+            }, 500);
+
+            scope.preImage = function() {
+              var current_index = 0;
+              angular.forEach(scope.feed.attach_files, function(item, index) {
+                if (item._id === scope.current_image._id) {
+                  current_index = index;
+                }
+              });
+              current_index = current_index - 1;
+              if (current_index < 0) {
+                current_index = scope.feed.attach_files.length - 1;
+              }
+              scope.current_image = scope.feed.attach_files[current_index];
+
+              setImageDimension(scope.rect);
+            };
+
+            scope.nextImage = function() {
+              var current_index = 0;
+              angular.forEach(scope.feed.attach_files, function(item, index) {
+                if (item._id === scope.current_image._id) {
+                  current_index = index;
+                }
+              });
+              current_index = current_index + 1;
+              if (current_index > scope.feed.attach_files.length -1) {
+                current_index = 0;
+              }
+              scope.current_image = scope.feed.attach_files[current_index];
+
+              setImageDimension(scope.rect);
+            };
+
           }
         }
       }

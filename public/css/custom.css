@@ -819,7 +819,9 @@ body.sf-feed-detail-open {
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: #ffffff; }
+  background-color: #ffffff;
+  overflow-x: hidden;
+  overflow-y: auto; }
   .feed-detail-intro .feed-intro-inner .feed-top {
     height: 56px;
     padding: 0 10px 8px; }
@@ -868,7 +870,8 @@ body.sf-feed-detail-open {
       color: rgba(0, 0, 0, 0.6); }
   .feed-detail-intro .fd-add-comment-wrap {
     padding: 0 10px;
-    margin-top: 20px; }
+    margin-top: 20px;
+    margin-bottom: 20px; }
   .feed-detail-intro .feed-detail-comments {
     padding: 0 10px; }
     .feed-detail-intro .feed-detail-comments .feed-comment-item {
@@ -878,8 +881,8 @@ body.sf-feed-detail-open {
     vertical-align: top;
     width: 34px; }
     .feed-detail-intro .comment-user-avatar img {
-      width: 34px;
-      height: 34px; }
+      width: 30px;
+      height: 30px; }
   .feed-detail-intro .comment-content {
     display: table-cell;
     vertical-align: top;
@@ -897,6 +900,43 @@ body.sf-feed-detail-open {
       font-size: 12px;
       line-height: 14px;
       color: rgba(0, 0, 0, 0.6); }
+
+.feed-detail-image-preview {
+  position: relative;
+  width: 100%;
+  height: 100%; }
+  .feed-detail-image-preview img {
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 50%; }
+  .feed-detail-image-preview .image-caption {
+    display: none;
+    position: absolute;
+    bottom: 15px;
+    width: 80%;
+    left: 10%;
+    text-align: center;
+    color: #ffffff; }
+  .feed-detail-image-preview:hover .image-caption {
+    display: block; }
+  .feed-detail-image-preview:hover i {
+    display: block; }
+  .feed-detail-image-preview i {
+    display: none;
+    position: absolute;
+    font-size: 56px;
+    width: 40px;
+    height: 56px;
+    top: 50%;
+    margin-top: -28px;
+    cursor: pointer; }
+    .feed-detail-image-preview i:hover {
+      color: #ffffff; }
+  .feed-detail-image-preview i.fa-chevron-left {
+    left: 15px; }
+  .feed-detail-image-preview i.fa-chevron-right {
+    right: 15px; }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
