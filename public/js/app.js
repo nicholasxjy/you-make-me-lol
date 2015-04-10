@@ -5,7 +5,6 @@ angular
     'ngSanitize',
     'ui.router',
     'angularFileUpload',
-    'wu.masonry',
     'ngTagsInput',
     'ngCoolNoti',
     'ngCoolVideo',

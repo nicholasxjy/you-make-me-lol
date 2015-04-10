@@ -436,4 +436,82 @@
         }
       }
     ])
+    .directive('sfFeedAddComment', [
+      '$document',
+      '$timeout',
+      'FeedService',
+      function($document, $timeout, FeedService) {
+        return {
+          restrict: 'AE',
+          scope: {
+            feed: '=feed'
+          },
+          transclude: true,
+          template: '<div class="feed-add-comment"><div class="feed-fake-comment-input"><input type="text" class="form-control sf-form-control" placeholder="Add a comment"></div><div class="feed-comment-input"><div class="comment-input" contentEditable="true"></div><button class="sf-btn sf-btn-success comment-post">post comment</button><button class="sf-btn sf-btn-default comment-cancel">cancel</button></div></div>',
+          link: function(scope, ele, attrs) {
+            var fake_con = ele[0].querySelector('.feed-fake-comment-input');
+            var real_con = ele[0].querySelector('.feed-comment-input');
+            var input = ele[0].querySelector('.feed-fake-comment-input input');
+            var cancel = ele[0].querySelector('.comment-cancel');
+            var post = ele[0].querySelector('.comment-post');
+
+            var comment_input = ele[0].querySelector('.comment-input');
+
+            var $fake_con = angular.element(fake_con);
+            var $real_con = angular.element(real_con);
+            var $comment_input = angular.element(comment_input);
+            input.addEventListener('focus', function(e) {
+              $timeout(function() {
+                $fake_con.css('display', 'none');
+                $real_con.css('display', 'block');
+              }, 200)
+
+            });
+
+            cancel.addEventListener('click', function() {
+              $comment_input.html('');
+              $real_con.css('display', 'none');
+              $fake_con.css('display', 'block');
+            });
+
+            post.addEventListener('click', function() {
+              var comment = $comment_input.html();
+              if (comment.trim() === '') {
+                return false;
+              }
+              scope.touser = scope.feed.creator._id;
+              FeedService.addComment(scope.feed._id, comment, scope.touser)
+                .then(function(data) {
+                  var c_obj = data.new_comment;
+                  c_obj.content = comment;
+                  scope.feed.comments.push(c_obj);
+                  $timeout(function() {
+                    $comment_input.html('');
+                    $real_con.css('display', 'none');
+                    $fake_con.css('display', 'block');
+                  })
+
+                }, function(err) {
+                  console.log(err);
+                })
+            })
+          }
+        }
+      }
+    ])
+    .directive('sfFeedGallery', [
+      '$timeout',
+      function($timeout) {
+        return {
+          restrict: 'AE',
+          scope: {
+            feed: '=feed'
+          },
+          template: '',
+          link: function(scope, ele, attrs) {
+            
+          }
+        }
+      }
+    ])
 })();

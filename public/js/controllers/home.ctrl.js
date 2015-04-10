@@ -38,7 +38,6 @@
         var loadFeeds = function() {
           FeedService.getFeeds()
             .then(function(data) {
-              console.log(data.feeds)
               // self.feeds = data.feeds;
               angular.forEach(data.feeds, function(feed) {
                 if (feed.category === 'video') {

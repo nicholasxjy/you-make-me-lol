@@ -1,5 +1,4 @@
-<div class="sf-feed masonry-brick" ng-repeat="feed in ctrl.feeds"
-ng-class="{'feed-video': feed.category=='video', 'feed-normal': feed.category!='video'}">
+<div class="sf-feed" ng-repeat="feed in ctrl.feeds">
   <div class="sf-feed-inner">
     <div class="feed-top">
       <div class="user-avatar">
@@ -28,7 +27,7 @@ ng-class="{'feed-video': feed.category=='video', 'feed-normal': feed.category!='
 
       <div class="feed-images" ng-if="feed.category =='image'">
         <div class="feed-image-container" ng-repeat="image in feed.attach_files">
-          <img ng-src="{{image.url}}" alt="">
+          <img ng-src="{{image.url}}" alt="" class="img-responsive" width="100%">
         </div>
       </div>
 
@@ -61,21 +60,17 @@ ng-class="{'feed-video': feed.category=='video', 'feed-normal': feed.category!='
     </div>
 
     <div class="feed-comments">
-
       <div class="feed-comment-item" ng-repeat="comment in feed.comments">
-
         <div class="comment-user-avatar">
           <a ui-sref="user({name: comment.creator.name})">
             <img ng-src="{{comment.creator.avatar}}" alt="" class="sf-img-circle">
           </a>
         </div>
-
         <div class="comment-content">
           <div class="top">
             <a class="comment-user-name" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a><span class="comment-time">{{comment.createdAt | sinceTime}}</span>
           </div>
-          <div class="comment-words">
-            {{comment.content}}
+          <div class="comment-words" ng-bind-html="comment.content">
           </div>
         </div>
       </div>
@@ -83,5 +78,7 @@ ng-class="{'feed-video': feed.category=='video', 'feed-normal': feed.category!='
         <a href="">More Comments</a>
       </div>
     </div>
+
+    <div class="feed-add-comment-wrap" sf-feed-add-comment feed="feed"></div>
   </div>
 </div>

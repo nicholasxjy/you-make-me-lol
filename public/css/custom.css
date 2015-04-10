@@ -78,7 +78,7 @@
     margin-bottom: 15px; }
   .auth-content .sf-form-control {
     width: 230px;
-    height: 24px;
+    height: 38px;
     border: 1px solid #DDE5EE;
     outline: none;
     -webkit-border-radius: 3px;
@@ -801,14 +801,6 @@ body.sf-feed-detail-open {
   -moz-border-radius: 2px;
   border-radius: 2px;
   background-clip: padding-box; }
-  .feed-detail-container i.fa-close {
-    position: absolute;
-    top: 5px;
-    right: 15px;
-    color: rgba(0, 0, 0, 0.4);
-    font-size: 18px;
-    z-index: 4000;
-    cursor: pointer; }
 
 .feed-detail-inner {
   background-color: #ffffff; }
@@ -827,81 +819,84 @@ body.sf-feed-detail-open {
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: #ffffff;
-  overflow-x: hidden;
-  overflow-y: auto; }
-  .feed-detail-intro .feed-intro-inner {
-    padding: 15px; }
-    .feed-detail-intro .feed-intro-inner .feed-top .user-other {
-      width: 200px; }
+  background-color: #ffffff; }
+  .feed-detail-intro .feed-intro-inner .feed-top {
+    height: 56px;
+    padding: 0 10px 8px; }
+  .feed-detail-intro .feed-intro-inner .feed-top .user-other {
+    width: 200px; }
+  .feed-detail-intro .feed-detail-close {
+    position: relative;
+    height: 20px; }
+    .feed-detail-intro .feed-detail-close i.fa-close {
+      position: absolute;
+      top: 1px;
+      right: 5px;
+      color: rgba(0, 0, 0, 0.4);
+      font-size: 18px;
+      z-index: 4000;
+      cursor: pointer; }
   .feed-detail-intro .feed-detail-text-content {
     font-size: 13px;
-    margin-top: 20px; }
+    padding: 0 10px; }
   .feed-detail-intro .feed-detail-likes {
     margin-top: 15px;
     margin-bottom: 20px;
     padding-left: 10px;
     padding-top: 5px;
-    padding-bottom: 8px;
-    border: 1px solid #dedede;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    background-clip: padding-box; }
-    .feed-detail-intro .feed-detail-likes .like-user-item img {
-      width: 24px;
-      height: 24px; }
-  .feed-detail-intro .feed-detail-likes-tip p {
-    margin: 0;
-    font-size: 12px;
-    font-weight: 700;
-    color: rgba(0, 0, 0, 0.6); }
-  .feed-detail-intro .comment-fake-input {
-    height: 20px;
-    padding: 5px 10px;
-    font-size: 12px;
-    width: 269px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    background-clip: padding-box;
-    outline: none;
-    border: 1px solid #dedede; }
-  .feed-detail-intro .add-comment-wrap {
-    position: relative;
-    width: 290px;
-    height: 120px; }
-  .feed-detail-intro .add-comment-tip {
-    position: absolute;
-    top: 5px;
-    left: 10px;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.4);
-    z-index: 1000; }
-  .feed-detail-intro .comment-input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1100;
-    border: 1px solid #d3d3d3;
-    height: 60px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    background-clip: padding-box;
-    font-size: 12px;
-    padding: 5px 10px;
-    width: 269px;
-    outline: none;
-    overflow: auto; }
-  .feed-detail-intro .comment-actions {
-    position: absolute;
-    left: 0;
-    bottom: 10px; }
-    .feed-detail-intro .comment-actions button.sf-btn {
-      height: 30px; }
-    .feed-detail-intro .comment-actions button.sf-btn-success {
-      margin-right: 20px; }
+    padding-bottom: 8px; }
+    .feed-detail-intro .feed-detail-likes .like-button {
+      display: table-cell;
+      vertical-align: top;
+      padding-right: 15px; }
+      .feed-detail-intro .feed-detail-likes .like-button .sf-btn {
+        height: 30px;
+        padding: 0 15px;
+        background-color: #ffffff;
+        border: 1px solid #d3d3d3;
+        color: rgba(0, 0, 0, 0.8); }
+  .feed-detail-intro .feed-likes-more {
+    text-decoration: underline; }
+  .feed-detail-intro .feed-detail-likes-tip {
+    display: table-cell;
+    vertical-align: top;
+    padding: 2px 0; }
+    .feed-detail-intro .feed-detail-likes-tip p {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.6); }
+  .feed-detail-intro .fd-add-comment-wrap {
+    padding: 0 10px;
+    margin-top: 20px; }
+  .feed-detail-intro .feed-detail-comments {
+    padding: 0 10px; }
+    .feed-detail-intro .feed-detail-comments .feed-comment-item {
+      margin-bottom: 15px; }
+  .feed-detail-intro .comment-user-avatar {
+    display: table-cell;
+    vertical-align: top;
+    width: 34px; }
+    .feed-detail-intro .comment-user-avatar img {
+      width: 34px;
+      height: 34px; }
+  .feed-detail-intro .comment-content {
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 6px; }
+    .feed-detail-intro .comment-content .comment-user-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.8);
+      margin-right: 10px; }
+    .feed-detail-intro .comment-content .comment-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.4); }
+    .feed-detail-intro .comment-content .comment-words {
+      font-size: 12px;
+      line-height: 14px;
+      color: rgba(0, 0, 0, 0.6); }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
@@ -947,7 +942,7 @@ body.sf-feed-detail-open {
   background-clip: padding-box;
   border: 1px solid #d3d3d3;
   background-color: #ffffff;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border-bottom-width: 2px; }
 
 .sf-feed-inner {
@@ -1096,14 +1091,26 @@ body.sf-feed-detail-open {
     color: rgba(0, 0, 0, 0.8);
     text-decoration: none; }
 
-.feed-normal {
-  width: 400px; }
-  .feed-normal .feed-image-container img {
-    cursor: pointer;
-    width: 100%; }
+.feed-normal .feed-image-container img {
+  cursor: pointer;
+  width: 100%; }
 
-.sf-feed.feed-video {
-  width: 830px; }
+.feed-comment-input {
+  display: none; }
+
+.feed-comment-input .comment-input {
+  outline: none;
+  border: 1px solid #d3d3d3;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-clip: padding-box;
+  height: 60px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  padding: 5px 8px;
+  font-size: 12px; }
 
 body {
   background-color: #E5E5E5; }
@@ -1119,8 +1126,7 @@ body {
   background-image: url("../images/background.jpg"); }
 
 .main-container {
-  width: 840px;
-  margin: 30px auto; }
+  padding-top: 30px; }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
