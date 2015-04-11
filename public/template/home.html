@@ -8,10 +8,12 @@
         <div class="row">
           <div class="col-md-6 col-md-offset-2">
             <div ng-include="'template/partials/feed.html'"></div>
+            <div class="load-more">
+              <button class="sf-btn sf-btn-block" ng-click="ctrl.loadMore()">Load More</button>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>

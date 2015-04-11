@@ -515,7 +515,7 @@
             feed: '=feed',
             current_image_index: '@currentImageIndex'
           },
-          template: '<div class="feed-detail-image-preview"><img ng-show="imageReady" ng-src="{{current_image.url}}" alt="Photo"><i class="fa fa-chevron-left" ng-click="preImage()"></i><i class="fa fa-chevron-right" ng-click="nextImage()"></i><div class="image-caption">{{current_image.caption || \'When he asked me to move in with him, we had only been dating a few months. It was a romantic proposition, but a practical one too.\'}}</div><div ng-show="!imageReady" ng-include="\'template/spinner.html\'"></div></div>',
+          template: '<div class="feed-detail-image-preview"><img ng-show="imageReady" ng-src="{{current_image.url}}" alt="Photo"><i class="ti-angle-left" ng-click="preImage()"></i><i class="ti-angle-right" ng-click="nextImage()"></i><div class="image-caption">{{current_image.caption}}</div><div ng-show="!imageReady" ng-include="\'template/spinner.html\'"></div></div>',
           link: function(scope, ele, attrs) {
             //calculate image for displaying
             scope.imageReady = false;

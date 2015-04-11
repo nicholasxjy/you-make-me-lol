@@ -204,7 +204,21 @@ module.exports = {
     }
   },
   getFeeds: function(req, res, next) {
-    feedProxy.getFeeds(null, null, function(err, feeds) {
+    var after = req.query.after;
+    var query = null;
+    if (after) {
+      query = {
+        createdAt: {$lt: after}
+      };
+    }
+
+    var options = {
+      sort: {
+        createdAt: '-1'
+      },
+      limit: 5
+    }
+    feedProxy.getFeeds(query, options, function(err, feeds) {
       if (err) return next(err);
 
       if (req.session && req.session.user) {

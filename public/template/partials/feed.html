@@ -10,10 +10,10 @@
         </div>
         <div class="feed-time-location">
           <span class="time" ng-cool-tooltip="{{feed.createdAt | date: 'yyyy-MM-dd HH:mm'}}">
-            <i class="fa fa-clock-o"></i>{{feed.createdAt | sinceTime}}
+            <i class="ti-time"></i>{{feed.createdAt | sinceTime}}
           </span>
           <span class="location">
-            <i class="fa fa-map-marker"></i>
+            <i class="ti-location-pin"></i>
             New York
           </span>
         </div>
@@ -47,8 +47,8 @@
 
     <div class="feed-actions">
       <div class="like-comment">
-        <i class="fa fa-heart" ng-class="{'is-like': feed.isLike}" ng-click="ctrl.toggleFeedLike(feed)"></i><span class="feed-count like-count">{{feed.likes.length}}</span>
-        <i class="fa fa-comment"></i><span class="feed-count comment-count">{{feed.comments.length}}</span>
+        <i class="ti-heart" ng-class="{'is-like': feed.isLike}" ng-click="ctrl.toggleFeedLike(feed)"></i><span class="feed-count like-count">{{feed.likes.length}}</span>
+        <i class="ti-comment"></i><span class="feed-count comment-count">{{feed.comments.length}}</span>
       </div>
 
       <div class="like-users">

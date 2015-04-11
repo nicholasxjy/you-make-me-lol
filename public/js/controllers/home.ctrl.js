@@ -11,7 +11,7 @@
       '$rootScope',
       function(UserService, FeedService, $state, ngCoolNoti, $rootScope) {
         var self = this;
-
+        self.feeds = [];
         self.unReadNotis = [
           {
             content: "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.",
@@ -35,10 +35,10 @@
           loadFeeds();
         })
 
-        var loadFeeds = function() {
-          FeedService.getFeeds()
+        var loadFeeds = function(after) {
+          FeedService.getFeeds(after)
             .then(function(data) {
-              // self.feeds = data.feeds;
+
               angular.forEach(data.feeds, function(feed) {
                 if (feed.category === 'video') {
                   var attach_file = feed.attach_files[0];
@@ -59,8 +59,13 @@
                   }
                   feed.source = source;
                 }
+                self.feeds.push(feed);
               });
-              self.feeds = data.feeds;
+
+              if (self.feeds.length >0) {
+                var last_feed = self.feeds[self.feeds.length -1];
+                self.last_feed_createdAt = last_feed.createdAt;
+              }
             })
         }
 
@@ -71,6 +76,11 @@
           })
 
         loadFeeds();
+
+
+        self.loadMore = function() {
+          loadFeeds(self.last_feed_createdAt);
+        }
 
         //toggle feed like
         self.toggleFeedLike = function(feed) {

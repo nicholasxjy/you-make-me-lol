@@ -21,12 +21,13 @@
           return deferred.promise;
         }
 
-        function getFeeds() {
+        function getFeeds(after) {
           var deferred = $q.defer();
           $http({
             method: 'GET',
             url: '/feed/getfeeds',
             params: {
+              after: after
             }
           }).success(function(data, status, headers, config) {
             deferred.resolve(data);

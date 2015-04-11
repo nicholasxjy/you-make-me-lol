@@ -219,9 +219,6 @@
     background-image: linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
 }
  */
-body {
-  font-family: 'Roboto', sans-serif; }
-
 .full-page, .sf-overlay {
   position: absolute;
   top: 0;
@@ -576,7 +573,7 @@ button[disabled=disabled], button:disabled {
     .sf-create-wrap .actions-list .action-item {
       padding: 10px 20px; }
     .sf-create-wrap .actions-list .action-item.audio {
-      padding-top: 7px; }
+      padding-top: 12px; }
     .sf-create-wrap .actions-list .action-item.video {
       padding-top: 13px; }
     .sf-create-wrap .actions-list .action-item-tip {
@@ -602,6 +599,8 @@ button[disabled=disabled], button:disabled {
 
 .add-button {
   cursor: pointer; }
+  .add-button i {
+    font-size: 30px; }
 
 .photos-container {
   margin-top: 20px; }
@@ -830,7 +829,7 @@ body.sf-feed-detail-open {
   .feed-detail-intro .feed-detail-close {
     position: relative;
     height: 20px; }
-    .feed-detail-intro .feed-detail-close i.fa-close {
+    .feed-detail-intro .feed-detail-close i.ti-close {
       position: absolute;
       top: 1px;
       right: 5px;
@@ -933,9 +932,9 @@ body.sf-feed-detail-open {
     cursor: pointer; }
     .feed-detail-image-preview i:hover {
       color: #ffffff; }
-  .feed-detail-image-preview i.fa-chevron-left {
+  .feed-detail-image-preview i.ti-angle-left {
     left: 15px; }
-  .feed-detail-image-preview i.fa-chevron-right {
+  .feed-detail-image-preview i.ti-angle-right {
     right: 15px; }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
@@ -1010,23 +1009,25 @@ body.sf-feed-detail-open {
       color: rgba(0, 0, 0, 0.8);
       line-height: 20px;
       text-decoration: none; }
-    .feed-top .user-other .feed-time-location .time {
-      font-size: 12px;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.44);
-      padding-right: 15px;
-      line-height: 16px; }
-      .feed-top .user-other .feed-time-location .time i.fa-clock-o {
-        font-size: 16px;
-        padding-right: 3px; }
-    .feed-top .user-other .feed-time-location .location {
-      font-size: 12px;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.44); }
-      .feed-top .user-other .feed-time-location .location i {
-        font-size: 16px;
-        padding-right: 3px;
-        color: #F34235; }
+    .feed-top .user-other .feed-time-location {
+      padding-top: 3px; }
+      .feed-top .user-other .feed-time-location .time {
+        font-size: 12px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.44);
+        padding-right: 15px;
+        line-height: 16px; }
+        .feed-top .user-other .feed-time-location .time i.ti-time {
+          font-size: 14px;
+          padding-right: 3px; }
+      .feed-top .user-other .feed-time-location .location {
+        font-size: 12px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.44); }
+        .feed-top .user-other .feed-time-location .location i {
+          font-size: 14px;
+          padding-right: 3px;
+          color: #F34235; }
 
 .feed-content {
   margin-top: 20px;
@@ -1065,13 +1066,15 @@ body.sf-feed-detail-open {
       line-height: 30px;
       color: rgba(0, 0, 0, 0.25);
       cursor: pointer; }
-    .feed-actions .like-comment i.fa-heart {
+    .feed-actions .like-comment i.ti-heart {
       position: relative;
-      top: 2px; }
-    .feed-actions .like-comment i.fa-heart.is-like {
+      top: 3px; }
+    .feed-actions .like-comment i.ti-heart.is-like {
       color: #F1392E; }
-    .feed-actions .like-comment i.fa-comment {
-      padding-left: 15px; }
+    .feed-actions .like-comment i.ti-comment {
+      padding-left: 25px;
+      position: relative;
+      top: 4px; }
     .feed-actions .like-comment span {
       font-size: 12px;
       font-weight: 700;
@@ -1283,9 +1286,15 @@ body {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    background-clip: padding-box; }
-    .st-navbar-item.st-navbar-right.authticated .navbar-action-item a svg {
-      padding-top: 8px; }
+    background-clip: padding-box;
+    text-decoration: none; }
+    .st-navbar-item.st-navbar-right.authticated .navbar-action-item a:hover {
+      color: rgba(74, 74, 74, 0.8); }
+    .st-navbar-item.st-navbar-right.authticated .navbar-action-item a i {
+      font-size: 16px;
+      line-height: 34px;
+      text-align: center;
+      color: rgba(74, 74, 74, 0.4); }
 .st-navbar-item.st-navbar-right.authticated .navbar-dropdown-img {
   width: 34px;
   height: 34px;
