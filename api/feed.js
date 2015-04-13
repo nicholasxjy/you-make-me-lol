@@ -216,7 +216,7 @@ module.exports = {
       sort: {
         createdAt: '-1'
       },
-      limit: 5
+      limit: 30
     }
     feedProxy.getFeeds(query, options, function(err, feeds) {
       if (err) return next(err);

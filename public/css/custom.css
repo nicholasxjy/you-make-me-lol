@@ -410,6 +410,12 @@ button[disabled=disabled], button:disabled {
   border-radius: 50%;
   background-clip: padding-box; }
 
+.sf-img-rounded {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-clip: padding-box; }
+
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3));
@@ -981,28 +987,28 @@ body.sf-feed-detail-open {
   background-clip: padding-box;
   border: 1px solid #d3d3d3;
   background-color: #ffffff;
-  margin-bottom: 20px;
-  border-bottom-width: 2px; }
-
-.sf-feed-inner {
-  padding: 15px; }
+  margin: 0 15px 20px 15px;
+  border-bottom-width: 2px;
+  width: 540px; }
 
 .feed-top {
-  height: 40px; }
+  height: 46px;
+  padding: 15px 10px; }
   .feed-top .user-avatar {
     display: inline-block;
     vertical-align: top;
-    width: 40px;
-    height: 40px;
+    width: 46px;
+    height: 46px;
     font-size: 0; }
     .feed-top .user-avatar img {
-      width: 40px;
-      height: 40px; }
+      width: 46px;
+      height: 46px; }
   .feed-top .user-other {
     display: inline-block;
     vertical-align: top;
-    width: 260px;
-    margin-left: 10px; }
+    width: 400px;
+    margin-left: 10px;
+    padding-top: 4px; }
     .feed-top .user-other .user-name a {
       font-size: 16px;
       font-weight: 700;
@@ -1030,60 +1036,66 @@ body.sf-feed-detail-open {
           color: #F34235; }
 
 .feed-content {
-  margin-top: 20px;
+  padding: 0 10px;
   margin-bottom: 15px; }
 
 .feed-text-words {
-  font-size: 20px;
-  line-height: 30px;
+  font-size: 14px;
+  line-height: 20px;
   color: rgba(0, 0, 0, 0.8);
   margin-bottom: 20px; }
 
 .feed-tags {
-  margin-bottom: 20px; }
+  margin-bottom: 15px;
+  padding: 0 10px; }
   .feed-tags .tag-item {
+    display: inline-block;
     border: 1px solid #02A8F3;
     font-size: 12px;
     font-weight: 700;
     color: #02A8F3;
     background-color: transparent;
-    padding: 3px 8px;
-    margin-right: 6px;
+    padding: 5px 10px;
+    margin-right: 8px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
     background-clip: padding-box; }
 
 .feed-actions {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   position: relative;
-  height: 30px; }
+  height: 30px;
+  padding: 0 10px; }
   .feed-actions .like-comment {
-    width: 150px;
-    padding-left: 10px; }
+    width: 150px; }
+    .feed-actions .like-comment a {
+      display: inline-block;
+      padding: 5px 10px;
+      border: 1px solid #e5e5e5;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background-clip: padding-box;
+      text-decoration: none;
+      margin-right: 15px; }
     .feed-actions .like-comment i {
-      font-size: 20px;
-      line-height: 30px;
-      color: rgba(0, 0, 0, 0.25);
-      cursor: pointer; }
-    .feed-actions .like-comment i.ti-heart {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.44);
+      cursor: pointer;
       position: relative;
-      top: 3px; }
+      top: 2px; }
     .feed-actions .like-comment i.ti-heart.is-like {
       color: #F1392E; }
-    .feed-actions .like-comment i.ti-comment {
-      padding-left: 25px;
-      position: relative;
-      top: 4px; }
     .feed-actions .like-comment span {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 700;
       color: rgba(0, 0, 0, 0.6);
-      padding-left: 4px; }
+      padding-left: 8px; }
   .feed-actions .like-users {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 10px;
     font-size: 0; }
     .feed-actions .like-users .like-user-item {
       padding: 1px 2px; }
@@ -1091,40 +1103,45 @@ body.sf-feed-detail-open {
       width: 28px;
       height: 28px; }
 
-.feed-comments .feed-comment-item {
-  margin-bottom: 15px; }
-  .feed-comments .feed-comment-item .comment-user-avatar {
-    display: table-cell;
-    vertical-align: top;
-    padding-right: 10px;
-    padding-top: 3px;
-    font-size: 0;
-    width: 34px;
-    height: 34px; }
-    .feed-comments .feed-comment-item .comment-user-avatar img {
+.feed-comments {
+  padding: 20px 13px;
+  background-color: #f5f5f5; }
+  .feed-comments .feed-comment-item {
+    margin-bottom: 15px; }
+    .feed-comments .feed-comment-item .comment-user-avatar {
+      display: table-cell;
+      vertical-align: top;
+      padding-right: 10px;
+      padding-top: 3px;
+      font-size: 0;
       width: 34px;
       height: 34px; }
-  .feed-comments .feed-comment-item .comment-content {
-    display: table-cell;
-    vertical-align: top; }
-    .feed-comments .feed-comment-item .comment-content .comment-user-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: rgba(0, 0, 0, 0.8);
-      text-decoration: none;
-      margin-right: 15px; }
-    .feed-comments .feed-comment-item .comment-content .comment-time {
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(0, 0, 0, 0.6); }
-    .feed-comments .feed-comment-item .comment-content .comment-words {
-      font-size: 12px;
-      color: rgba(0, 0, 0, 0.8);
-      line-height: 15px; }
-      .feed-comments .feed-comment-item .comment-content .comment-words a {
+      .feed-comments .feed-comment-item .comment-user-avatar img {
+        width: 34px;
+        height: 34px; }
+    .feed-comments .feed-comment-item .comment-content {
+      display: table-cell;
+      vertical-align: top;
+      padding-top: 3px; }
+      .feed-comments .feed-comment-item .comment-content .comment-user-name {
+        font-size: 14px;
         font-weight: 700;
-        color: #02A8F3;
-        text-decoration: none; }
+        color: rgba(0, 0, 0, 0.8);
+        text-decoration: none;
+        margin-right: 15px; }
+      .feed-comments .feed-comment-item .comment-content .comment-time {
+        font-size: 12px;
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.6); }
+      .feed-comments .feed-comment-item .comment-content .comment-words {
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.8);
+        line-height: 15px;
+        padding-top: 3px; }
+        .feed-comments .feed-comment-item .comment-content .comment-words a {
+          font-weight: 700;
+          color: #02A8F3;
+          text-decoration: none; }
 
 .comments-more {
   padding-left: 5px; }
@@ -1155,6 +1172,18 @@ body.sf-feed-detail-open {
   padding: 5px 8px;
   font-size: 12px; }
 
+.feed-fake-comment-input input {
+  width: 495px;
+  outline: none;
+  border: 1px solid #dedede;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background-clip: padding-box;
+  font-size: 14px;
+  line-height: 22px;
+  padding: 5px 8px; }
+
 body {
   background-color: #E5E5E5; }
 
@@ -1170,6 +1199,10 @@ body {
 
 .main-container {
   padding-top: 30px; }
+
+.container-inner {
+  width: 940px;
+  margin: 0 auto; }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
@@ -1210,18 +1243,14 @@ body {
  */
 .st-navbar {
   position: absolute;
-  top: 30px;
-  left: 40px;
-  right: 40px;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 60px;
   background-color: #ffffff;
-  -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
-  -webkit-border-radius: 35px;
-  -moz-border-radius: 35px;
-  border-radius: 35px;
-  background-clip: padding-box;
+  -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
   z-index: 1300; }
 
 .st-navbar-inner {
@@ -1241,7 +1270,7 @@ body {
 
 .st-navbar-left {
   float: left;
-  width: 275px; }
+  width: 350px; }
 
 .st-navbar-right {
   float: right;
@@ -2525,7 +2554,12 @@ body {
   border: 5px solid #ffffff;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); }
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  /*   &:hover {
+    .ng-cool-video-controls {
+      display: block;
+    }
+  } */ }
   .ng-cool-video-container .video-center-icon {
     position: absolute;
     top: 50%;
@@ -2533,8 +2567,6 @@ body {
     margin-left: -41px;
     margin-top: -41px;
     z-index: 1400; }
-  .ng-cool-video-container:hover .ng-cool-video-controls {
-    display: block; }
 
 .ng-cool-video-overlay {
   position: absolute;

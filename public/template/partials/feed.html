@@ -10,7 +10,7 @@
         </div>
         <div class="feed-time-location">
           <span class="time" ng-cool-tooltip="{{feed.createdAt | date: 'yyyy-MM-dd HH:mm'}}">
-            <i class="ti-time"></i>{{feed.createdAt | sinceTime}}
+            Shared on - {{feed.createdAt | sinceTime}}
           </span>
           <span class="location">
             <i class="ti-location-pin"></i>
@@ -42,29 +42,32 @@
     </div>
 
     <div class="feed-tags">
-      <span class="tag-item" ng-repeat="tag in feed.tags">{{tag.text}}</span>
+      <a class="tag-item" ng-repeat="tag in feed.tags">{{tag.text}}</a>
     </div>
 
     <div class="feed-actions">
       <div class="like-comment">
-        <i class="ti-heart" ng-class="{'is-like': feed.isLike}" ng-click="ctrl.toggleFeedLike(feed)"></i><span class="feed-count like-count">{{feed.likes.length}}</span>
-        <i class="ti-comment"></i><span class="feed-count comment-count">{{feed.comments.length}}</span>
+        <a href="" ng-click="ctrl.toggleFeedLike(feed)"><i class="ti-heart" ng-class="{'is-like': feed.isLike}"></i><span class="feed-count like-count">{{feed.likes.length}}</span></a>
+        <a href=""><i class="ti-comment"></i><span class="feed-count comment-count">{{feed.comments.length}}</span></a>
       </div>
 
       <div class="like-users">
         <ul class="list-inline">
           <li class="like-user-item" ng-repeat="liker in feed.likes">
-            <a><img ng-src="{{liker.avatar}}" alt="" class="sf-img-circle like-user-avatar"></a>
+            <a><img ng-src="{{liker.avatar}}" alt="" class="sf-img-rounded like-user-avatar"></a>
           </li>
         </ul>
       </div>
     </div>
 
     <div class="feed-comments">
+      <div class="comments-more" ng-if="feed.comments.length>3">
+        <a href="">More Comments</a>
+      </div>
       <div class="feed-comment-item" ng-repeat="comment in feed.comments">
         <div class="comment-user-avatar">
           <a ui-sref="user({name: comment.creator.name})">
-            <img ng-src="{{comment.creator.avatar}}" alt="" class="sf-img-circle">
+            <img ng-src="{{comment.creator.avatar}}" alt="" class="sf-img-rounded">
           </a>
         </div>
         <div class="comment-content">
@@ -75,11 +78,7 @@
           </div>
         </div>
       </div>
-      <div class="comments-more" ng-if="feed.comments.length>3">
-        <a href="">More Comments</a>
-      </div>
+      <div class="feed-add-comment-wrap" sf-feed-add-comment feed="feed"></div>
     </div>
-
-    <div class="feed-add-comment-wrap" sf-feed-add-comment feed="feed"></div>
   </div>
 </div>
