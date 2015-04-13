@@ -339,17 +339,6 @@
                       body.append(angular.element(tpl));
 
                       var detail_con = body[0].querySelector('.sf-feed-detail');
-
-                      var rect = detail_con.getBoundingClientRect();
-                      var $container = $('.feed-detail-container');
-                      $container.css('width', (rect.width - 200)+'px');
-                      $container.css('height', (rect.height - 100)+'px');
-
-                      var $content = $('.feed-gallery');
-
-                      $content.css('width', (rect.width - 200 -320)+'px');
-                      $content.css('height', (rect.height - 100)+'px');
-
                       body.addClass('sf-feed-detail-open');
                     })
                   }
@@ -453,54 +442,9 @@
             feed: '=feed'
           },
           transclude: true,
-          template: '<div class="feed-add-comment"><div class="feed-fake-comment-input"><input type="text" class="form-control sf-form-control" placeholder="Add a comment"></div><div class="feed-comment-input"><div class="comment-input" contentEditable="true"></div><button class="sf-btn sf-btn-success comment-post">post comment</button><button class="sf-btn sf-btn-default comment-cancel">cancel</button></div></div>',
+          template: '<div class="feed-add-comment"><div class="feed-add-comment-inner"><input type="text" class="sf-form-control" placeholder="Add a comment"></div></div>',
           link: function(scope, ele, attrs) {
-            var fake_con = ele[0].querySelector('.feed-fake-comment-input');
-            var real_con = ele[0].querySelector('.feed-comment-input');
-            var input = ele[0].querySelector('.feed-fake-comment-input input');
-            var cancel = ele[0].querySelector('.comment-cancel');
-            var post = ele[0].querySelector('.comment-post');
 
-            var comment_input = ele[0].querySelector('.comment-input');
-
-            var $fake_con = angular.element(fake_con);
-            var $real_con = angular.element(real_con);
-            var $comment_input = angular.element(comment_input);
-            input.addEventListener('focus', function(e) {
-              $timeout(function() {
-                $fake_con.css('display', 'none');
-                $real_con.css('display', 'block');
-              }, 200)
-
-            });
-
-            cancel.addEventListener('click', function() {
-              $comment_input.html('');
-              $real_con.css('display', 'none');
-              $fake_con.css('display', 'block');
-            });
-
-            post.addEventListener('click', function() {
-              var comment = $comment_input.html();
-              if (comment.trim() === '') {
-                return false;
-              }
-              scope.touser = scope.feed.creator._id;
-              FeedService.addComment(scope.feed._id, comment, scope.touser)
-                .then(function(data) {
-                  var c_obj = data.new_comment;
-                  c_obj.content = comment;
-                  scope.feed.comments.push(c_obj);
-                  $timeout(function() {
-                    $comment_input.html('');
-                    $real_con.css('display', 'none');
-                    $fake_con.css('display', 'block');
-                  })
-
-                }, function(err) {
-                  console.log(err);
-                })
-            })
           }
         }
       }
@@ -542,6 +486,9 @@
                 $img.css('height', real.height + 'px');
                 $img.css('margin-top', (-real.height/2)+'px');
                 $img.css('margin-left', (-real.width/2)+'px');
+                $timeout(function() {
+                  scope.imageReady = true;
+                }, 300)
               }
             }
 
@@ -549,7 +496,6 @@
             $timeout(function() {
               var rect = scope.rect = ele[0].getBoundingClientRect();
               setImageDimension(rect);
-              scope.imageReady = true;
             }, 500);
 
             scope.preImage = function() {
@@ -564,7 +510,6 @@
                 current_index = scope.feed.attach_files.length - 1;
               }
               scope.current_image = scope.feed.attach_files[current_index];
-
               setImageDimension(scope.rect);
             };
 
@@ -580,7 +525,6 @@
                 current_index = 0;
               }
               scope.current_image = scope.feed.attach_files[current_index];
-
               setImageDimension(scope.rect);
             };
 

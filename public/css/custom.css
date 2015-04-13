@@ -795,32 +795,42 @@ body.sf-feed-detail-open {
   right: 0;
   bottom: 0;
   overflow: hidden;
-  z-index: 4000; }
+  z-index: 4000;
+  padding: 40px 80px; }
 
 .feed-detail-container {
   position: relative;
   z-index: 4100;
-  margin: 50px auto;
   background-color: #ffffff;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  background-clip: padding-box; }
+  background-clip: padding-box;
+  display: table;
+  width: 100%;
+  height: 100%; }
 
 .feed-detail-inner {
-  background-color: #ffffff; }
+  background-color: #ffffff;
+  display: table-cell;
+  vertical-align: middle; }
 
 .feed-detail-content {
   position: absolute;
   top: 0;
   left: 0;
-  right: 320px;
+  right: 380px;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.9); }
+  .feed-detail-content .feed-gallery {
+    display: table;
+    width: 100%;
+    height: 100%;
+    position: relative; }
 
 .feed-detail-intro {
   position: absolute;
-  width: 320px;
+  width: 380px;
   right: 0;
   top: 0;
   bottom: 0;
@@ -911,10 +921,9 @@ body.sf-feed-detail-open {
   width: 100%;
   height: 100%; }
   .feed-detail-image-preview img {
-    display: block;
-    left: 50%;
     position: absolute;
-    top: 50%; }
+    top: 50%;
+    left: 50%; }
   .feed-detail-image-preview .image-caption {
     display: none;
     position: absolute;
@@ -1067,41 +1076,21 @@ body.sf-feed-detail-open {
   position: relative;
   height: 30px;
   padding: 0 10px; }
-  .feed-actions .like-comment {
-    width: 150px; }
-    .feed-actions .like-comment a {
-      display: inline-block;
-      padding: 5px 10px;
-      border: 1px solid #e5e5e5;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
-      background-clip: padding-box;
+  .feed-actions .toggle-like-link {
+    display: table-cell;
+    vertical-align: top;
+    height: 24px;
+    width: 23px; }
+  .feed-actions .feed-like-tip {
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 15px;
+    font-size: 14px; }
+    .feed-actions .feed-like-tip a {
       text-decoration: none;
-      margin-right: 15px; }
-    .feed-actions .like-comment i {
-      font-size: 14px;
-      color: rgba(0, 0, 0, 0.44);
-      cursor: pointer;
-      position: relative;
-      top: 2px; }
-    .feed-actions .like-comment i.ti-heart.is-like {
-      color: #F1392E; }
-    .feed-actions .like-comment span {
-      font-size: 14px;
-      font-weight: 700;
-      color: rgba(0, 0, 0, 0.6);
-      padding-left: 8px; }
-  .feed-actions .like-users {
-    position: absolute;
-    top: 0;
-    right: 10px;
-    font-size: 0; }
-    .feed-actions .like-users .like-user-item {
-      padding: 1px 2px; }
-    .feed-actions .like-users img {
-      width: 28px;
-      height: 28px; }
+      color: #02A8F3; }
+      .feed-actions .feed-like-tip a span {
+        color: #cccccc; }
 
 .feed-comments {
   padding: 20px 13px;
@@ -1155,34 +1144,17 @@ body.sf-feed-detail-open {
   cursor: pointer;
   width: 100%; }
 
-.feed-comment-input {
-  display: none; }
-
-.feed-comment-input .comment-input {
-  outline: none;
-  border: 1px solid #d3d3d3;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  background-clip: padding-box;
-  height: 60px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  margin-bottom: 10px;
-  padding: 5px 8px;
-  font-size: 12px; }
-
-.feed-fake-comment-input input {
-  width: 495px;
+.feed-add-comment-inner input.sf-form-control {
+  padding: 5px 10px;
+  font-size: 14px;
+  line-height: 20px;
   outline: none;
   border: 1px solid #dedede;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
   background-clip: padding-box;
-  font-size: 14px;
-  line-height: 22px;
-  padding: 5px 8px; }
+  width: 490px; }
 
 body {
   background-color: #E5E5E5; }
