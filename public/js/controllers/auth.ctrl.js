@@ -8,7 +8,8 @@
       'UserService',
       '$state',
       '$timeout',
-      function($rootscope, UserService, $state, $timeout) {
+      'ngCoolNoti',
+      function($rootscope, UserService, $state, $timeout, ngCoolNoti) {
         var self = this;
         self.signUping = false;
         self.signUp = function(user) {
@@ -21,8 +22,14 @@
                 self.signUping = false;
                 $timeout(function() {
                   //here should tip user
-                  self.hasError = true;
-                  self.error = data.msg;
+                  // self.hasError = true;
+                  // self.error = data.msg;
+                  ngCoolNoti.create({
+                    message: data.msg,
+                    type: 'danger',
+                    position: 'top-right',
+                    timeout: 4000
+                  })
                 }, 1000);
               } else {
                 self.spinnerShow = false;
@@ -41,14 +48,21 @@
       'UserService',
       '$state',
       '$timeout',
-      function(UserService, $state, $timeout) {
+      'ngCoolNoti',
+      function(UserService, $state, $timeout, ngCoolNoti) {
         var self = this;
         self.login = function(user) {
           UserService.login(user)
             .then(function(data) {
               if (data.status === 'fail') {
-                self.hasError = true;
-                self.error = data.msg;
+                // self.hasError = true;
+                // self.error = data.msg;
+                ngCoolNoti.create({
+                  message: data.msg,
+                  type: 'danger',
+                  position: 'top-right',
+                  timeout: 4000
+                })
               } else {
                 $state.go('home');
               }

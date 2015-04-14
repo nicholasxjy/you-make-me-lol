@@ -1,5 +1,5 @@
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
         <span class="sr-only">Toggle navigation</span>
@@ -20,6 +20,7 @@
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Messages <span class="badge">5</span></a>
           <ul class="dropdown-menu" role="menu">
+            <li class="dropdown-arrow noti-arrow"></li>
             <li><a href="#">Action</a></li>
             <li><a href="#">Another action</a></li>
             <li><a href="#">Something else here</a></li>
@@ -31,17 +32,18 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          <a class=""><i class="ti-search"></i></a>
+        <li class="navbar-action-item">
+          <a class="navbar-action-link"><i class="ti-search"></i></a>
         </li>
-        <li>
-          <a class=""><i class="ti-pencil-alt"></i></a>
+        <li class="navbar-action-item">
+          <a class="navbar-action-link" sf-create-feed current-user="ctrl.current_user"><i class="ti-pencil-alt"></i></a>
         </li>
         <li class="dropdown">
           <a class="dropdown-toggle navbar-user-dropdown" data-toggle="dropdown" role="button" aria-expanded="false">
             <img ng-src="{{ctrl.current_user.avatar}}" alt="" class="img-responsive img-circle">
           </a>
           <ul class="dropdown-menu" role="menu">
+            <li class="dropdown-arrow user-arrow"></li>
             <li><a ui-sref="user({name: ctrl.current_user.name})">{{ctrl.current_user.name}}</a></li>
             <li><a href="#">Another action</a></li>
             <li><a href="#">Something else here</a></li>

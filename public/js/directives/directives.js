@@ -10,12 +10,22 @@
       function($document, $timeout, $http, $compile) {
         return {
           restrict: 'AE',
+          scope: {
+            current_user: '=currentUser'
+          },
+          controller: ['$scope', function($scope) {
+            // set scope people for at
+            $scope.people = [
+              {label: 'nicholas'},
+              {label: 'peter'},
+              {label: 'michelle'}
+            ];
+
+          }],
           link: function(scope, ele, attrs) {
             var body = $document.find('body')[0];
             var $body = angular.element(body);
-            attrs.$observe('sfCreateFeed', function(val) {
-              scope.current_user_avatar = val;
-            });
+
             ele.on('click', function() {
               //append dom to body
               var template = $http.get('template/partials/create-bar.html');
@@ -174,24 +184,24 @@
           }],
           link: function(scope, ele, attrs) {
 
-            var textPlaceholder = ele[0].querySelector('.create-placeholder');
-            var inputEdit = ele[0].querySelector('.input-edit');
-
-            var $textPlaceholder = $(textPlaceholder);
-            var $inputEdit = $(inputEdit);
-
-            $inputEdit.on('keyup', function(e) {
-              var val = $(this).html();
-              if (val !== '') {
-                $textPlaceholder.hide();
-              } else {
-                $textPlaceholder.show();
-              }
-            });
+            // var textPlaceholder = ele[0].querySelector('.create-placeholder');
+            // var inputEdit = ele[0].querySelector('.input-edit');
+            var $text = ele.find('textarea');
+            // var $textPlaceholder = $(textPlaceholder);
+            // var $inputEdit = $(inputEdit);
+            //
+            // $inputEdit.on('keyup', function(e) {
+            //   var val = $(this).html();
+            //   if (val !== '') {
+            //     $textPlaceholder.hide();
+            //   } else {
+            //     $textPlaceholder.show();
+            //   }
+            // });
 
             var checkContents = function() {
               var hasContents = false;
-              var text = $inputEdit.html();
+              var text = $text.val();
               text = text.trim();
               if (text !== '') {
                 hasContents = true;
@@ -228,7 +238,7 @@
 
             scope.postShare = function() {
 
-              var text = $inputEdit.html();
+              var text = $text.val();
               text = text.trim();
               if (!checkContents()) {
                 ngCoolNoti.create({
@@ -289,7 +299,7 @@
               scope.category = null;
               scope.share_files = null;
               scope.tags = null;
-
+              $text.val('');
               $(ele).find('.sf-create-wrap').addClass('zoomOut');
               $timeout(function() {
                 ele.remove();

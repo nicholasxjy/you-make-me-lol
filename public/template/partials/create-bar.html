@@ -3,13 +3,12 @@
   </div>
   <div class="sf-create-wrap">
     <div class="user-wrap">
-      <img ng-src="{{current_user_avatar}}" class="sf-img-circle create-avatar">
+      <img ng-src="{{current_user.avatar}}" class="sf-img-circle create-avatar">
     </div>
     <div class="create-content">
       <div class="create-words-input">
         <div class="word-input-arrow"></div>
-        <div class="create-placeholder">What's new...</div>
-        <div class="input-edit" contentEditable="true"></div>
+        <textarea class="form-control" placeholder="what's new..." mentio mentio-items="people" ng-model="atUsers"></textarea>
       </div>
 
       <div class="create-add-actions" ng-hide="(images && images.length && images.length<=5) || audio || video">
@@ -64,8 +63,8 @@
               <div class="photo-caption">
                 <input type="text" ng-model="image.caption" placeholder="Add a caption">
               </div>
-              <a href="" class="delete-link" ng-click="removeImage($index)">
-                <i class="fa fa-close"></i>
+              <a class="delete-link" ng-click="removeImage($index)">
+                <i class="ti-close"></i>
               </a>
             </div>
           </div>
@@ -74,7 +73,7 @@
         <div class="audio-video-uploaded-tip" ng-if="mediaUploading">
           <div class="media-uploaded" ng-if="mediaUploaded">
             <p>Cool, your file <strong>{{media.name}}</strong> has been uploaded!</p>
-            <i class="fa fa-trash" ng-click="removeMedia(media)"></i>
+            <i class="ti-trash" ng-click="removeMedia(media)"></i>
           </div>
           <div ng-include="'template/spinner.html'" ng-show="!mediaUploaded"></div>
         </div>

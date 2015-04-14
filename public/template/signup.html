@@ -10,14 +10,14 @@
     </div>
     <div class="form-wrap">
       <div class="form-content">
-        <form novalidate name="signForm" ng-submit="signUp(user)">
+        <form novalidate name="signForm" ng-submit="signCtrl.signUp(user)">
           <div class="sf-form-group">
             <input type="text" class="sf-form-control" placeholder="Name"
             ng-model="user.name" ng-maxlength="20" ng-minlength="6" required>
           </div>
           <div class="sf-form-group">
             <input type="email" class="sf-form-control" placeholder="Email"
-            ng-model="user.eamil" required>
+            ng-model="user.email" required>
           </div>
           <div class="sf-form-group">
             <input type="password" class="sf-form-control" placeholder="Password"

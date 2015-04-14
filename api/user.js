@@ -11,7 +11,6 @@ module.exports = {
     var name = req.body.name;
     var email = req.body.email;
     var password = req.body.password;
-
     var sess = req.session;
 
     if (!name || !email || !password) {
