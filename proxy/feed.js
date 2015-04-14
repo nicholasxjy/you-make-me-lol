@@ -27,7 +27,7 @@ module.exports = {
           {path: 'creator', model: 'User', select: '_id name avatar'},
           {path: 'comments', model: 'Comment', options: {sort: {'createdAt': -1}, limit: 3}, select:'_id creator to_user content createdAt'},
           {path: 'likes', model: 'User', select: '_id name avatar'},
-          {path: 'tags', model: 'Tag', select: 'text'}
+          {path: 'tags', model: 'Tag'}
         ];
         Feed.populate(feeds, options, function(err, pfeeds) {
           if (err) cb2(err);

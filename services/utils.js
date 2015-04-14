@@ -3,6 +3,7 @@ exports.checkFeedsLike = function(feeds, userId) {
     var isLike = feed.likes.some(function(liker) {
       return userId.toString() === liker._id.toString();
     });
+    feed = feed.toObject();
     feed.isLike = isLike;
     feed.likes = feed.likes.slice(-5);
     return feed;

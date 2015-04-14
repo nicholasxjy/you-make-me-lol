@@ -1,61 +1,55 @@
-<nav class="st-navbar">
-  <div class="st-navbar-inner">
-    <div class="st-navbar-brand">
-      <a ui-sref="home" class="brand-link">
-        Friendfies
-      </a>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" ui-sref="home">Friendfies</a>
     </div>
-    <div class="st-navbar-item st-navbar-left">
-      <ul class="list-inline">
-        <li class="navbar-link-item" ui-sref-active="active">
-          <a ui-sref="home">HOME</a>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li ui-sref-active="active">
+          <a ui-sref="home">Home</a>
         </li>
-        <li class="navbar-link-item" ui-sref-active="active">
-          <a ui-sref="explore">EXPLORE</a>
+        <li ui-sref-active="active">
+          <a ui-sref="explore">Explore</a>
         </li>
-        <li class="navbar-link-item" ui-sref-active="active">
-          <a ng-cool-popover="noti" source="ctrl.unReadNotis">MESSAGES <span class="badge sf-badge">5</span></a>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Messages <span class="badge">5</span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
         </li>
       </ul>
-    </div>
-    <div class="st-navbar-item st-navbar-right none-authticated" ng-if="!ctrl.isAuthticated">
-      <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-      <svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-          <defs></defs>
-          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-              <g id="welcome" sketch:type="MSArtboardGroup" transform="translate(-1197.000000, -68.000000)" fill="#FF5252">
-                  <g id="navbar" sketch:type="MSLayerGroup" transform="translate(100.000000, 63.000000)">
-                      <g id="person" transform="translate(1097.000000, 5.000000)" sketch:type="MSShapeGroup">
-                          <path d="M6,6 C7.65,6 9,4.65 9,3 C9,1.35 7.65,0 6,0 C4.35,0 3,1.35 3,3 C3,4.65 4.35,6 6,6 L6,6 Z M6,7.5 C3.975,7.5 0,8.475 0,10.5 L0,12 L12,12 L12,10.5 C12,8.475 8.025,7.5 6,7.5 L6,7.5 Z" id="Shape"></path>
-                      </g>
-                  </g>
-              </g>
-          </g>
-      </svg>
-      <a ui-sref="signup">Sign Up</a>
-      <span> / </span>
-      <a ui-sref="login">Login</a>
-    </div>
-
-    <div class="st-navbar-item st-navbar-right authticated" ng-if="ctrl.isAuthticated">
-      <ul class="list-inline navbar-action-list">
-        <li class="navbar-action-item">
-          <a ui-sref="search">
-            <i class="ti-search"></i>
-          </a>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a class=""><i class="ti-search"></i></a>
         </li>
-        <li class="navbar-action-item">
-          <a sf-create-feed="{{ctrl.current_user.avatar}}">
-            <i class="ti-export"></i>
-          </a>
+        <li>
+          <a class=""><i class="ti-pencil-alt"></i></a>
         </li>
-        <li class="navbar-action-item">
-          <a ui-sref="user({name: ctrl.current_user.name})">
-            <img ng-src="{{ctrl.current_user.avatar}}" class="sf-img-circle navbar-dropdown-img">
+        <li class="dropdown">
+          <a class="dropdown-toggle navbar-user-dropdown" data-toggle="dropdown" role="button" aria-expanded="false">
+            <img ng-src="{{ctrl.current_user.avatar}}" alt="" class="img-responsive img-circle">
           </a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a ui-sref="user({name: ctrl.current_user.name})">{{ctrl.current_user.name}}</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
         </li>
       </ul>
-    </div>
-
-  </div>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
 </nav>

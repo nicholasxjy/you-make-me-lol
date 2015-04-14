@@ -6,6 +6,7 @@ angular
     'ui.router',
     'angularFileUpload',
     'ngTagsInput',
+    'mentio',
     'ngCoolNoti',
     'ngCoolVideo',
     'ngCoolAudio',

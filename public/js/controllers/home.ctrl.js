@@ -94,7 +94,7 @@
                       return liker.id !== self.current_user.id;
                     })
                   } else {
-                    feed.likes.push({
+                    feed.likes.unshift({
                       id: self.current_user.id,
                       name: self.current_user.name,
                       avatar: self.current_user.avatar

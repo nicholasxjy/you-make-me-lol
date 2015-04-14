@@ -359,74 +359,14 @@
         return {
           restrict: 'AE',
           controller: ['$scope', function($scope) {
-            $scope.isCommenting = false;
-            $scope.canPostComment = false;
-            $scope.touser = $scope.feed.creator.id;
+
           }],
           link: function(scope, ele, attrs) {
             var body = $document.find('body');
-            var $comment_input = $(ele).find('.comment-input');
-            var $comment_fake_input = $(ele).find('.comment-fake-input');
             scope.closeFeedDetail = function() {
               ele.remove();
               body.removeClass('sf-feed-detail-open');
             };
-
-            scope.cancelComment = function() {
-              $comment_input.html('');
-              scope.isCommenting = false;
-            };
-
-            scope.postComment = function(feed) {
-              var comment_words = $comment_input.html();
-              FeedService.addComment(feed.id, comment_words, scope.touser)
-                .then(function(data) {
-                  if (data.status === 'success') {
-
-                    var comment = data.new_comment;
-                    comment.content = comment_words;
-
-                    feed.comments.push(comment);
-
-                    $comment_input.html('');
-                    scope.isCommenting = false;
-
-                  } else {
-                    ngCoolNoti.create({
-                      message: data.msg,
-                      position: 'top-right',
-                      timeout: 4000,
-                      type: 'danger'
-                    });
-                  }
-                }, function(err) {
-                  console.log(err);
-                })
-            }
-
-            $comment_input.on('keyup', function(e) {
-              var val = $(this).html();
-              if (val !== '') {
-                scope.canPostComment = true;
-              } else {
-                scope.canPostComment = false;
-              }
-              scope.$apply();
-            });
-
-            $comment_fake_input.on('focus', function() {
-              scope.isCommenting = true;
-              var input = ele[0].querySelector('.comment-input');
-              var s = window.getSelection();
-              var r = document.createRange();
-              r.collapse(false);
-              r.setStart(input, 0);
-              r.setEnd(input, 0);
-              s.removeAllRanges();
-              s.addRange(r);
-              scope.$apply();
-            });
-
           }
         }
       }
@@ -442,9 +382,41 @@
             feed: '=feed'
           },
           transclude: true,
-          template: '<div class="feed-add-comment"><div class="feed-add-comment-inner"><input type="text" class="sf-form-control" placeholder="Add a comment"></div></div>',
+          controller: ['$scope', function($scope) {
+            $scope.people = [
+              {label: 'nicholas'},
+              {label: 'peter'},
+              {label: 'michelle'}
+            ];
+          }],
+          template: '<div class="feed-add-comment"><div class="feed-add-comment-inner"><form class="comment-form"><input type="text" class="form-control" placeholder="Add a comment" mentio mentio-items="people" ng-model="commentWord"></form></div></div>',
           link: function(scope, ele, attrs) {
 
+            var form = ele[0].querySelector('form.comment-form');
+            var $input = $(ele[0]).find('input');
+            form.addEventListener('submit', function() {
+              if ($input.val() === '') {
+                return;
+              } else {
+                if (!scope.comment_to) {
+                  scope.comment_to = scope.feed.creator._id;
+                }
+                FeedService.addComment(scope.feed._id, $input.val(), scope.comment_to)
+                  .then(function(data) {
+                    if (data.status === 'success') {
+                      var new_c = data.new_comment;
+                      new_c.content = $input.val();
+
+                      scope.feed.comments.unshift(new_c);
+
+                      //remove input
+                      $input.val('');
+                    }
+                  }, function(err) {
+                    console.log(err);
+                  })
+              }
+            })
           }
         }
       }
