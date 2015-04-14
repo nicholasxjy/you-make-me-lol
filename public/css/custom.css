@@ -2677,6 +2677,124 @@ body {
     background-image: linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
 }
  */
+.setting-content {
+  background-color: #ffffff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-clip: padding-box;
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.135);
+  -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.135);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.135);
+  padding: 20px 40px;
+  margin-bottom: 30px; }
+
+.setting-section .top-tip {
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+  .setting-section .top-tip h1 {
+    margin-top: 0;
+    font-size: 24px;
+    margin-bottom: 0; }
+.setting-section .form-wrap {
+  margin-top: 20px; }
+
+.account-section {
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+
+.avatar-section {
+  margin-top: 20px; }
+  .avatar-section .top-tip {
+    border: none; }
+
+.set-avatar-preview {
+  display: table-cell;
+  vertical-align: top; }
+  .set-avatar-preview img {
+    width: 200px;
+    height: 200px; }
+
+.set-avatar {
+  margin-top: 15px;
+  margin-bottom: 20px; }
+
+.set-button {
+  display: table-cell;
+  vertical-align: top;
+  padding-left: 20px;
+  padding-top: 20px; }
+  .set-button .set-avatar-tip {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.44);
+    padding: 10px 0; }
+
+.upload-button {
+  text-align: center;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  padding: 6px 10px;
+  background-color: #03A9F4;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background-clip: padding-box;
+  outline: none;
+  border: none;
+  cursor: pointer; }
+
+.set-page-bg .set-bg-preview {
+  min-height: 300px;
+  max-height: 400px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-clip: padding-box;
+  margin-bottom: 15px; }
+
+/* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
+    background-color: $default;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3));
+    background-image: -webkit-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -moz-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -ms-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -o-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+}
+@mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3,$color4,$stop4) {
+    background-color: $default;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3), color-stop($stop4 $color4));
+    background-image: -webkit-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -moz-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -ms-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -o-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+} */
+/* @mixin linear-gradient-left($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
+    background-color: $default;
+    background-image: -webkit-gradient(linear, left top, left top, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3));
+    background-image: -webkit-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -moz-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -ms-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: -o-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+    background-image: linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
+}
+@mixin linear-gradient-left($default,$color1,$stop1,$color2,$stop2,$color3,$stop3,$color4,$stop4) {
+    background-color: $default;
+    background-image: -webkit-gradient(linear, left top, left top, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3), color-stop($stop4 $color4));
+    background-image: -webkit-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -moz-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -ms-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: -o-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+    background-image: linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
+}
+ */
 .billborad-card {
   min-height: 200px; }
 

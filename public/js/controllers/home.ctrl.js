@@ -12,25 +12,7 @@
       function(UserService, FeedService, $state, ngCoolNoti, $rootScope) {
         var self = this;
         self.feeds = [];
-        self.unReadNotis = [
-          {
-            content: "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.",
-            creator: {
-              name: 'Nicholas',
-              avatar: '/images/user1.png'
-            },
-            createdAt: new Date()
-          },
-          {
-            content: "She didn’t want to scare her second graders with an eye patch — or have to explain, over and over, why it was there.",
-            creator: {
-              name: 'Sophia',
-              avatar: '/images/user3.png'
-            },
-            createdAt: new Date()
-          }
-        ];
-
+        
         $rootScope.$on('feed:new', function(evt, newFeed) {
           loadFeeds();
         })

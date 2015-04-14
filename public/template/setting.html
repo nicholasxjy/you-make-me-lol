@@ -1,0 +1,109 @@
+<div ng-controller="SettingCtrl as ctrl" class="main">
+  <div ng-include="'template/partials/navbar.html'"></div>
+  <div class="main-content">
+    <div class="main-content-inner">
+      <div class="main-container">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 col-md-offset-3 setting-content">
+              <div class="setting-section account-section">
+                <div class="top-tip">
+                  <h1>Account</h1>
+                  <div class="subtitle">
+                    Change your basic account and language settings.
+                  </div>
+                </div>
+                <div class="form-wrap">
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label for="name" class="col-sm-2 col-sm-offset-1 control-label">Name</label>
+                      <div class="col-sm-6">
+                        <input type="text" class="form-control" id="name" placeholder="Name"
+                        ng-model="ctrl.user.name" required ng-maxlength="20" ng-minlength="6">
+                        <div class="setting-tip">You can change another cool name!</div>
+                      </div>
+
+                    </div>
+                    <div class="form-group">
+                      <label for="email" class="col-sm-2 col-sm-offset-1 control-label">Email</label>
+                      <div class="col-sm-6">
+                        <input type="email" class="form-control" id="email" placeholder="Email"
+                        ng-model="ctrl.user.email" readonly="readonly">
+                        <div class="setting-tip">You can't change it now, we don't spam :)</div>
+                      </div>
+
+                    </div>
+                    <div class="form-group">
+                      <label for="age" class="col-sm-2 col-sm-offset-1 control-label">Age</label>
+                      <div class="col-sm-6">
+                        <input type="number" class="form-control" id="age"
+                        ng-model="ctrl.user.age" max="200" min="10">
+                        <div class="setting-tip">Let us know your age.</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="gender" class="col-sm-2 col-sm-offset-1 control-label">Gender</label>
+                      <div class="col-sm-6">
+                        <input type="text" class="form-control" id="gender"
+                        ng-model="ctrl.user.gender">
+                        <div class="setting-tip">Girl or Boy</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="location" class="col-sm-2 col-sm-offset-1 control-label">Location</label>
+                      <div class="col-sm-6">
+                        <input type="text" class="form-control" id="location"
+                        ng-model="ctrl.user.location" ng-maxlength="20">
+                        <div class="setting-tip">Tell us where you are.</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="location" class="col-sm-2 col-sm-offset-1 control-label">Profile</label>
+                      <div class="col-sm-6">
+                        <textarea id="profile" class="form-control" rows="5" ng-model="ctrl.user.profile"
+                        ></textarea>
+                        <div class="setting-tip">Tell more about you!</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-sm-offset-3 col-sm-10">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="setting-section avatar-section">
+                <div class="top-tip">
+                  <h1>Design</h1>
+                  <div class="subtitle">
+                    Change your avatar and page background image.
+                  </div>
+
+                  <div class="set-image-wrap">
+                    <div class="set-avatar">
+                      <div class="set-avatar-preview">
+                        <img ng-src="{{ctrl.user.avatar}}" alt="" class="img-rounded">
+                      </div>
+                      <div class="set-button">
+                        <div class="upload-button" ng-file-select ng-file-change="uploadAvatar($files)"
+                        ng-multiple="false" accept="image/*">upload avatar</div>
+                        <div class="set-avatar-tip"><i class="ti-info"></i> we may crop your image for the best displaying!</div>
+                      </div>
+                    </div>
+                    <div class="set-page-bg">
+                      <div class="set-bg-preview" style="background-image: url('{{ctrl.user.bg_image}}')">
+                      </div>
+                      <div class="upload-button" ng-file-select ng-file-change="uploadPageBg($files)">upload background image</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -77,11 +77,25 @@
           return deferred.promise;
         }
 
+        function getUserInfo() {
+          var deferred = $q.defer();
+          $http({
+            method: 'GET',
+            url: '/user/info'
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
         return {
           signUp: signUp,
           currentUser: currentUser,
           login: login,
-          logout: logout
+          logout: logout,
+          getUserInfo: getUserInfo
         }
       }
     ])

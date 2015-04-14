@@ -158,6 +158,17 @@ module.exports = {
       })
     })
   },
+  getInfo: function(req, res, next) {
+    var userId = req.session.user;
+    var fields = '_id name avatar email age gender profile location bg_image';
+    UserProxy.getUserById(userId, fields, function(err, user) {
+      if (err) return next(err);
+      return res.json({
+        status: 'success',
+        user: user
+      })
+    })
+  },
   logout: function(req, res, next) {
     var sess = req.session;
     if (!sess || !sess.user) {

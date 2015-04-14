@@ -44,7 +44,7 @@ angular
         templateUrl: 'template/messages.html'
       })
       .state('user', {
-        url: '/:name',
+        url: '/user/:name',
         templateUrl: 'template/user_page.html'
       })
       .state('setting', {

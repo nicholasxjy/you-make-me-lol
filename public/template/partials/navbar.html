@@ -45,10 +45,10 @@
           <ul class="dropdown-menu" role="menu">
             <li class="dropdown-arrow user-arrow"></li>
             <li><a ui-sref="user({name: ctrl.current_user.name})">{{ctrl.current_user.name}}</a></li>
-            <li><a href="#">Another action</a></li>
+            <li><a ui-sref="setting">settings</a></li>
             <li><a href="#">Something else here</a></li>
             <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a ng-click="logout">Logout</a></li>
           </ul>
         </li>
       </ul>
