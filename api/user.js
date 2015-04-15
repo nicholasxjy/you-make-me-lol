@@ -3,6 +3,7 @@ var validator = require('validator');
 var async = require('async');
 var CryptService = require('../services/crypt');
 var EmailService = require('../services/email');
+var qiniuService = require('../services/qiniu');
 var config = require('../config');
 var utils = require('../services/utils');
 
@@ -167,6 +168,84 @@ module.exports = {
         status: 'success',
         user: user
       })
+    })
+  },
+  updateInfo: function(req, res, next) {
+    var userId = req.session.user;
+    var info = req.body.info;
+    if (!info) {
+      return res.json({
+        status: 'fail',
+        msg: 'Not set anything to update!'
+      })
+    }
+    var fields = 'name age gender profile location';
+    UserProxy.getUserById(userId, fields, function(err, user) {
+      if (err) return next(err);
+      if (!user) return res.sendStatus(403);
+      user.name = info.name;
+      user.age = info.age;
+      user.gender = info.gender;
+      user.location = info.location;
+      user.profile = info.profile;
+
+      user.save(function(err) {
+        if (err) return next(err);
+        return res.json({
+          status: 'success',
+          msg: 'Informations update successfully'
+        })
+      })
+    })
+  },
+  uploadImage: function(req, res, next) {
+    var userId = req.session.user;
+    var file = req.files.file;
+    var type = req.body.type;
+    if (file === null || file === undefined) {
+      return res.json({
+        status: 'fail',
+        msg: 'No file found!'
+      });
+    }
+    async.parallel({
+      user: function(cb1) {
+        var fields = "_id avatar bg_image bg_blur_image";
+        UserProxy.getUserById(userId, fields, function(err, user) {
+          if (err) return cb1(err);
+          return cb1(null, user);
+        })
+      },
+      image: function(cb2) {
+        var uptoken = qiniuService.generateUpToken();
+        qiniuService.uploadFileLocalFile(file.mimetype, file.path, file.name, uptoken, null, function(err, file_info) {
+          if (err) return cb2(err);
+          cb2(null, file_info);
+        });
+      }
+    }, function(err, result) {
+      if (err) return next(err);
+      if (type === 'user-avatar') {
+        result.user.avatar = result.image.url + '?imageView2/5/w/200/h/200';
+        result.user.save(function(err) {
+          if (err) return next(err);
+          return res.json({
+            status: 'success',
+            url: result.user.avatar
+          })
+        })
+      } else {
+        result.user.bg_image = result.image.url;
+        result.user.bg_blur_image = result.image.url + '?imageMogr2/blur/20x10';
+        result.user.save(function(err) {
+          if (err) return next(err);
+          return res.json({
+            status: 'success',
+            url: result.user.bg_image,
+            blur_url: result.user.bg_blur_image
+          })
+        })
+      }
     })
   },
   logout: function(req, res, next) {

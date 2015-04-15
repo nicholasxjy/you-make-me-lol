@@ -986,9 +986,8 @@ mentio-menu .dropdown-menu {
   background-clip: padding-box;
   border: 1px solid #d3d3d3;
   background-color: #ffffff;
-  margin: 0 15px 20px 15px;
-  border-bottom-width: 2px;
-  width: 540px; }
+  margin-bottom: 30px;
+  border-bottom-width: 2px; }
 
 .feed-top {
   padding: 15px 10px; }
@@ -1145,7 +1144,8 @@ mentio-menu .dropdown-menu {
   width: 490px; }
 
 body {
-  background-color: #E5E5E5; }
+  background-color: #E5E5E5;
+  font-family: 'Source Sans Pro', sans-serif; }
 
 /****** top feed ******/
 .top-feed {
@@ -1159,10 +1159,6 @@ body {
 
 .main-container {
   padding-top: 80px; }
-
-.container-inner {
-  width: 940px;
-  margin: 0 auto; }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
@@ -2736,7 +2732,7 @@ body {
   font-size: 14px;
   font-weight: 700;
   line-height: 20px;
-  padding: 6px 10px;
+  padding: 8px 10px;
   background-color: #03A9F4;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
