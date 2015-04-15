@@ -24,5 +24,12 @@ module.exports = {
   getUserByName: function(name, fields, cb) {
     fields = fields || null;
     User.findOne({name: name}, fields, cb)
+  },
+  addPost: function(userId, cb) {
+    User.findById(userId, 'post_count', function(err, user) {
+      if (err) return cb(err);
+      user.post_count = user.post_count + 1;
+      user.save(cb);
+    })
   }
 }

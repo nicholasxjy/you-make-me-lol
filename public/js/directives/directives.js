@@ -33,7 +33,7 @@
                 var tpl = $compile(data)(scope);
                 $timeout(function() {
                   $body.append(tpl);
-                  $body.addClass('sf-feed-detail-open');
+                  $body.css('overflow', 'hidden');
                 });
               })
             })
@@ -289,7 +289,7 @@
               $(ele).find('.sf-create-wrap').addClass('zoomOut');
               $timeout(function() {
                 ele.remove();
-                $document.find('body').removeClass('sf-feed-detail-open');
+                $document.find('body').css('overflow', 'auto');
               }, 750);
             }
           }
@@ -509,8 +509,10 @@
           link: function(scope, ele, attrs) {
             $(window).on('scroll', function() {
               var val = 0;
-              val = $(window).scrollTop()/100;
-              $(ele[0]).find('.sf-banner-blur').css('opacity', val);
+              val = $(window).scrollTop()/405;
+              if (val <= 1) {
+                $(ele[0]).find('.sf-banner-blur').css('opacity', val);
+              }
             })
           }
         }

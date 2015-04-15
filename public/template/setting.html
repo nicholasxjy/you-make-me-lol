@@ -85,17 +85,20 @@
                     <div class="set-avatar">
                       <div class="set-avatar-preview">
                         <img ng-src="{{ctrl.user.avatar}}" alt="" class="img-rounded">
+                        <div ng-include="'template/spinner.html'" ng-show="!ctrl.uploadAvatarDone"></div>
                       </div>
                       <div class="set-button">
                         <div class="upload-button" ng-file-select ng-file-change="ctrl.uploadAvatar($files)"
-                        ng-multiple="false" accept="image/*">upload avatar</div>
+                        ng-multiple="false" accept="image/*" ng-disabled="ctrl.avatarUploading">upload avatar</div>
                         <div class="set-avatar-tip"><i class="ti-info"></i> we may crop your image for the best displaying!</div>
                       </div>
                     </div>
                     <div class="set-page-bg">
                       <div class="set-bg-preview" style="background-image: url('{{ctrl.user.bg_image}}')">
+                        <div ng-include="'template/spinner.html'" ng-show="!ctrl.uploadBgDone"></div>
                       </div>
-                      <div class="upload-button" ng-file-select ng-file-change="ctrl.uploadPageBg($files)">upload background image</div>
+                      <div class="upload-button" ng-file-select ng-file-change="ctrl.uploadPageBg($files)"
+                      ng-disabled="ctrl.bgUploading">upload background image</div>
                     </div>
                   </div>
                 </div>

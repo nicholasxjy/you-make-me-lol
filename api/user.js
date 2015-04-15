@@ -150,10 +150,9 @@ module.exports = {
     if (!sess || !sess.user) {
       return res.sendStatus(404);
     }
-    var fields = '_id name avatar';
+    var fields = '_id name avatar gender location profile followers followees post_count';
     UserProxy.getUserById(sess.user, fields,function(err, user) {
       if (err) return next(err);
-      // var _user = utils.homeCurrentUserFilter(user);
       return res.json({
         status: 'success',
         user: user
@@ -237,7 +236,7 @@ module.exports = {
         })
       } else {
         result.user.bg_image = result.image.url;
-        result.user.bg_blur_image = result.image.url + '?imageMogr2/blur/20x10';
+        result.user.bg_blur_image = result.image.url + '?imageMogr2/blur/50x50';
         result.user.save(function(err) {
           if (err) return next(err);
           return res.json({
@@ -269,21 +268,13 @@ module.exports = {
     }
     async.waterfall([
       function(cb1) {
-        var fields = '_id name avatar bg_image bg_blur_image age gender location profile followers followees';
+        var fields = '_id name avatar bg_image bg_blur_image age gender location profile followers followees post_count';
         UserProxy.getUserByName(name, fields, function(err, user) {
           if (err) return cb1(err);
           if (!user) {
             return res.sendStatus(404);
           }
           return cb1(null, user);
-        })
-      },
-      function(user, cb2) {
-        FeedProxy.getCountByUser(user._id, function(err, count) {
-          if (err) return cb2(err);
-          user = user.toObject();
-          user.post_count = count;
-          return cb2(null, user);
         })
       }
     ], function(err, result) {

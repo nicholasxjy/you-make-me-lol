@@ -230,7 +230,7 @@
 
 .sf-overlay {
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.85);
   z-index: 1400;
   width: 100%;
   overflow: hidden; }
@@ -480,6 +480,16 @@ button[disabled=disabled], button:disabled {
   -moz-animation-duration: 0.75s;
   -ms-animation-duration: 0.75s;
   -o-animation-duration: 0.75s; }
+
+.sf-create-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; }
 
 .sf-create-wrap {
   position: absolute;
@@ -770,7 +780,6 @@ button[disabled=disabled], button:disabled {
 }
  */
 body.sf-feed-detail-open {
-  overflow: hidden;
   position: fixed; }
 
 .sf-feed-detail {
@@ -1158,7 +1167,7 @@ body {
   background-image: url("../images/background.jpg"); }
 
 .main-container {
-  padding-top: 80px; }
+  padding-top: 20px; }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
@@ -1207,7 +1216,8 @@ body {
   -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
   border: none;
-  min-height: 60px; }
+  min-height: 60px;
+  margin-bottom: 0; }
   .navbar .container {
     padding-top: 5px;
     padding-bottom: 5px; }
@@ -2706,7 +2716,9 @@ body {
 
 .set-avatar-preview {
   display: table-cell;
-  vertical-align: top; }
+  vertical-align: top;
+  position: relative;
+  z-index: 400; }
   .set-avatar-preview img {
     width: 200px;
     height: 200px; }
@@ -2743,6 +2755,8 @@ body {
   cursor: pointer; }
 
 .set-page-bg .set-bg-preview {
+  position: relative;
+  z-index: 400;
   min-height: 300px;
   max-height: 400px;
   background-position: center;
@@ -3007,13 +3021,15 @@ body {
  */
 .sf-card {
   background-color: #ffffff;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   background-clip: padding-box;
-  margin-top: 30px;
   padding-top: 10px;
-  padding-bottom: 10px; }
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #d3d3d3;
+  border-bottom-width: 2px; }
 
 .user-card .card-top {
   margin-bottom: 40px; }

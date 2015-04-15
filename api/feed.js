@@ -3,6 +3,7 @@ var qiniuService = require('../services/qiniu');
 var fileProxy = require('../proxy/file');
 var feedProxy = require('../proxy/feed');
 var tagProxy = require('../proxy/tag');
+var UserProxy = require('../proxy/user');
 var commentProxy = require('../proxy/comment');
 var utils = require('../services/utils');
 
@@ -145,10 +146,14 @@ module.exports = {
 
         feedProxy.create(userId, data, function(err, newFeed) {
           if (err) return next(err);
-          res.json({
-            status: 'success',
-            new_feed_id: newFeed._id
-          });
+          //here user post_count +1
+          UserProxy.addPost(userId, function(err) {
+            if (err) return next(err);
+            res.json({
+              status: 'success',
+              new_feed_id: newFeed._id
+            });
+          })
         })
       })
     } else {
@@ -194,10 +199,13 @@ module.exports = {
 
         feedProxy.create(userId, data, function(err, newFeed) {
           if (err) return next(err);
-          res.json({
-            status: 'success',
-            new_feed_id: newFeed._id
-          });
+          UserProxy.addPost(userId, function(err) {
+            if (err) return next(err);
+            res.json({
+              status: 'success',
+              new_feed_id: newFeed._id
+            });
+          })
         })
 
       })

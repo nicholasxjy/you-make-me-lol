@@ -56,6 +56,10 @@ var User = new Schema({
     type: String,
     default: config.user_default.profile
   },
+  post_count: {
+    type: Number,
+    default: 0
+  },
   weibo: {
     type: String,
     default: ''

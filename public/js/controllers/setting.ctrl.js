@@ -40,7 +40,9 @@
             })
         };
 
-        self.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
+
+        self.uploadAvatarDone = true;
+        self.uploadBgDone = true;
 
         self.uploadAvatar = function(files) {
           if (files && files.length > 0) {
@@ -55,6 +57,13 @@
         }
 
         self.uploadImage = function(file, type) {
+          if (type === 'user-avatar') {
+            self.uploadAvatarDone = false;
+            self.avatarUploading = true;
+          } else {
+            self.uploadBgDone = false;
+            self.bgUploading = true;
+          }
           $upload.upload({
             url: '/user/upload_image',
             file: file,
@@ -63,8 +72,12 @@
             }
           }).success(function(data, status, headers, config) {
             if (type === 'user-avatar') {
+              self.uploadAvatarDone = true;
+              self.avatarUploading = false;
               self.current_user.avatar = self.user.avatar = data.url;
             } else {
+              self.uploadBgDone = true;
+              self.bgUploading = false;
               self.current_user.bg_image = self.user.bg_image = data.url;
               self.current_user.bg_blur_image = self.user.bg_blur_image = data.blur_url;
             }
