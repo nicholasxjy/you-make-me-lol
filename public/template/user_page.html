@@ -2,8 +2,8 @@
   <div ng-include="'template/partials/navbar.html'"></div>
   <div class="main-content">
     <div class="top-wrap">
-      <div class="sf-banner">
-        <div class="sf-banner-blur"></div>
+      <div class="sf-banner" sf-banner-scroll-blur style="background-image: url('{{ctrl.user.bg_image}}')">
+        <div class="sf-banner-blur" style="background-image: url('{{ctrl.user.bg_blur_image}}')"></div>
       </div>
 
       <div class="user-info">
@@ -11,19 +11,19 @@
           <li class="info-item">
             <a href="">
               <div class="info-item-title">Posts</div>
-              <div class="info-item-count">123</div>
+              <div class="info-item-count">{{ctrl.user.post_count}}</div>
           </a>
           </li>
           <li class="info-item">
             <a href="">
               <div class="info-item-title">Followers</div>
-              <div class="info-item-count">123</div>
+              <div class="info-item-count">{{ctrl.user.followers.length}}</div>
             </a>
           </li>
           <li class="info-item">
             <a href="">
               <div class="info-item-title">Followees</div>
-              <div class="info-item-count">123</div>
+              <div class="info-item-count">{{ctrl.user.followees.length}}</div>
             </a>
           </li>
         </ul>
@@ -36,15 +36,14 @@
         <div class="col-md-3">
           <div class="user-profile-wrap">
             <div class="avatar-wrap">
-              <img src="images/avatar-default.png" alt="Avatar" class="img-responsive img-circle">
+              <img ng-src="{{ctrl.user.avatar}}" alt="Avatar" class="img-responsive img-circle">
             </div>
             <div class="gender-location">
-              <i class="fa fa-user"></i><span>Male</span>
-              <i class="fa fa-map-marker"></i><span>Shanghai</span>
+              <i class="ti-user"></i><span>{{ctrl.user.gender || 'unknow'}}</span>
+              <i class="ti-location-pin"></i><span>{{ctrl.user.location || 'unknow'}}</span>
             </div>
             <div class="profile-wrap">
-              I started learning Swift 4 months ago and I knew some coding before that.
-              But I have never created a native app for any platform.
+              {{ctrl.user.profile || 'Not set anything about self!' }}
             </div>
           </div>
         </div>

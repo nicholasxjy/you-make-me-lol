@@ -20,5 +20,9 @@ module.exports = {
   getUserById: function(id, fields, cb) {
     fields = fields || null;
     User.findById(id, fields, cb);
+  },
+  getUserByName: function(name, fields, cb) {
+    fields = fields || null;
+    User.findOne({name: name}, fields, cb)
   }
 }

@@ -1,4 +1,5 @@
 var UserProxy = require('../proxy/user');
+var FeedProxy = require('../proxy/feed');
 var validator = require('validator');
 var async = require('async');
 var CryptService = require('../services/crypt');
@@ -260,5 +261,37 @@ module.exports = {
         status: 'success'
       });
     });
+  },
+  getInfoByName: function(req, res, next) {
+    var name = req.query.name;
+    if (!name) {
+      return res.sendStatus(404);
+    }
+    async.waterfall([
+      function(cb1) {
+        var fields = '_id name avatar bg_image bg_blur_image age gender location profile followers followees';
+        UserProxy.getUserByName(name, fields, function(err, user) {
+          if (err) return cb1(err);
+          if (!user) {
+            return res.sendStatus(404);
+          }
+          return cb1(null, user);
+        })
+      },
+      function(user, cb2) {
+        FeedProxy.getCountByUser(user._id, function(err, count) {
+          if (err) return cb2(err);
+          user = user.toObject();
+          user.post_count = count;
+          return cb2(null, user);
+        })
+      }
+    ], function(err, result) {
+      if (err) return next(err);
+      return res.json({
+        status: 'success',
+        user: result
+      })
+    })
   }
 }

@@ -10,4 +10,5 @@ router.post('/upload_image', middleware.checkUser, user.uploadImage);
 router.get('/current', user.current);
 router.get('/logout', user.logout);
 router.get('/info', middleware.checkUser, user.getInfo);
+router.get('/info_name', user.getInfoByName);
 module.exports = router;

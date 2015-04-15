@@ -90,5 +90,8 @@ module.exports = {
       if (err) return cb(err);
       return cb(null, feed);
     })
+  },
+  getCountByUser: function(userId, cb) {
+    Feed.count({creator: userId}, cb);
   }
 }

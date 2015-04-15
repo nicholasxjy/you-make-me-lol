@@ -106,13 +106,30 @@
           return deferred.promise;
         }
 
+        function getUserInfoByName(name) {
+          var deferred = $q.defer();
+          $http({
+            method: 'GET',
+            url: '/user/info_name',
+            params: {
+              name: name
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
         return {
           signUp: signUp,
           currentUser: currentUser,
           login: login,
           logout: logout,
           getUserInfo: getUserInfo,
-          updateInfo: updateInfo
+          updateInfo: updateInfo,
+          getUserInfoByName: getUserInfoByName
         }
       }
     ])
