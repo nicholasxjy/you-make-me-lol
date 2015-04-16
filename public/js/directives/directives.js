@@ -33,7 +33,7 @@
                 var tpl = $compile(data)(scope);
                 $timeout(function() {
                   $body.append(tpl);
-                  $body.css('overflow', 'hidden');
+                  $body.addClass('create-open');
                 });
               })
             })
@@ -161,7 +161,7 @@
             }
 
             $scope.validateFile = function(file, type) {
-              if (file.size > 10485760) {
+              if (file.size > 50485760) {
                 ngCoolNoti.create({
                   message: 'Your file size should be less than 10MB',
                   position: 'top-right',
@@ -286,11 +286,11 @@
               scope.share_files = null;
               scope.tags = null;
               $text.val('');
-              $(ele).find('.sf-create-wrap').addClass('zoomOut');
+              $(ele).find('.sf-create-inner').addClass('zoomOut');
               $timeout(function() {
                 ele.remove();
-                $document.find('body').css('overflow', 'auto');
-              }, 750);
+                $document.find('body').removeClass('create-open');
+              }, 700);
             }
           }
         }
