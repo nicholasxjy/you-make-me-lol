@@ -10,9 +10,15 @@
         <div class="sf-create-main-content">
           <div class="user-wrap">
             <img ng-src="{{current_user.avatar}}" class="img-responsive img-rounded create-avatar">
+          </div>
+
+          <div class="create-content">
+            <div class="create-words-input">
+              <textarea class="form-control" placeholder="what's new..." mentio mentio-items="people" ng-model="atUsers"></textarea>
+            </div>
             <div class="create-add-actions" ng-hide="(images && images.length && images.length<=5) || audio || video">
               <div class="add-actions-inner" ng-hide="spinnerShow">
-                <ul class="list-unstyled actions-list">
+                <ul class="list-inline actions-list">
                   <li class="action-item">
                     <div class="add-button add-photo-button"
                     ng-file-select
@@ -20,7 +26,7 @@
                     accept="image/*"
                     ng-file-change="upload($files, 'image')"
                     ng-accept="validateFile($file)">
-                      <i class="ti-camera"></i>
+                      <i class="ti-camera"></i><span class="action-tip">photos</span>
                     </div>
                   </li>
                   <li class="action-item audio">
@@ -29,7 +35,7 @@
                     ng-multiple="false"
                     accept="audio/*"
                     ng-accept="validateFile($file)">
-                      <i class="ti-music-alt"></i>
+                      <i class="ti-music-alt"></i><span class="action-tip">audio</span>
                     </div>
                   </li>
                   <li class="action-item video">
@@ -39,17 +45,11 @@
                     ng-multiple="false"
                     accept="video/*"
                     ng-accept="validateFile($file)">
-                      <i class="ti-video-clapper"></i>
+                      <i class="ti-video-clapper"></i><span class="action-tip">video</span>
                     </div>
                   </li>
                 </ul>
               </div>
-            </div>
-          </div>
-
-          <div class="create-content">
-            <div class="create-words-input">
-              <textarea class="form-control" placeholder="what's new..." mentio mentio-items="people" ng-model="atUsers"></textarea>
             </div>
             <div class="upload-file-preview">
               <div class="photos-container" ng-if="images && images.length && images.length<=5">
@@ -76,8 +76,8 @@
             </div>
             <div class="create-submit">
               <button class="btn btn-default cancel-create" ng-click="cancel(false)">Cancel</button>
-              <button class="btn btn-info post-create" ng-disabled="!canPosted" ng-click="postShare()">Share</button>
-              <button class="btn btn-primary" ng-click="getLocation()"><i class="ti-location-pin"></i>{{location || 'Add location'}}</button>
+              <button class="btn btn-primary post-create" ng-disabled="!canPosted" ng-click="postShare()">Share</button>
+              <a class="pull-right" ng-click="getLocation()"><i class="ti-location-pin"></i>{{location || 'Add location'}}</a>
             </div>
           </div>
 

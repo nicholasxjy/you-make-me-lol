@@ -34,6 +34,11 @@
                 $timeout(function() {
                   $body.append(tpl);
                   $body.addClass('create-open');
+                  var $main = $('.sf-create-main');
+                  $main.addClass('jelley-in');
+                  $timeout(function() {
+                    $main.removeClass('jelley-in');
+                  }, 1200);
                 });
               })
             })
@@ -363,11 +368,11 @@
               scope.share_files = null;
               scope.tags = null;
               $text.val('');
-              $(ele).find('.sf-create-inner').addClass('zoomOut');
+              $(ele).find('.sf-create-main').addClass('jelley-out');
               $timeout(function() {
                 ele.remove();
                 $document.find('body').removeClass('create-open');
-              }, 700);
+              }, 950);
             }
           }
         }
