@@ -1,0 +1,19 @@
+<div class="sf-card user-card user-card-popover">
+  <div class="card-top">
+    <div class="user-card-banner" style="background-image: url('{{user.bg_image}}')">
+    </div>
+    <div class="user-avatar">
+      <img src="{{user.avatar}}" alt="Avatar" class="img-responsive img-circle">
+    </div>
+    <div class="user-link">
+      <a ui-sref="user({name: user.name})">{{user.name}}</a>
+    </div>
+    <div class="user-other">
+      <i class="ti-user"></i><span>{{user.gender}}</span>
+      <i class="ti-location-pin"></i><span>{{user.location}}</span>
+    </div>
+    <div class="user-profile">
+      {{user.profile}}
+    </div>
+  </div>
+</div>

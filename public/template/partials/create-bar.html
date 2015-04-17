@@ -77,7 +77,7 @@
             <div class="create-submit">
               <button class="btn btn-default cancel-create" ng-click="cancel(false)">Cancel</button>
               <button class="btn btn-info post-create" ng-disabled="!canPosted" ng-click="postShare()">Share</button>
-              <button class="btn btn-primary"><i class="ti-location-pin"></i>{{location || 'Add location'}}</button>
+              <button class="btn btn-primary" ng-click="getLocation()"><i class="ti-location-pin"></i>{{location || 'Add location'}}</button>
             </div>
           </div>
 

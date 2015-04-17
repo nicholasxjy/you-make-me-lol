@@ -178,4 +178,50 @@
         }
       }
   }])
+  m.directive('sfUserCardPopover', [
+    '$http',
+    '$q',
+    '$timeout',
+    '$document',
+    '$compile',
+    function($http, $q, $timeout, $document, $compile) {
+      return {
+        restrict: 'AE',
+        scope: {
+          user: '=user',
+          current_user: '=currentUser'
+        },
+        link: function(scope, ele, attrs) {
+          var body = $document.find('body');
+          $(ele[0]).on('mouseover', function(e) {
+            var tpl = $http.get('template/partials/user-card-popover.html');
+            tpl.then(function(res) {
+              var tplElement = $compile(res.data)(scope);
+              $timeout(function() {
+                body.append(angular.element(tplElement));
+
+                //set position popover
+                var target = e.target;
+                var offset = $(target).offset();
+
+                var $popover = $('.user-card-popover');
+                $popover.css('top', offset.top+10+'px');
+                $popover.css('left', offset.left+48+'px');
+              })
+            })
+          })
+
+          $(ele[0]).on('mouseout', function() {
+            var $popover = $('.user-card-popover');
+            if ($popover) {
+              $popover.addClass('out');
+              $timeout(function() {
+                $popover.remove();
+              }, 500);
+            }
+          })
+        }
+      }
+    }
+  ])
 })();

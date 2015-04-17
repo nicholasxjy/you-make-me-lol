@@ -51,7 +51,8 @@
       'ngCoolNoti',
       'FeedService',
       'ngAudioTag',
-      function($document, $timeout, $http, $rootScope, $q, $upload, ngCoolNoti, FeedService, ngAudioTag) {
+      'ngGeo',
+      function($document, $timeout, $http, $rootScope, $q, $upload, ngCoolNoti, FeedService, ngAudioTag, ngGeo) {
         return {
           restrict: 'AE',
           scope: false,
@@ -235,6 +236,27 @@
               }
             };
 
+
+            $scope.getLocation = function() {
+              ngGeo.getLocationCoords()
+                .then(function(position) {
+                  console.log(position);
+                  alert(position)
+                  return position.coords;
+                }, function(data) {
+                  console.log(data);
+                })
+                .then(function(coords) {
+                  ngGeo.coordsToAddress(coords)
+                    .then(function(result) {
+                      console.log(result);
+                      alert(result)
+                    }, function(data) {
+                      console.log(data);
+                    })
+                })
+            }
+
           }],
           link: function(scope, ele, attrs) {
             var $text = ele.find('textarea');
@@ -274,6 +296,8 @@
               }
               return hasContents;
             }
+
+
 
             scope.postShare = function() {
 

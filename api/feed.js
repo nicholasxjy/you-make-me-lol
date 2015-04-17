@@ -16,9 +16,6 @@ module.exports = {
     var artist = req.body.artist;
     var comment = JSON.parse(req.body.comment);
     var audio_data = req.body.audio_data;
-    // console.log(artist);
-    // console.log(audio_data);
-    console.log(comment)
     var fileObj = {
       category: category,
       artist: artist,

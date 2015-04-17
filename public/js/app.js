@@ -11,7 +11,8 @@ angular
     'ngCoolVideo',
     'ngCoolAudio',
     'ngCoolComponents',
-    'ngAudioTag'
+    'ngAudioTag',
+    'ngGeo'
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
