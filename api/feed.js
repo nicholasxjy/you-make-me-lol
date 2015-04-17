@@ -6,13 +6,27 @@ var tagProxy = require('../proxy/tag');
 var UserProxy = require('../proxy/user');
 var commentProxy = require('../proxy/comment');
 var utils = require('../services/utils');
+var id3 = require('id3js');
 
 module.exports = {
   uploadFile: function(req, res, next) {
     var userId = req.session.user;
     var file = req.files.file;
     var category = req.body.category;
-
+    var artist = req.body.artist;
+    var comment = JSON.parse(req.body.comment);
+    var audio_data = req.body.audio_data;
+    // console.log(artist);
+    // console.log(audio_data);
+    console.log(comment)
+    var fileObj = {
+      category: category,
+      artist: artist,
+      audio_data: audio_data
+    };
+    if (!comment) {
+      fileObj.comment = comment;
+    }
     if (file === null || file === undefined) {
       return res.json({
         status: 'fail',
@@ -22,19 +36,23 @@ module.exports = {
     async.waterfall([
       function(cb1) {
         var uptoken = qiniuService.generateUpToken();
-        qiniuService.uploadFileLocalFile(category, file.path, file.name, uptoken, null, function(err, file_info) {
+        qiniuService.uploadFileLocalFile(fileObj, file.path, file.name, uptoken, null, function(err, file_info) {
           if (err) return cb1(err);
           cb1(null, file_info);
         });
       },
       function(file_info, cb2) {
         var file_obj = {
-          key: file_info.key,
-          url: file_info.url,
+          key: file_info.audio.key,
+          url: file_info.audio.url,
           author: userId,
-          hash: file_info.hash,
+          hash: file_info.audio.hash,
           mimeType: file.mimetype,
-          category: category
+          category: category,
+          singer_name: fileObj.artist || '',
+          title: comment['musicName'] || '',
+          cover_url: file_info.cover.url,
+          album: comment['album'] || ''
         };
         fileProxy.create(file_obj, function(err, newFile) {
           if (err) return cb2(err);
@@ -44,14 +62,23 @@ module.exports = {
       }
     ], function(err, result) {
       if (err) return next(err);
-      res.json({
-        status: 'success',
-        file_info: {
-          fileId: result.fileId,
-          key: result.key,
-          url: result.url
-        }
-      })
+      if (category === 'image') {
+        res.json({
+          status: 'success',
+          file_info: {
+            fileId: result.fileId,
+            key: result.key,
+            url: result.url
+          }
+        })
+      } else {
+        res.json({
+          status: 'success',
+          file_info: {
+            fileId: result.fileId
+          }
+        })
+      }
     })
   },
   removeFile: function(req, res, next) {

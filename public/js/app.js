@@ -10,7 +10,8 @@ angular
     'ngCoolNoti',
     'ngCoolVideo',
     'ngCoolAudio',
-    'ngCoolComponents'
+    'ngCoolComponents',
+    'ngAudioTag'
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');

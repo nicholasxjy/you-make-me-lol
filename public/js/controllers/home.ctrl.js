@@ -12,7 +12,7 @@
       function(UserService, FeedService, $state, ngCoolNoti, $rootScope) {
         var self = this;
         self.feeds = [];
-        
+
         $rootScope.$on('feed:new', function(evt, newFeed) {
           loadFeeds();
         })
@@ -34,9 +34,9 @@
                   var source = {
                     audio: {
                       src: attach_file.url,
-                      name: 'Sunday Morning',
-                      author: 'Maroon Five',
-                      cover: 'images/welcome.jpg'
+                      name: attach_file.title || 'Unknow',
+                      author: attach_file.singer_name || 'Unknow',
+                      cover: attach_file.cover_url ||'images/audio_bg.jpg'
                     }
                   }
                   feed.source = source;

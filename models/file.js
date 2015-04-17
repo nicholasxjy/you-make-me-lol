@@ -18,6 +18,22 @@ var File = new Schema({
     type: String,
     default: ''
   },
+  singer_name: {
+    type: String,
+    default: ''
+  },
+  album: {
+    type: String,
+    default: ''
+  },
+  title: {
+    type: String,
+    default: ''
+  },
+  cover_url: {
+    type: String,
+    default: ''
+  },
   hash: String,
   mimeType: String,
   category: {

@@ -23,7 +23,7 @@ module.exports = {
       },
       function(feeds, cb2) {
         var options = [
-          {path: 'attach_files', model: 'File', select: 'caption url'},
+          {path: 'attach_files', model: 'File', select: 'caption url title singer_name cover_url'},
           {path: 'creator', model: 'User', select: '_id name avatar'},
           {path: 'comments', model: 'Comment', options: {sort: {'createdAt': -1}, limit: 3}, select:'_id creator to_user content createdAt'},
           {path: 'likes', model: 'User', select: '_id name avatar'},
