@@ -79,9 +79,6 @@
             });
             $scope.upload = function(files, type) {
 
-              // console.log(files)
-              // return false;
-
               $scope.selectedFiles = files;
               $scope.file_count = 0;
               if (files && files.length > 0) {
@@ -122,6 +119,7 @@
                     }
                     var fields = {
                       category: type,
+                      title: tagdata.title,
                       comment: tagdata.comment.text.replace('music:', ''),
                       artist: tagdata.artist,
                       audio_data: window.btoa(base64String)
@@ -133,7 +131,6 @@
                           file: file,
                           fields: fields
                         }).success(function(data, status, headers, config) {
-                          console.log(data)
                           if (data.status === 'fail') {
                             ngCoolNoti.create({
                               message: data.msg,
@@ -166,7 +163,6 @@
                         category: type
                       }
                     }).success(function(data, status, headers, config) {
-
                       if (data.status === 'fail') {
                         ngCoolNoti.create({
                           message: data.msg,
@@ -222,7 +218,7 @@
             $scope.validateFile = function(file, type) {
               if (file.size > 50485760) {
                 ngCoolNoti.create({
-                  message: 'Your file size should be less than 10MB',
+                  message: 'Your file size too large!',
                   position: 'top-right',
                   animation: 'jelly',
                   type: 'warning'
@@ -264,12 +260,10 @@
 
           }],
           link: function(scope, ele, attrs) {
-            var $text = ele.find('textarea');
+
             var checkContents = function() {
               var hasContents = false;
-              var text = $text.val();
-              text = text.trim();
-              if (text !== '') {
+              if (scope.feedWords && scope.feedWords !== '') {
                 hasContents = true;
               }
               if (scope.images && scope.images.length > 0) {
@@ -305,9 +299,6 @@
 
 
             scope.postShare = function() {
-
-              var text = $text.val();
-              text = text.trim();
               if (!checkContents()) {
                 ngCoolNoti.create({
                   message: 'You add nothing to share :(',
@@ -318,7 +309,7 @@
                 return false;
               } else {
                 var feed = {
-                  text: text,
+                  text: scope.feedWords,
                   category: scope.category,
                   share_files: scope.share_files,
                   tags: scope.tags
@@ -354,22 +345,21 @@
                 }
               }
 
-              scope.spinnerShow = false;
-              scope.mediaReady = false;
-              scope.mediaUploading = false;
-              scope.mediaUploaded = false;
-              scope.file_count = null;
-              scope.selectedFiles = null;
-              scope.canPosted = false;
-              scope.images = null;
-              scope.audio = null;
-              scope.video = null;
-              scope.category = null;
-              scope.share_files = null;
-              scope.tags = null;
-              $text.val('');
               $(ele).find('.sf-create-main').addClass('jelley-out');
               $timeout(function() {
+                scope.spinnerShow = false;
+                scope.mediaReady = false;
+                scope.mediaUploading = false;
+                scope.mediaUploaded = false;
+                scope.file_count = null;
+                scope.selectedFiles = null;
+                scope.canPosted = false;
+                scope.images = null;
+                scope.audio = null;
+                scope.video = null;
+                scope.category = null;
+                scope.share_files = null;
+                scope.feedWords = '';
                 ele.remove();
                 $document.find('body').removeClass('create-open');
               }, 950);

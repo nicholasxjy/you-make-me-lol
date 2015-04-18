@@ -13,16 +13,19 @@ module.exports = {
     var userId = req.session.user;
     var file = req.files.file;
     var category = req.body.category;
-    var artist = req.body.artist;
-    var comment = JSON.parse(req.body.comment);
-    var audio_data = req.body.audio_data;
-    var fileObj = {
-      category: category,
-      artist: artist,
-      audio_data: audio_data
-    };
-    if (!comment) {
-      fileObj.comment = comment;
+    var title = req.body.title;
+    var artist = req.body.artist || '';
+    var comment = req.body.comment;
+    var audio_data = req.body.audio_data || '';
+
+    var fileObj = {};
+    fileObj.category = category;
+    fileObj.artist = artist;
+    fileObj.audio_data = audio_data;
+    fileObj.title = title;
+    if (comment !== '') {
+      var _comment = JSON.parse(comment);
+      fileObj.comment = _comment;
     }
     if (file === null || file === undefined) {
       return res.json({
@@ -39,19 +42,34 @@ module.exports = {
         });
       },
       function(file_info, cb2) {
-        var file_obj = {
-          key: file_info.audio.key,
-          url: file_info.audio.url,
-          author: userId,
-          hash: file_info.audio.hash,
-          mimeType: file.mimetype,
-          category: category,
-          singer_name: fileObj.artist || '',
-          title: comment['musicName'] || '',
-          cover_url: file_info.cover.url,
-          album: comment['album'] || ''
-        };
-        fileProxy.create(file_obj, function(err, newFile) {
+        var _file_obj = null;
+        if (category === 'audio') {
+          var file_obj = {
+            key: file_info.audio.key,
+            url: file_info.audio.url,
+            author: userId,
+            hash: file_info.audio.hash,
+            mimeType: file.mimetype,
+            category: category,
+            singer_name: fileObj.artist || '',
+            title: title || comment['musicName'] || '',
+            cover_url: file_info.cover.url,
+            album: comment['album'] || ''
+          };
+          _file_obj = file_obj;
+        } else {
+          var file_obj = {
+            key: file_info.key,
+            url: file_info.url,
+            author: userId,
+            hash: file_info.hash,
+            mimeType: file.mimetype,
+            category: category,
+          };
+          _file_obj = file_obj;
+        }
+
+        fileProxy.create(_file_obj, function(err, newFile) {
           if (err) return cb2(err);
           file_info.fileId = newFile._id;
           cb2(null, file_info);

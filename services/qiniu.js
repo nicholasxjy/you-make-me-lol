@@ -39,7 +39,7 @@ module.exports = {
           if (fileObj.audio_data) {
             var bufData = new Buffer(fileObj.audio_data, 'base64');
             var myExtra = extra || new qiniu.io.PutExtra();
-            qiniu.io.put(uptoken, key+'_cover'+'.png', bufData, extra, function(err, ret) {
+            qiniu.io.put(uptoken, key.split('.')[0]+'_cover'+'.png', bufData, extra, function(err, ret) {
               if (err) return cb2(err);
               ret.url = DOMAIN + '/' + ret.key;
               return cb2(null, ret);

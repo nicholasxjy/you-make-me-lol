@@ -194,6 +194,10 @@
         link: function(scope, ele, attrs) {
           var body = $document.find('body');
           $(ele[0]).on('mouseover', function(e) {
+            var $former_pop = $('.user-card-popover');
+            if ($former_pop) {
+              $former_pop.remove();
+            }
             var tpl = $http.get('template/partials/user-card-popover.html');
             tpl.then(function(res) {
               var tplElement = $compile(res.data)(scope);
