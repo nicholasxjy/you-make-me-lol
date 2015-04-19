@@ -446,42 +446,21 @@
         return {
           restrict: 'AE',
           scope: {
-            feed: '=feed'
+            feed: '=feed',
+            usersAt: '=usersAt'
           },
           transclude: true,
-          controller: ['$scope', function($scope) {
-            $scope.comment_to = [];
-            UserService.getUserFollowersForAt()
-              .then(function(data) {
-                $scope.userPeople = data.users;
-              })
-
-            $scope.selectAtUser = function(item) {
-              // change @users
-              $scope.comment_to.push(item._id);
-              return '@' + item.label;
-            }
-          }],
-          template: '<div class="feed-add-comment"><div class="feed-add-comment-inner"><form class="comment-form"><input type="text" class="form-control" placeholder="Add a comment" mentio mentio-items="userPeople" mentio-select="selectAtUser(item)" ng-model="commentWord"></form></div></div>',
+          template: '<div class="feed-add-comment"><div class="feed-add-comment-inner"><form class="comment-form"><input type="text" class="form-control" placeholder="Add a comment" mentio mentio-items="usersAt" ng-model="commentWord"></form></div></div>',
           link: function(scope, ele, attrs) {
             var form = ele[0].querySelector('form.comment-form');
-            // var $input = $(ele[0]).find('input');
             form.addEventListener('submit', function() {
-              console.log(scope.commentWord)
               if (scope.commentWord === '') {
                 return;
               } else {
-                if (scope.comment_to.length <= 0) {
-                  scope.comment_to.push(scope.feed.creator._id);
-                } else {
-                  scope.commentWord.indexOf()
-                }
-                FeedService.addComment(scope.feed._id, scope.commentWord, scope.comment_to)
+                FeedService.addComment(scope.feed._id, scope.commentWord)
                   .then(function(data) {
                     if (data.status === 'success') {
                       var new_c = data.new_comment;
-                      new_c.content = $input.val();
-
                       scope.feed.comments.unshift(new_c);
 
                       //remove input

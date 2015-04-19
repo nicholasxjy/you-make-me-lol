@@ -344,7 +344,6 @@ module.exports = {
   },
   addComment: function(req, res, next) {
     var feedId = req.body.feedId;
-    var tousers = req.body.tousers;
     var content = req.body.content;
     var userId = req.session.user;
 
@@ -368,19 +367,39 @@ module.exports = {
         })
       },
       function(feed, cb2) {
-        commentProxy.create(feed._id, userId, tousers, content, function(err, comment) {
-          if (err) return cb2(err);
+        // here handle the comment to users
+        // create html for comment content
+        var regex = /@\w+\s/g;
+        var atUsers = content.match(regex);
+        console.log(atUsers);
+        if (atUsers && atUsers.length > 0) {
+          var userNames = atUsers.map(function(atUser) {
+            var arr = atUser.trim().split('@');
+            return arr[arr.length -1];
+          });
 
-          feed.comments.push(comment._id);
+          console.log(userNames)
+          utils.formatCommentContentByUserNames(userNames, content, function(err, doc) {
+            if (err) return cb2(err);
+            doc.feed = feed;
+            return cb2(null, doc);
+          })
+        }
+      },
+      function(doc, cb3) {
+        commentProxy.create(doc.feed._id, userId, doc.users, doc.content, function(err, comment) {
+          if (err) return cb3(err);
+          doc.feed.comments.push(comment._id);
           var _comment = {
             id: comment._id,
             creator: comment.creator,
             to_users: comment.to_users,
+            content: comment.content,
             createdAt: comment.createdAt
           }
-          feed.save(function(err) {
-            if (err) return cb2(err);
-            return cb2(null, _comment);
+          doc.feed.save(function(err) {
+            if (err) return cb3(err);
+            return cb3(null, _comment);
           })
         })
       }

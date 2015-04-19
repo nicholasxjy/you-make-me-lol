@@ -54,6 +54,15 @@
           .then(function(user) {
             self.current_user = user;
             self.isAuthticated = true;
+            return user;
+          })
+          .then(function(user) {
+            if (user) {
+              UserService.getUserFollowersForAt()
+                .then(function(data) {
+                  self.usersAt = data.users;
+                })
+            }
           })
 
         loadFeeds();

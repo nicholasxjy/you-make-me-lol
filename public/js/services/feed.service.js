@@ -71,15 +71,14 @@
           return deferred.promise;
         }
 
-        function addComment(feedId, words, tousers) {
+        function addComment(feedId, words) {
           var deferred = $q.defer();
           $http({
             method: 'POST',
             url: '/feed/add_comment',
             data: {
               feedId: feedId,
-              content: words,
-              tousers: tousers
+              content: words
             }
           }).success(function(data, status, headers, config) {
             deferred.resolve(data);
