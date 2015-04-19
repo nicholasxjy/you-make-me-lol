@@ -11,17 +11,9 @@
         return {
           restrict: 'AE',
           scope: {
-            current_user: '=currentUser'
+            current_user: '=currentUser',
+            usersAt: '=usersAt'
           },
-          controller: ['$scope', function($scope) {
-            // set scope people for at
-            $scope.people = [
-              {label: 'nicholas'},
-              {label: 'peter'},
-              {label: 'michelle'}
-            ];
-
-          }],
           link: function(scope, ele, attrs) {
             var body = $document.find('body')[0];
             var $body = angular.element(body);
@@ -60,7 +52,6 @@
       function($document, $timeout, $http, $rootScope, $q, $upload, ngCoolNoti, FeedService, ngAudioTag, ngGeo) {
         return {
           restrict: 'AE',
-          scope: false,
           controller: ['$scope', '$element', function($scope, $element) {
             $scope.mediaUploading = false;
             $scope.mediaUploaded = false;
@@ -375,7 +366,9 @@
         return {
           restrict: 'AE',
           scope: {
-            feedId: '=feedId'
+            feedId: '=feedId',
+            usersAt: '=usersAt',
+            current_user: '=currentUser'
           },
           link: function(scope, ele, attrs) {
             var body = $document.find('body');
@@ -406,6 +399,7 @@
 
                       var detail_con = body[0].querySelector('.sf-feed-detail');
                       body.addClass('sf-feed-detail-open');
+                      $('.feed-detail-container').addClass('in');
                     })
                   }
                 }, function(err) {
@@ -424,14 +418,14 @@
       function($document, $timeout, FeedService, ngCoolNoti) {
         return {
           restrict: 'AE',
-          controller: ['$scope', function($scope) {
-
-          }],
           link: function(scope, ele, attrs) {
             var body = $document.find('body');
             scope.closeFeedDetail = function() {
-              ele.remove();
-              body.removeClass('sf-feed-detail-open');
+              $('.feed-detail-container').removeClass('in').addClass('out');
+              $timeout(function() {
+                ele.remove();
+                body.removeClass('sf-feed-detail-open');
+              }, 1000);
             };
           }
         }
@@ -575,4 +569,40 @@
         }
       }
     ])
+    .directive('sfFeedAction', function(FeedService) {
+      return {
+        restrict: 'AE',
+        scope: {
+          feed: '=feed',
+          current_user: '=currentUser'
+        },
+        template: '<div class="feed-actions"><a ng-click="toggleFeedLike(feed)" class="toggle-like-link"><svg ng-show="!feed.isLike" width="24px" height="23px" viewBox="0 0 24 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"><defs></defs><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"><g id="detail" sketch:type="MSArtboardGroup" transform="translate(-617.000000, -373.000000)" fill="#CCCCCC"><path d="M629,395.488889 L627.32,393.777778 C621.08,388.155556 617,384.366667 617,379.722222 C617,375.933333 619.88,373 623.6,373 C625.64,373 627.68,373.977778 629,375.566667 C630.32,373.977778 632.36,373 634.4,373 C638.12,373 641,375.933333 641,379.722222 C641,384.366667 636.92,388.155556 630.68,393.777778 L629,395.488889 L629,395.488889 Z" id="Shape" sketch:type="MSShapeGroup"></path></g></g></svg><svg ng-show="feed.isLike" width="24px" height="23px" viewBox="0 0 24 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"><defs></defs><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"><g id="detail" sketch:type="MSArtboardGroup" transform="translate(-617.000000, -373.000000)" fill="#FF5252"><path d="M629,395.488889 L627.32,393.777778 C621.08,388.155556 617,384.366667 617,379.722222 C617,375.933333 619.88,373 623.6,373 C625.64,373 627.68,373.977778 629,375.566667 C630.32,373.977778 632.36,373 634.4,373 C638.12,373 641,375.933333 641,379.722222 C641,384.366667 636.92,388.155556 630.68,393.777778 L629,395.488889 L629,395.488889 Z" id="Shape" sketch:type="MSShapeGroup"></path></g></g></svg></a><div class="feed-like-tip" ng-if="feed.likes.length > 0"><div class="feed-like-tip-inner" ng-if="feed.likes.length == 1"><a ui-sref="user({name: feed.likes[0].name})">{{feed.likes[0].name}}</a> liked this</div><div class="feed-like-tip-inner" ng-if="feed.likes.length > 1 && feed.likes.length <= 3"><a ng-repeat="liker in feed.likes" ui-sref="user({name: liker.name})">{{liker.name}}<span>, </span></a> liked this</div><div class="feed-like-tip-inner" ng-if="feed.likes.length > 3"><a ng-repeat="liker in feed.likes" ui-sref="user({name: liker.name})">{{liker.name}}<span>, </span></a> and 32 other liked this <a href="" ng-show="feed.likes.length > 3">see more</a></div></div></div>',
+        link: function(scope, ele, attrs) {
+          scope.toggleFeedLike = function(feed) {
+            if (feed) {
+              FeedService.toggleLike(feed)
+                .then(function(data) {
+                  if (data.status === 'success') {
+                    //dom
+                    if (feed.isLike) {
+                      feed.likes = feed.likes.filter(function(liker) {
+                        return liker.id !== scope.current_user.id;
+                      })
+                    } else {
+                      feed.likes.unshift({
+                        id: scope.current_user.id,
+                        name: scope.current_user.name,
+                        avatar: scope.current_user.avatar
+                      });
+                    }
+                    feed.isLike = !feed.isLike;
+                  }
+                }, function(err) {
+                  console.log(err);
+                })
+            }
+          }
+        }
+      }
+    })
 })();

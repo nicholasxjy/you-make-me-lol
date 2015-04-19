@@ -493,8 +493,7 @@ button[disabled=disabled], button:disabled {
   bottom: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  z-index: 1500; }
+  overflow: auto; }
 
 .sf-create-wrap {
   display: table;
@@ -782,7 +781,6 @@ body.create-open {
   right: 0;
   bottom: 0;
   overflow: hidden;
-  z-index: 4000;
   padding: 40px 80px; }
 
 .feed-detail-container {
@@ -796,6 +794,28 @@ body.create-open {
   display: table;
   width: 100%;
   height: 100%; }
+
+.feed-detail-container.in {
+  -webkit-animation: fadeIn;
+  -moz-animation: fadeIn;
+  -ms-animation: fadeIn;
+  -o-animation: fadeIn;
+  animation: fadeIn;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  -ms-animation-duration: 1s;
+  -o-animation-duration: 1s; }
+
+.feed-detail-container.out {
+  -webkit-animation: bounceOut;
+  -moz-animation: bounceOut;
+  -ms-animation: bounceOut;
+  -o-animation: bounceOut;
+  animation: bounceOut;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  -ms-animation-duration: 1s;
+  -o-animation-duration: 1s; }
 
 .feed-detail-inner {
   background-color: #ffffff;
@@ -839,8 +859,9 @@ body.create-open {
       cursor: pointer; }
   .feed-detail-intro .feed-detail-text-content {
     font-size: 13px;
-    line-height: 16px;
-    padding: 0 10px; }
+    line-height: 18px;
+    padding: 0 10px;
+    margin-bottom: 10px; }
   .feed-detail-intro .feed-detail-likes {
     margin-top: 15px;
     margin-bottom: 20px;
@@ -941,6 +962,57 @@ mentio-menu .dropdown-menu {
   position: relative;
   top: 0;
   left: 0; }
+
+@-webkit-keyframes fadeIn {
+  0% {
+    -ms-filter: "progid:DXImageTransform@mixin Microsoft@mixin Alpha(Opacity=${iefactor})";
+    filter: "alpha(opacity=(${iefactor}))";
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    opacity: 0; }
+  100% {
+    -ms-filter: "progid:DXImageTransform@mixin Microsoft@mixin Alpha(Opacity=${iefactor})";
+    filter: "alpha(opacity=(${iefactor}))";
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    opacity: 1; } }
+@keyframes fadeIn {
+  0% {
+    -ms-filter: "progid:DXImageTransform@mixin Microsoft@mixin Alpha(Opacity=${iefactor})";
+    filter: "alpha(opacity=(${iefactor}))";
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    opacity: 0; }
+  100% {
+    -ms-filter: "progid:DXImageTransform@mixin Microsoft@mixin Alpha(Opacity=${iefactor})";
+    filter: "alpha(opacity=(${iefactor}))";
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    opacity: 1; } }
+@-webkit-keyframes bounceOut {
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9); }
+  50%, 55% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1); }
+  100% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3); } }
+@keyframes bounceOut {
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9); }
+  50%, 55% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1); }
+  100% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3); } }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
@@ -1080,7 +1152,7 @@ mentio-menu .dropdown-menu {
 .feed-actions {
   margin-bottom: 10px;
   position: relative;
-  height: 30px;
+  height: 25px;
   padding: 0 10px; }
   .feed-actions .toggle-like-link {
     display: table-cell;

@@ -304,6 +304,10 @@ module.exports = {
       if (!feed) {
         res.sendStatus(404);
       }
+      if (req.session && req.session.user) {
+        feed = utils.checkFeedLike(feed, req.session.user);
+      }
+
       feed.likes = feed.likes.slice(-10);
       res.json(feed);
     })

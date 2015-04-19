@@ -13,6 +13,15 @@ exports.checkFeedsLike = function(feeds, userId) {
   return _feeds;
 };
 
+exports.checkFeedLike = function(feed, userId) {
+  feed = feed.toObject();
+  var isLike = feed.likes.some(function(liker) {
+    return userId.toString() === liker._id.toString();
+  });
+  feed.isLike = isLike;
+  return feed;
+}
+
 exports.checkFollowRelation = function(feeds, userId, cb) {
   UserProxy.getUserById(userId, 'followers', function(err, user) {
     if (err) return cb(err);

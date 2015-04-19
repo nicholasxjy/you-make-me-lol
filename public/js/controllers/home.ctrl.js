@@ -61,6 +61,7 @@
               UserService.getUserFollowersForAt()
                 .then(function(data) {
                   self.usersAt = data.users;
+                  console.log(self.usersAt)
                 })
             }
           })

@@ -39,7 +39,7 @@
       <div class="feed-images" ng-if="feed.category =='image'">
         <div class="feed-image-container" ng-repeat="image in feed.attach_files">
           <img ng-src="{{image.url}}" alt="" class="img-responsive" width="100%"
-          sf-feed-detail-show feed-id="feed._id" current-image-index="{{$index}}">
+          sf-feed-detail-show current-user="ctrl.current_user" users-at="ctrl.usersAt" feed-id="feed._id" current-image-index="{{$index}}">
         </div>
       </div>
 
@@ -55,8 +55,8 @@
     <div class="feed-tags">
       <a class="tag-item" ng-repeat="tag in feed.tags">{{tag.text}}</a>
     </div>
-
-    <div class="feed-actions">
+    <div sf-feed-action feed="feed" current-user="ctrl.current_user"></div>
+<!--     <div class="feed-actions" sf-feed-action feed="feed">
       <a ng-click="ctrl.toggleFeedLike(feed)" class="toggle-like-link">
         <svg ng-show="!feed.isLike" width="24px" height="23px" viewBox="0 0 24 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
           <defs></defs>
@@ -88,7 +88,7 @@
           and 32 other liked this <a href="" ng-show="feed.likes.length > 3">see more</a>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="feed-comments">
       <div class="comments-more" ng-if="feed.comments.length>3">
