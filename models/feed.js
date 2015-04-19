@@ -18,6 +18,10 @@ var Feed = new Schema({
     type: ObjectId,
     ref: 'File'
   }],
+  location: {
+    type: String,
+    default: 'Unknow'
+  },
   creator: {
     type: ObjectId,
     ref: 'User'

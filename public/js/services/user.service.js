@@ -122,6 +122,51 @@
           return deferred.promise;
         }
 
+        function getUserFollowersForAt() {
+          var deferred = $q.defer();
+          $http({
+            method: 'GET',
+            url: '/user/followers_at',
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
+        function follow(userId) {
+          var deferred = $q.defer();
+          $http({
+            method: 'POST',
+            url: '/user/follow',
+            data: {
+              followId: userId
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          })
+          return deferred.promise;
+        }
+
+        function unfollow(userId) {
+          var deferred = $q.defer();
+          $http({
+            method: 'POST',
+            url: '/user/unfollow',
+            data: {
+              unfollowId: userId
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          })
+          return deferred.promise;
+        }
+
         return {
           signUp: signUp,
           currentUser: currentUser,
@@ -129,7 +174,10 @@
           logout: logout,
           getUserInfo: getUserInfo,
           updateInfo: updateInfo,
-          getUserInfoByName: getUserInfoByName
+          getUserInfoByName: getUserInfoByName,
+          getUserFollowersForAt: getUserFollowersForAt,
+          follow: follow,
+          unfollow: unfollow
         }
       }
     ])

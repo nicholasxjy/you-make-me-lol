@@ -193,35 +193,48 @@
         },
         link: function(scope, ele, attrs) {
           var body = $document.find('body');
+
+          var pop_timespan = null;
+
           $(ele[0]).on('mouseover', function(e) {
             var $former_pop = $('.user-card-popover');
             if ($former_pop) {
               $former_pop.remove();
             }
-            var tpl = $http.get('template/partials/user-card-popover.html');
-            tpl.then(function(res) {
-              var tplElement = $compile(res.data)(scope);
-              $timeout(function() {
-                body.append(angular.element(tplElement));
+            if (!pop_timespan) {
+              pop_timespan = $timeout(function() {
+                pop_timespan = null;
+                var tpl = $http.get('template/partials/user-card-popover.html');
+                tpl.then(function(res) {
+                  var tplElement = $compile(res.data)(scope);
+                  $timeout(function() {
+                    body.append(angular.element(tplElement));
 
-                //set position popover
-                var target = e.target;
-                var offset = $(target).offset();
+                    //set position popover
+                    var target = e.target;
+                    var offset = $(target).offset();
 
-                var $popover = $('.user-card-popover');
-                $popover.css('top', offset.top+10+'px');
-                $popover.css('left', offset.left+48+'px');
-              })
-            })
+                    var $popover = $('.user-card-popover');
+                    $popover.css('top', offset.top+10+'px');
+                    $popover.css('left', offset.left+48+'px');
+                  })
+                })
+              }, 500)
+            }
           })
 
-          $(ele[0]).on('mouseout', function() {
-            var $popover = $('.user-card-popover');
-            if ($popover) {
-              $popover.addClass('out');
-              $timeout(function() {
-                $popover.remove();
-              }, 500);
+          $(ele[0]).on('mouseleave', function() {
+            if (pop_timespan) {
+              $timeout.cancel(pop_timespan);
+              pop_timespan = null;
+            } else {
+              var $popover = $('.user-card-popover');
+              if ($popover) {
+                $popover.addClass('out');
+                $timeout(function() {
+                  $popover.remove();
+                }, 500);
+              }
             }
           })
         }

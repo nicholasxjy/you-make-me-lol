@@ -11,4 +11,5 @@ router.post('/toggle_like', middleware.checkUser, feed.toggleLike);
 router.post('/add_comment', middleware.checkUser, feed.addComment);
 router.get('/getfeeds', feed.getFeeds);
 router.get('/detail', feed.getDetail);
+
 module.exports = router;

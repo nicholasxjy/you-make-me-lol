@@ -31,5 +31,14 @@ module.exports = {
       user.post_count = user.post_count + 1;
       user.save(cb);
     })
+  },
+  getFollowesForAt: function(userId, cb) {
+    User.findById(userId, 'followers' ,function(err, user) {
+      if (err) return cb(err);
+      var options = [
+        {path: 'followers', model: 'User', options: {limit: 20}, select: '_id name'}
+      ];
+      User.populate(user, options, cb);
+    })
   }
 }

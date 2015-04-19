@@ -20,7 +20,6 @@
         var loadFeeds = function(after) {
           FeedService.getFeeds(after)
             .then(function(data) {
-
               angular.forEach(data.feeds, function(feed) {
                 if (feed.category === 'video') {
                   var attach_file = feed.attach_files[0];
@@ -88,7 +87,29 @@
                 console.log(err);
               })
           }
-        }
+        };
+
+        self.follow = function(feed) {
+          UserService.follow(feed.creator._id)
+            .then(function(data) {
+              if (data.status === 'success') {
+                self.current_user.followers.push(feed.creator._id);
+                feed.creator.hasFollowed = true;
+              }
+            })
+        };
+
+        self.unfollow = function(feed) {
+          UserService.unfollow(feed.creator._id)
+            .then(function(data) {
+              if (data.status === 'success') {
+                feed.creator.followees = feed.creator.followees.filter(function(item) {
+                  return item._id != self.current_user._id;
+                });
+                feed.creator.hasFollowed = false;
+              }
+            })
+        };
 
         self.logout = function() {
           UserService.logout()

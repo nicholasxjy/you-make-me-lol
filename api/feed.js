@@ -8,6 +8,7 @@ var commentProxy = require('../proxy/comment');
 var utils = require('../services/utils');
 var id3 = require('id3js');
 
+
 module.exports = {
   uploadFile: function(req, res, next) {
     var userId = req.session.user;
@@ -23,7 +24,7 @@ module.exports = {
     fileObj.artist = artist;
     fileObj.audio_data = audio_data;
     fileObj.title = title;
-    if (comment !== '') {
+    if (category === 'audio' && comment !== '') {
       var _comment = JSON.parse(comment);
       fileObj.comment = _comment;
     }
@@ -139,7 +140,7 @@ module.exports = {
     var files = req.body.share_files;
     var text = req.body.text;
     var tags = req.body.tags;
-
+    var location = req.body.location;
 
     if (category === 'image') {
       async.parallel({
@@ -185,6 +186,8 @@ module.exports = {
           return tag._id;
         });
         data.category = category;
+
+        data.location = location || 'Unknow';
 
         feedProxy.create(userId, data, function(err, newFeed) {
           if (err) return next(err);
@@ -275,11 +278,20 @@ module.exports = {
         var userId = req.session.user;
         // check user like feed or not and slice likes 5 : slice(-5) for display
         feeds = utils.checkFeedsLike(feeds, userId);
+        // check user and feed follow relation
+        feeds = utils.checkFollowRelation(feeds, userId, function(err, f_feeds) {
+          if (err) return next(err);
+            res.json({
+              status: 'success',
+              feeds: f_feeds
+            })
+        })
+      } else {
+        res.json({
+          status: 'success',
+          feeds: feeds
+        })
       }
-      res.json({
-        status: 'success',
-        feeds: feeds
-      })
     })
   },
   getDetail: function(req, res, next) {
@@ -332,7 +344,7 @@ module.exports = {
   },
   addComment: function(req, res, next) {
     var feedId = req.body.feedId;
-    var touser = req.body.touser;
+    var tousers = req.body.tousers;
     var content = req.body.content;
     var userId = req.session.user;
 
@@ -356,17 +368,14 @@ module.exports = {
         })
       },
       function(feed, cb2) {
-        if (!touser) {
-          touser = userId;
-        }
-        commentProxy.create(feed._id, userId, touser, content, function(err, comment) {
+        commentProxy.create(feed._id, userId, tousers, content, function(err, comment) {
           if (err) return cb2(err);
 
           feed.comments.push(comment._id);
           var _comment = {
             id: comment._id,
             creator: comment.creator,
-            to_user: comment.to_user,
+            to_users: comment.to_users,
             createdAt: comment.createdAt
           }
           feed.save(function(err) {

@@ -11,4 +11,9 @@ router.get('/current', user.current);
 router.get('/logout', user.logout);
 router.get('/info', middleware.checkUser, user.getInfo);
 router.get('/info_name', user.getInfoByName);
+
+router.get('/followers_at', middleware.checkUser, user.getFollowesForAt);
+
+router.post('/follow', middleware.checkUser, user.follow);
+router.post('/unfollow', middleware.checkUser, user.unfollow);
 module.exports = router;

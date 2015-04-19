@@ -9,6 +9,7 @@ module.exports = {
     feed.attach_files = data.files;
     feed.creator = userId;
     feed.tags = data.tags;
+    feed.location = data.location;
     feed.comments = [];
     feed.likes = [];
     feed.save(cb);

@@ -74,13 +74,19 @@
                 <div ng-include="'template/spinner.html'" ng-show="!mediaUploaded"></div>
               </div>
             </div>
+
+            <div class="add-tags">
+              <tags-input ng-model="tags">
+                <!-- <auto-complete source="loadTags($query)"></auto-complete> -->
+              </tags-input>
+            </div>
+
             <div class="create-submit">
               <button class="btn btn-default cancel-create" ng-click="cancel(false)">Cancel</button>
               <button class="btn btn-primary post-create" ng-disabled="!canPosted" ng-click="postShare()">Share</button>
               <a class="pull-right" ng-click="getLocation()"><i class="ti-location-pin"></i>{{location || 'Add location'}}</a>
             </div>
           </div>
-
         </div>
       </div>
     </div>

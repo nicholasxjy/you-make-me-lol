@@ -239,22 +239,15 @@
 
 
             $scope.getLocation = function() {
-              ngGeo.getLocationCoords()
-                .then(function(position) {
-                  console.log(position);
-                  alert(position)
-                  return position.coords;
-                }, function(data) {
-                  console.log(data);
-                })
-                .then(function(coords) {
-                  ngGeo.coordsToAddress(coords)
-                    .then(function(result) {
-                      console.log(result);
-                      alert(result)
-                    }, function(data) {
-                      console.log(data);
-                    })
+              ngGeo.getLocationByIP()
+                .then(function(data) {
+                  if (data.city !== '') {
+                    $scope.location = data.city;
+                  } else {
+                    $scope.location = 'Location Not Found';
+                  }
+                }, function(err) {
+                  console.log(err);
                 })
             }
 
@@ -312,7 +305,8 @@
                   text: scope.feedWords,
                   category: scope.category,
                   share_files: scope.share_files,
-                  tags: scope.tags
+                  tags: scope.tags,
+                  location: scope.location
                 };
                 FeedService.create(feed)
                   .then(function(data) {
@@ -360,6 +354,9 @@
                 scope.category = null;
                 scope.share_files = null;
                 scope.feedWords = '';
+
+                scope.tags = null;
+
                 ele.remove();
                 $document.find('body').removeClass('create-open');
               }, 950);
@@ -444,7 +441,8 @@
       '$document',
       '$timeout',
       'FeedService',
-      function($document, $timeout, FeedService) {
+      'UserService',
+      function($document, $timeout, FeedService, UserService) {
         return {
           restrict: 'AE',
           scope: {
@@ -452,25 +450,33 @@
           },
           transclude: true,
           controller: ['$scope', function($scope) {
-            $scope.people = [
-              {label: 'nicholas'},
-              {label: 'peter'},
-              {label: 'michelle'}
-            ];
-          }],
-          template: '<div class="feed-add-comment"><div class="feed-add-comment-inner"><form class="comment-form"><input type="text" class="form-control" placeholder="Add a comment" mentio mentio-items="people" ng-model="commentWord"></form></div></div>',
-          link: function(scope, ele, attrs) {
+            $scope.comment_to = [];
+            UserService.getUserFollowersForAt()
+              .then(function(data) {
+                $scope.userPeople = data.users;
+              })
 
+            $scope.selectAtUser = function(item) {
+              // change @users
+              $scope.comment_to.push(item._id);
+              return '@' + item.label;
+            }
+          }],
+          template: '<div class="feed-add-comment"><div class="feed-add-comment-inner"><form class="comment-form"><input type="text" class="form-control" placeholder="Add a comment" mentio mentio-items="userPeople" mentio-select="selectAtUser(item)" ng-model="commentWord"></form></div></div>',
+          link: function(scope, ele, attrs) {
             var form = ele[0].querySelector('form.comment-form');
-            var $input = $(ele[0]).find('input');
+            // var $input = $(ele[0]).find('input');
             form.addEventListener('submit', function() {
-              if ($input.val() === '') {
+              console.log(scope.commentWord)
+              if (scope.commentWord === '') {
                 return;
               } else {
-                if (!scope.comment_to) {
-                  scope.comment_to = scope.feed.creator._id;
+                if (scope.comment_to.length <= 0) {
+                  scope.comment_to.push(scope.feed.creator._id);
+                } else {
+                  scope.commentWord.indexOf()
                 }
-                FeedService.addComment(scope.feed._id, $input.val(), scope.comment_to)
+                FeedService.addComment(scope.feed._id, scope.commentWord, scope.comment_to)
                   .then(function(data) {
                     if (data.status === 'success') {
                       var new_c = data.new_comment;
@@ -479,7 +485,7 @@
                       scope.feed.comments.unshift(new_c);
 
                       //remove input
-                      $input.val('');
+                      scope.commentWord = '';
                     }
                   }, function(err) {
                     console.log(err);

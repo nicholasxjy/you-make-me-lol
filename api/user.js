@@ -284,5 +284,96 @@ module.exports = {
         user: result
       })
     })
+  },
+  getFollowesForAt: function(req, res, next) {
+    var userId = req.session.user;
+
+    UserProxy.getFollowesForAt(userId, function(err, user) {
+      if (err) return next(err);
+      var users = [];
+      user.followers.forEach(function(follower) {
+        var _user = {};
+        _user.label = follower.name;
+        _user._id = follower._id;
+
+        users.push(_user);
+      })
+      return res.json({
+        status: 'success',
+        users: users
+      })
+    })
+  },
+  follow: function(req, res, next) {
+    var userId = req.session.user;
+
+    var followId = req.body.followId;
+
+    if (!followId) {
+      return res.sendStatus(403);
+    }
+
+    async.parallel({
+      follower: function(cb1) {
+        UserProxy.getUserById(userId, 'followers', function(err, user) {
+          if (err) return cb1(err);
+          user.followers.push(followId);
+          user.save(function(err, user) {
+            if (err) return cb1(err);
+            return cb1(null, user.followers);
+          })
+        })
+      },
+      followee: function(cb2) {
+        UserProxy.getUserById(followId, 'followees', function(err, user) {
+          if (err) return cb2(err);
+          user.followees.push(userId);
+          user.save(function(err, user) {
+            if (err) return cb2(err);
+            return cb2(null);
+          })
+        })
+      }
+    }, function(err, result) {
+      if (err) return next(err);
+      return res.json({
+        status: 'success'
+      })
+    })
+  },
+  unfollow: function(req, res, next) {
+    var userId = req.session.user;
+    var unfollowId = req.body.unfollowId;
+    if (!unfollowId) {
+      return res.sendStatus(403);
+    }
+
+    async.parallel({
+      unfollower: function(cb1) {
+        UserProxy.getUserById(userId, 'followers', function(err, user) {
+          if (err) return cb1(err);
+          user.followers.pull(unfollowId);
+          user.save(function(err, newUser) {
+            if (err) return cb1(err);
+            return cb1(null);
+          })
+        })
+      },
+      unfollowee: function(cb2) {
+        UserProxy.getUserById(unfollowId, 'followees', function(err, user) {
+          if (err) return cb2(err);
+          user.followees.pull(userId);
+          user.save(function(err) {
+            if (err) return cb2(err);
+            return cb2(null);
+          })
+        })
+      }
+    }, function(err, result) {
+      if (err) return next(err);
+      return res.json({
+        status: 'success'
+      })
+    })
   }
 }

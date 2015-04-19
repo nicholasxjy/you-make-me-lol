@@ -7,10 +7,10 @@ var Comment = new Schema({
     type: ObjectId,
     ref: 'Feed'
   },
-  to_user: {
+  to_users: [{
     type: ObjectId,
     ref: 'User'
-  },
+  }],
   creator: {
     type: ObjectId,
     ref: 'User'

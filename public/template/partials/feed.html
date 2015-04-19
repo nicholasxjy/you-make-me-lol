@@ -6,7 +6,18 @@
       </div>
       <div class="user-other">
         <div class="user-name">
-          <a ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
+          <a class="user-name-link" ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
+          <div class="dropdown feed-right-dropdown pull-right">
+            <a class="dropdown-toggle ti-angle-down" data-toggle="dropdown" role="button" aria-expanded="false"></a>
+            <ul class="dropdown-menu" role="menu">
+              <li class="dropdown-arrow feed-drop-arrow"></li>
+              <li><a ng-if="ctrl.current_user._id != feed.creator._id && feed.creator.hasFollowed" ng-click="ctrl.unfollow(feed)">unfollow {{feed.creator.name}}</a></li>
+              <li><a ng-if="ctrl.current_user._id != feed.creator._id && !feed.creator.hasFollowed" ng-click="ctrl.follow(feed)">follow {{feed.creator.name}}</a></li>
+              <li><a ng-if="ctrl.current_user._id == feed.creator._id">delete post</a></li>
+              <li><a >share feed</a></li>
+              <li><a ui-sref="feed({id: feed._id})">view detail</a></li>
+            </ul>
+          </div>
         </div>
         <div class="feed-time-location">
           <span class="time" ng-cool-tooltip="{{feed.createdAt | date: 'yyyy-MM-dd HH:mm'}}">
@@ -14,7 +25,7 @@
           </span>
           <span class="location">
             <i class="ti-location-pin"></i>
-            New York
+            {{feed.location}}
           </span>
         </div>
       </div>
