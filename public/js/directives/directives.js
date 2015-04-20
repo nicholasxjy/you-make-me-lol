@@ -605,4 +605,38 @@
         }
       }
     })
+    .directive('sfWeatherCard', [
+      '$timeout',
+      'ngGeo',
+      function($timeout, ngGeo) {
+        return {
+          restrict: 'AE',
+          scope: {
+            current_user: '=currentUser'
+          },
+          template: '<div class="sf-map-card"><div id="map-container"><div class="weather-city"><i class="ti-location-pin"></i><span>{{weather.city}}</span></div></div><div class="sf-weathers"><div ng-bind-html="weather.icon" class="weather-icon"></div><div class="weather-info"><div class="weather-weather"><span>天气: </span><span>{{weather.weather}}</span></div><div class="weather-temperature"><span>温度: </span><span>{{weather.temperature}}&#176;C</span></div><div class="weather-time"><span>发布时间: </span><span>{{weather.reportTime}}</span></div></div></div></div>',
+          controller: ['$scope', function($scope) {
+
+          }],
+          link: function(scope, ele, attrs) {
+            scope.$watch('current_user', function(val) {
+              if (val) {
+                var domId = 'map-container';
+                var city = scope.current_user.location === 'others' ? '上海市': scope.current_user.location;
+                ngGeo.initMapByCity(city, domId);
+
+                ngGeo.getWeatherByCity(city)
+                  .then(function(info) {
+                    if (info) {
+                      scope.weather = info;
+                    }
+                  }, function(err) {
+                    console.log(err);
+                  })
+              }
+            })
+          }
+        }
+      }
+    ])
 })();
