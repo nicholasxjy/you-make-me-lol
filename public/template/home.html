@@ -6,88 +6,124 @@
         <div class="container">
           <div class="row">
             <div class="col-md-3">
-              <div ng-include="'template/partials/side-bar-left.html'"></div>
+              <div class="sf-card user-card">
+                <div class="card-top">
+                  <div class="user-card-banner" style="background-image: url('{{ctrl.current_user.bg_image}}')">
+                  </div>
+                  <div class="user-avatar">
+                    <img src="{{ctrl.current_user.avatar}}" alt="Avatar" class="img-responsive img-circle">
+                  </div>
+                  <div class="user-link">
+                    <a ui-sref="user({name: ctrl.current_user.name})">{{ctrl.current_user.name}}</a>
+                  </div>
+                  <div class="user-other">
+                    <i class="ti-user"></i><span>{{ctrl.current_user.gender}}</span>
+                    <i class="ti-location-pin"></i><span>{{ctrl.current_user.location}}</span>
+                  </div>
+                  <div class="user-profile">
+                    {{ctrl.current_user.profile}}
+                  </div>
+                  <ul class="list-inline user-info-list">
+                    <li class="info-item">
+                      <a href="">
+                        <div class="info-item-title">Posts</div>
+                        <div class="info-item-count">{{ctrl.current_user.post_count}}</div>
+                      </a>
+                    </li>
+                    <li class="info-item">
+                      <a href="">
+                        <div class="info-item-title">Followers</div>
+                        <div class="info-item-count">{{ctrl.current_user.followers.length}}</div>
+                      </a>
+                    </li>
+                    <li class="info-item">
+                      <a href="">
+                        <div class="info-item-title">Followees</div>
+                        <div class="info-item-count">{{ctrl.current_user.followees.length}}</div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div class="col-md-6">
-              <div ng-repeat="feed in ctrl.feeds">
-                <div class="sf-feed">
-                  <div class="sf-feed-inner">
-                    <div class="feed-top">
-                      <div class="user-avatar">
-                        <img ng-src="{{feed.creator.avatar}}" class="sf-img-circle feed-avatar" sf-user-card-popover user="feed.creator" current-user="ctrl.current_user">
+              <div class="sf-feed slide-down" ng-repeat="feed in ctrl.feeds">
+                <div class="sf-feed-inner">
+                  <div class="feed-top">
+                    <div class="user-avatar">
+                      <img ng-src="{{feed.creator.avatar}}" class="sf-img-circle feed-avatar" sf-user-card-popover user="feed.creator" current-user="ctrl.current_user">
+                    </div>
+                    <div class="user-other">
+                      <div class="user-name">
+                        <a class="user-name-link" ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
+                        <div class="dropdown feed-right-dropdown pull-right">
+                          <a class="dropdown-toggle ti-angle-down" data-toggle="dropdown" role="button" aria-expanded="false"></a>
+                          <ul class="dropdown-menu" role="menu">
+                            <li class="dropdown-arrow feed-drop-arrow"></li>
+                            <li><a ng-if="ctrl.current_user._id != feed.creator._id && feed.creator.hasFollowed" ng-click="ctrl.unfollow(feed)">unfollow {{feed.creator.name}}</a></li>
+                            <li><a ng-if="ctrl.current_user._id != feed.creator._id && !feed.creator.hasFollowed" ng-click="ctrl.follow(feed)">follow {{feed.creator.name}}</a></li>
+                            <li><a ng-if="ctrl.current_user._id == feed.creator._id">delete post</a></li>
+                            <li><a >share feed</a></li>
+                            <li><a ui-sref="feed({id: feed._id})">view detail</a></li>
+                          </ul>
+                        </div>
                       </div>
-                      <div class="user-other">
-                        <div class="user-name">
-                          <a class="user-name-link" ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
-                          <div class="dropdown feed-right-dropdown pull-right">
-                            <a class="dropdown-toggle ti-angle-down" data-toggle="dropdown" role="button" aria-expanded="false"></a>
-                            <ul class="dropdown-menu" role="menu">
-                              <li class="dropdown-arrow feed-drop-arrow"></li>
-                              <li><a ng-if="ctrl.current_user._id != feed.creator._id && feed.creator.hasFollowed" ng-click="ctrl.unfollow(feed)">unfollow {{feed.creator.name}}</a></li>
-                              <li><a ng-if="ctrl.current_user._id != feed.creator._id && !feed.creator.hasFollowed" ng-click="ctrl.follow(feed)">follow {{feed.creator.name}}</a></li>
-                              <li><a ng-if="ctrl.current_user._id == feed.creator._id">delete post</a></li>
-                              <li><a >share feed</a></li>
-                              <li><a ui-sref="feed({id: feed._id})">view detail</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div class="feed-time-location">
-                          <span class="time" ng-cool-tooltip="{{feed.createdAt | date: 'yyyy-MM-dd HH:mm'}}">
-                            Shared on - {{feed.createdAt | sinceTime}}
-                          </span>
-                          <span class="location">
-                            <i class="ti-location-pin"></i>
-                            {{feed.location}}
-                          </span>
-                        </div>
+                      <div class="feed-time-location">
+                        <span class="time" ng-cool-tooltip="{{feed.createdAt | date: 'yyyy-MM-dd HH:mm'}}">
+                          Shared on - {{feed.createdAt | sinceTime}}
+                        </span>
+                        <span class="location">
+                          <i class="ti-location-pin"></i>
+                          {{feed.location}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="feed-content">
+                    <div class="feed-text-words" ng-if="feed.content">
+                      <div ng-bind-html="feed.content"></div>
+                    </div>
+
+                    <div class="feed-images" ng-if="feed.category =='image'">
+                      <div class="feed-image-container" ng-repeat="image in feed.attach_files">
+                        <img ng-src="{{image.url}}" alt="" class="img-responsive" width="100%"
+                        sf-feed-detail-show current-user="ctrl.current_user" users-at="ctrl.usersAt" feed-id="feed._id" current-image-index="{{$index}}">
                       </div>
                     </div>
 
-                    <div class="feed-content">
-                      <div class="feed-text-words" ng-if="feed.content">
-                        <div ng-bind-html="feed.content"></div>
-                      </div>
-
-                      <div class="feed-images" ng-if="feed.category =='image'">
-                        <div class="feed-image-container" ng-repeat="image in feed.attach_files">
-                          <img ng-src="{{image.url}}" alt="" class="img-responsive" width="100%"
-                          sf-feed-detail-show current-user="ctrl.current_user" users-at="ctrl.usersAt" feed-id="feed._id" current-image-index="{{$index}}">
-                        </div>
-                      </div>
-
-                      <div class="feed-video-container" ng-if="feed.category == 'video'">
-                        <ng-cool-video source="feed.source"></ng-cool-video>
-                      </div>
-
-                      <div class="feed-audio-container" ng-if="feed.category == 'audio'">
-                        <ng-cool-audio source="feed.source"></ng-cool-audio>
-                      </div>
+                    <div class="feed-video-container" ng-if="feed.category == 'video'">
+                      <ng-cool-video source="feed.source"></ng-cool-video>
                     </div>
 
-                    <div class="feed-tags" ng-if="feed.tags && feed.tags.length> 0">
-                      <a class="tag-item" ng-repeat="tag in feed.tags">{{tag.text}}</a>
+                    <div class="feed-audio-container" ng-if="feed.category == 'audio'">
+                      <ng-cool-audio source="feed.source"></ng-cool-audio>
                     </div>
-                    <div sf-feed-action feed="feed" current-user="ctrl.current_user"></div>
-                    <div class="feed-comments">
-                      <div class="comments-more" ng-if="feed.comments.length>3">
-                        <a href="">More Comments</a>
-                      </div>
-                      <div class="feed-comment-item" ng-repeat="comment in feed.comments">
-                        <div class="comment-user-avatar">
-                          <a ui-sref="user({name: comment.creator.name})">
-                            <img ng-src="{{comment.creator.avatar}}" alt="" class="sf-img-rounded">
-                          </a>
-                        </div>
-                        <div class="comment-content">
-                          <div class="top">
-                            <a class="comment-user-name" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a><span class="comment-time">{{comment.createdAt | sinceTime}}</span>
-                          </div>
-                          <div class="comment-words" ng-bind-html="comment.content">
-                          </div>
-                        </div>
-                      </div>
-                    <div class="feed-add-comment-wrap" sf-feed-add-comment feed="feed" users-at="ctrl.usersAt"></div>
+                  </div>
+
+                  <div class="feed-tags" ng-if="feed.tags && feed.tags.length> 0">
+                    <a class="tag-item" ng-repeat="tag in feed.tags">{{tag.text}}</a>
+                  </div>
+                  <div sf-feed-action feed="feed" current-user="ctrl.current_user"></div>
+                  <div class="feed-comments">
+                    <div class="comments-more" ng-if="feed.comments.length>3">
+                      <a href="">More Comments</a>
                     </div>
+                    <div class="feed-comment-item" ng-repeat="comment in feed.comments">
+                      <div class="comment-user-avatar">
+                        <a ui-sref="user({name: comment.creator.name})">
+                          <img ng-src="{{comment.creator.avatar}}" alt="" class="sf-img-rounded">
+                        </a>
+                      </div>
+                      <div class="comment-content">
+                        <div class="top">
+                          <a class="comment-user-name" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a><span class="comment-time">{{comment.createdAt | sinceTime}}</span>
+                        </div>
+                        <div class="comment-words" ng-bind-html="comment.content">
+                        </div>
+                      </div>
+                    </div>
+                  <div class="feed-add-comment-wrap" sf-feed-add-comment feed="feed" users-at="ctrl.usersAt"></div>
                   </div>
                 </div>
               </div>

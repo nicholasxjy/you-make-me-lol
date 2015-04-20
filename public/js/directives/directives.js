@@ -108,13 +108,18 @@
                         base64String += String.fromCharCode(image.data[i]);
                       }
                     }
-                    var fields = {
-                      category: type,
-                      title: tagdata.title,
-                      comment: tagdata.comment.text.replace('music:', ''),
-                      artist: tagdata.artist,
-                      audio_data: window.btoa(base64String)
-                    };
+                    var fields = {};
+                    fields.category = type;
+                    if (tagdata.title) {
+                      fields.title = tagdata.title;
+                    }
+                    if (tagdata.comment && tagdata.comment.text) {
+                      fields.comment = tagdata.comment.text.replace('music:', '');
+                    }
+                    if (tagdata.artist) {
+                      fields.artist = tagdata.artist;
+                    }
+                    fields.audio_data = window.btoa(base64String);
                     angular.forEach(files, function(file) {
                       if (file) {
                         var fun = $upload.upload({

@@ -43,8 +43,11 @@ exports.formatCommentContentByUserNames = function(names, content, cb) {
       if (user) {
         var tpl = '<a href="#/user/'+ user.name +'">@'+ user.name +'</a>';
         content = content.replace('@'+name, tpl);
-      };
-      callback(null, user);
+        callback(null, user);
+      } else {
+        callback(null);
+      }
+
     })
   }, function(err, results) {
     if (err) return cb(err);

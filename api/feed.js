@@ -24,7 +24,7 @@ module.exports = {
     fileObj.artist = artist;
     fileObj.audio_data = audio_data;
     fileObj.title = title;
-    if (category === 'audio' && comment !== '') {
+    if (category === 'audio' && comment && comment !== '') {
       var _comment = JSON.parse(comment);
       fileObj.comment = _comment;
     }
@@ -53,10 +53,14 @@ module.exports = {
             mimeType: file.mimetype,
             category: category,
             singer_name: fileObj.artist || '',
-            title: title || comment['musicName'] || '',
-            cover_url: file_info.cover.url,
-            album: comment['album'] || ''
           };
+          if (comment) {
+            file_obj.title = title || fileObj.comment['musicName'];
+            file_obj.album = fileObj['album'] || '';
+          }
+          if (file_info.cover && file_info.cover.url) {
+            file_obj.cover_url = file_info.cover.url || '';
+          }
           _file_obj = file_obj;
         } else {
           var file_obj = {

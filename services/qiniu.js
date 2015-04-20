@@ -36,7 +36,7 @@ module.exports = {
           });
         },
         cover: function(cb2) {
-          if (fileObj.audio_data) {
+          if (fileObj.audio_data && fileObj.audio_data !== '') {
             var bufData = new Buffer(fileObj.audio_data, 'base64');
             var myExtra = extra || new qiniu.io.PutExtra();
             qiniu.io.put(uptoken, key.split('.')[0]+'_cover'+'.png', bufData, extra, function(err, ret) {
@@ -44,6 +44,8 @@ module.exports = {
               ret.url = DOMAIN + '/' + ret.key;
               return cb2(null, ret);
             });
+          } else {
+            return cb2(null);
           }
         }
       }, function(err, result) {

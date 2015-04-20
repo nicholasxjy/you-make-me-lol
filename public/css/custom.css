@@ -3728,7 +3728,8 @@ tags-input .autocomplete .suggestion-item em {
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0; }
+    bottom: 0;
+    outline: 0; }
   .user-feed-card .feed-bottom {
     font-size: 14px;
     color: rgba(0, 0, 0, 0.44); }
