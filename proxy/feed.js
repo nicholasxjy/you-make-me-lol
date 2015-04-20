@@ -50,6 +50,30 @@ module.exports = {
       cb(null, feeds);
     })
   },
+  getUserFeeds: function(userId, cb) {
+    async.waterfall([
+      function(cb1) {
+        Feed.find({creator: userId}, '_id attach_files creator tags content location createdAt category', function(err, feeds) {
+          if (err) return cb1(err);
+          return cb1(null, feeds);
+        })
+      },
+      function(feeds, cb2) {
+        var options = [
+          {path: 'attach_files', model: 'File', select: 'caption url title singer_name cover_url'},
+          {path: 'creator', model: 'User', select: '_id name avatar'},
+          {path: 'tags', model: 'Tag'}
+        ];
+        Feed.populate(feeds, options, function(err, pfeeds) {
+          if (err) return cb2(err);
+          cb2(null, pfeeds);
+        })
+      }
+    ], function(err, feeds) {
+      if (err) cb(err);
+      cb(null, feeds);
+    })
+  },
   getFeedById: function(id, cb) {
     Feed.findById(id, cb);
   },
@@ -66,7 +90,7 @@ module.exports = {
       },
       function(feed, cb2) {
         var options = [
-          {path: 'attach_files', model: 'File', select: 'caption url'},
+          {path: 'attach_files', model: 'File', select: 'caption url title singer_name cover_url'},
           {path: 'creator', model: 'User', select: '_id name avatar'},
           {path: 'comments', model: 'Comment', options: {sort: {'createdAt': -1}, limit: 10}, select:'_id creator to_user content createdAt'},
           {path: 'likes', model: 'User', select: '_id name avatar'},

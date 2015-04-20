@@ -88,12 +88,46 @@
           return deferred.promise;
         }
 
+        function getFeedDetail(id) {
+          var deferred = $q.defer();
+          $http({
+            methond: 'GET',
+            url: '/feed/detail',
+            params: {
+              feedId: id
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
+        function getFeedsByUser(userId) {
+          var deferred = $q.defer();
+          $http({
+            method: 'GET',
+            url: '/feed/user_feeds',
+            params: {
+              userId: userId
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
         return {
           create: create,
           getFeeds: getFeeds,
           removeFile: removeFile,
           toggleLike: toggleLike,
-          addComment: addComment
+          addComment: addComment,
+          getFeedDetail: getFeedDetail,
+          getFeedsByUser: getFeedsByUser
         }
       }
     ])

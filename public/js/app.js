@@ -57,4 +57,8 @@ angular
         url: '/bookmarks',
         templateUrl: 'template/bookmarks.html'
       })
+      .state('feed', {
+        url:'/feed/:id',
+        templateUrl: 'template/feed-page.html'
+      })
   })

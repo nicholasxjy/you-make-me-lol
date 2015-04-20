@@ -1,103 +1,85 @@
 <div ng-controller="UserCtrl as ctrl" class="user-page">
+  <div class="sf-banner" sf-banner-scroll-blur style="background-image: url('{{ctrl.user.bg_image}}')">
+    <div class="sf-banner-blur" style="background-image: url('{{ctrl.user.bg_blur_image}}')"></div>
+  </div>
   <div ng-include="'template/partials/navbar.html'"></div>
   <div class="main-content">
-    <div class="top-wrap">
-      <div class="sf-banner" sf-banner-scroll-blur style="background-image: url('{{ctrl.user.bg_image}}')">
-        <div class="sf-banner-blur" style="background-image: url('{{ctrl.user.bg_blur_image}}')"></div>
-      </div>
-
-      <div class="user-info">
-        <ul class="list-inline user-info-list">
-          <li class="info-item">
-            <a href="">
-              <div class="info-item-title">Posts</div>
-              <div class="info-item-count">{{ctrl.user.post_count}}</div>
-          </a>
-          </li>
-          <li class="info-item">
-            <a href="">
-              <div class="info-item-title">Followers</div>
-              <div class="info-item-count">{{ctrl.user.followers.length}}</div>
-            </a>
-          </li>
-          <li class="info-item">
-            <a href="">
-              <div class="info-item-title">Followees</div>
-              <div class="info-item-count">{{ctrl.user.followees.length}}</div>
-            </a>
-          </li>
-        </ul>
-        <button class="sf-btn sf-btn-teal sf-btn-small sf-follow-btn">Follow</button>
-      </div>
-
-    </div>
     <div class="user-page-content">
-      <div class="container">
-        <div class="col-md-3">
-          <div class="user-profile-wrap">
-            <div class="avatar-wrap">
+      <div class="user-info">
+        <div class="user-profile-wrap">
+          <div class="avatar-wrap">
+            <div class="avatar-circle">
               <img ng-src="{{ctrl.user.avatar}}" alt="Avatar" class="img-responsive img-circle">
             </div>
-            <div class="gender-location">
-              <i class="ti-user"></i><span>{{ctrl.user.gender || 'unknow'}}</span>
-              <i class="ti-location-pin"></i><span>{{ctrl.user.location || 'unknow'}}</span>
-            </div>
-            <div class="profile-wrap">
-              {{ctrl.user.profile || 'Not set anything about self!' }}
-            </div>
           </div>
+          <h1 class="user-name-link">
+            <a ui-sref="user({name: ctrl.user.name})">{{ctrl.user.name}}</a>
+          </h1>
+          <div class="gender-location">
+            <i class="ti-user"></i><span>{{ctrl.user.gender || 'unknow'}}</span>
+            <i class="ti-location-pin"></i><span>{{ctrl.user.location || 'unknow'}}</span>
+          </div>
+          <div class="profile-wrap">
+            {{ctrl.user.profile || 'Not set anything about self!' }}
+          </div>
+          <ul class="list-inline user-info-list">
+            <li class="info-item">
+              <a href="">
+                <div class="info-item-title">Posts</div>
+                <div class="info-item-count">{{ctrl.user.post_count}}</div>
+            </a>
+            </li>
+            <li class="info-item">
+              <a href="">
+                <div class="info-item-title">Followers</div>
+                <div class="info-item-count">{{ctrl.user.followers.length}}</div>
+              </a>
+            </li>
+            <li class="info-item">
+              <a href="">
+                <div class="info-item-title">Followees</div>
+                <div class="info-item-count">{{ctrl.user.followees.length}}</div>
+              </a>
+            </li>
+          </ul>
+          <button class="btn btn-success" ng-if="ctrl.current_user._id !== ctrl.user._id && !ctrl.user.hasFollowed"
+          ng-click="ctrl.follow(ctrl.user)">Follow</button>
+          <button class="btn btn-danger" ng-if="ctrl.current_user._id !== ctrl.user._id && ctrl.user.hasFollowed"
+          ng-click="ctrl.unfollow(ctrl.user)">Unfollow</button>
         </div>
+      </div>
+      <div class="container user-page-container">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <div class="user-feed-card" ng-repeat="feed in ctrl.feeds">
+              <a ui-sref="feed({id: feed._id})" class="user-feed-link"></a>
+              <div class="feed-content">
+                <div class="feed-text-words" ng-if="feed.content">
+                  <div ng-bind-html="feed.content"></div>
+                </div>
+                <div class="feed-images" ng-if="feed.category =='image'">
+                  <div class="feed-image-container" style="background-image: url('{{feed.attach_files[0].url}}')">
+                  </div>
+                </div>
+                <div class="feed-video-container" ng-if="feed.category == 'video'">
+                  <ng-cool-video source="feed.source"></ng-cool-video>
+                </div>
+                <div class="feed-audio-container" ng-if="feed.category == 'audio'">
+                  <ng-cool-audio source="feed.source"></ng-cool-audio>
+                </div>
+              </div>
+              <div class="feed-tags" ng-if="feed.tags && feed.tags.length> 0">
+                <a class="tag-item" ng-repeat="tag in feed.tags">{{tag.text}}</a>
+              </div>
 
-        <div class="col-md-9">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="thumbnail">
-                <img src="images/auth-form-bg.jpg" alt="...">
-                <div class="caption">
-                  <h3>Thumbnail label</h3>
-                  <p>...</p>
-                  <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="thumbnail">
-                <img src="images/auth-form-bg.jpg" alt="...">
-                <div class="caption">
-                  <h3>Thumbnail label</h3>
-                  <p>...</p>
-                  <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="thumbnail">
-                <img src="images/auth-form-bg.jpg" alt="...">
-                <div class="caption">
-                  <h3>Thumbnail label</h3>
-                  <p>...</p>
-                  <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="thumbnail">
-                <img src="images/auth-form-bg.jpg" alt="...">
-                <div class="caption">
-                  <h3>Thumbnail label</h3>
-                  <p>...</p>
-                  <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="thumbnail">
-                <img src="images/auth-form-bg.jpg" alt="...">
-                <div class="caption">
-                  <h3>Thumbnail label</h3>
-                  <p>...</p>
-                  <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                </div>
+              <div class="feed-bottom">
+                <span class="time">
+                  Shared on {{feed.createdAt | date: 'yyyy-MM-dd HH:mm'}}
+                </span>
+                <span class="location">
+                  <i class="ti-location-pin"></i>
+                  {{feed.location}}
+                </span>
               </div>
             </div>
           </div>

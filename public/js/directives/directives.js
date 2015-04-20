@@ -560,7 +560,7 @@
           link: function(scope, ele, attrs) {
             $(window).on('scroll', function() {
               var val = 0;
-              val = $(window).scrollTop()/405;
+              val = $(window).scrollTop()/450;
               if (val <= 1) {
                 $(ele[0]).find('.sf-banner-blur').css('opacity', val);
               }

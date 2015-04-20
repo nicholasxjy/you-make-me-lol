@@ -302,7 +302,7 @@ module.exports = {
     feedProxy.getDetail(feedId, function(err, feed) {
       if (err) return next(err);
       if (!feed) {
-        res.sendStatus(404);
+        return res.sendStatus(404);
       }
       if (req.session && req.session.user) {
         feed = utils.checkFeedLike(feed, req.session.user);
@@ -414,5 +414,26 @@ module.exports = {
         new_comment: result
       })
     })
+  },
+  getUserFeeds: function(req, res, next) {
+    var userId = req.query.userId;
+    if (!userId) {
+      return res.sendStatus(404);
+    }
+    async.waterfall([
+      function(cb1) {
+        UserProxy.getUserById(userId, null, function(err, user) {
+          if (err) return cb1(err);
+          if (!user) return res.sendStatus(404);
+          return cb1(null, user);
+        })
+      },
+      function(user, cb2) {
+        feedProxy.getUserFeeds(user._id, function(err, feeds) {
+          if (err) return cb2(err);
+          return res.json(feeds);
+        })
+      }
+    ])
   }
 }

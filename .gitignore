@@ -8,3 +8,4 @@ public/media
 .sass-cache
 config.js
 .git
+npm-debug.log
