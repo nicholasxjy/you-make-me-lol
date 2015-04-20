@@ -863,32 +863,28 @@ body.create-open {
     padding: 0 10px;
     margin-bottom: 10px; }
   .feed-detail-intro .feed-detail-likes {
-    margin-top: 15px;
-    margin-bottom: 20px;
-    padding-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 8px; }
-    .feed-detail-intro .feed-detail-likes .like-button {
+    height: 30px;
+    padding-right: 20px;
+    margin-bottom: 15px;
+    padding-left: 10px; }
+    .feed-detail-intro .feed-detail-likes .like-tip {
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.44);
       display: table-cell;
       vertical-align: top;
-      padding-right: 15px; }
-      .feed-detail-intro .feed-detail-likes .like-button .sf-btn {
-        height: 30px;
-        padding: 0 15px;
-        background-color: #ffffff;
-        border: 1px solid #d3d3d3;
-        color: rgba(0, 0, 0, 0.8); }
+      padding-top: 5px; }
+    .feed-detail-intro .feed-detail-likes ul {
+      display: table-cell;
+      vertical-align: top;
+      padding-left: 10px; }
+    .feed-detail-intro .feed-detail-likes .like-item {
+      padding: 0 3px; }
+      .feed-detail-intro .feed-detail-likes .like-item img {
+        width: 30px;
+        height: 30px; }
   .feed-detail-intro .feed-likes-more {
     text-decoration: underline; }
-  .feed-detail-intro .feed-detail-likes-tip {
-    display: table-cell;
-    vertical-align: top;
-    padding: 2px 0; }
-    .feed-detail-intro .feed-detail-likes-tip p {
-      margin: 0;
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(0, 0, 0, 0.6); }
   .feed-detail-intro .fd-add-comment-wrap {
     padding: 0 10px;
     margin-top: 20px;

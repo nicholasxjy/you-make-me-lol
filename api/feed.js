@@ -308,7 +308,7 @@ module.exports = {
         feed = utils.checkFeedLike(feed, req.session.user);
       }
 
-      feed.likes = feed.likes.slice(-10);
+      feed.likes = feed.likes.slice(-6);
       res.json(feed);
     })
   },

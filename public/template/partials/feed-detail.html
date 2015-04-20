@@ -34,7 +34,19 @@
             <div ng-bind-html="feed.content"></div>
           </div>
 
-          <div sf-feed-action feed="feed" current-user="current_user"></div>
+          <div class="feed-detail-likes">
+            <div class="like-tip">Liked by: </div>
+            <ul class="list-inline">
+              <li class="like-item" ng-repeat="liker in feed.likes">
+                <a ui-sref="user({name: liker.name})">
+                  <img ng-src="{{liker.avatar}}" alt="avatar" class="img-responsive img-circle" ng-cool-tooltip="{{liker.name}}">
+                </a>
+              </li>
+              <li class="like-item" ng-if="feed.likes.length > 6">
+                <a href="" class="feed-likes-more">See More</a>
+              </li>
+            </ul>
+          </div>
 
           <div class="feed-detail-comments">
             <div class="feed-comment-item" ng-repeat="comment in feed.comments">
