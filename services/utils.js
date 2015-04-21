@@ -65,4 +65,4 @@ exports.checkFollowRelationByFollowees = function(user, currentUserId) {
   });
   user.hasFollowed = hasFollowed;
   return user;
-}
+};

@@ -7,7 +7,7 @@ var UserProxy = require('../proxy/user');
 var commentProxy = require('../proxy/comment');
 var utils = require('../services/utils');
 var id3 = require('id3js');
-
+var NotiProxy = require('../proxy/notification');
 
 module.exports = {
   uploadFile: function(req, res, next) {
@@ -338,10 +338,48 @@ module.exports = {
         } else {
           feed.likes.push(userId);
         }
-        feed.save(function(err) {
+        feed.save(function(err, new_feed) {
           if (err) return cb2(err);
-          return cb2(null);
+          return cb2(null, new_feed);
         });
+      },
+      function(feed, cb3) {
+        if (!isLike) {
+          var ids = [];
+          ids.push(userId);
+          ids.push(feed.creator);
+          var noti_type = 'LIKE';
+          UserProxy.findUsersByIds(ids, '_id name avatar notifications', function(err, docs) {
+            if (err) return cb3(err);
+            if (docs && docs.length === 2) {
+              cb3(null, {c_user: docs[0], f_user: docs[1], feed: feed})
+            } else {
+              cb3(new Error('users length not right...'))
+            }
+          })
+        } else {
+          cb3(null);
+        }
+      },
+      function(noti, cb4) {
+        if (noti && noti.c_user && noti.f_user && noti.feed) {
+          var noti_obj = {
+            type: 'LIKE',
+            feed: noti.feed._id,
+            text: ' liked your feed!',
+            sender: userId
+          }
+          NotiProxy.create(noti_obj, function(err, new_noti) {
+            if (err) return cb4(err);
+            noti.f_user.notifications.push(new_noti._id);
+            noti.f_user.save(function(err) {
+              if (err) return cb4(err);
+              return cb4(null);
+            })
+          })
+        } else {
+          cb4(null);
+        }
       }
     ], function(err) {
       if (err) return next(err);
@@ -379,14 +417,11 @@ module.exports = {
         // create html for comment content
         var regex = /@\w+\s/g;
         var atUsers = content.match(regex);
-        console.log(atUsers);
         if (atUsers && atUsers.length > 0) {
           var userNames = atUsers.map(function(atUser) {
             var arr = atUser.trim().split('@');
             return arr[arr.length -1];
           });
-
-          console.log(userNames)
           utils.formatCommentContentByUserNames(userNames, content, function(err, doc) {
             if (err) return cb2(err);
             doc.feed = feed;
@@ -407,8 +442,27 @@ module.exports = {
           }
           doc.feed.save(function(err) {
             if (err) return cb3(err);
-            return cb3(null, _comment);
+            return cb3(null, {new_comment: _comment, feed: doc.feed});
           })
+        })
+      },
+      function(doc, cb4) {
+        var noti_obj = {
+          type: 'COMMENT',
+          text: doc.new_comment.content,
+          sender: userId,
+          feed: doc.feed._id
+        };
+        NotiProxy.create(noti_obj, function(err, new_noti) {
+          if (err) return cb4(err);
+          doc.new_comment.to_users.push(doc.feed.creator);
+          return cb4(null, {noti: new_noti, comment: doc.new_comment});
+        })
+      },
+      function(doc, cb5) {
+        UserProxy.saveNewNotification(doc.comment.to_users, doc.noti._id,function(err) {
+          if (err) return cb5(err);
+          return cb5(null, doc.comment);
         })
       }
     ], function(err, result) {

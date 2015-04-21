@@ -1,4 +1,5 @@
 var User = require('../models').User;
+var async = require('async');
 
 module.exports = {
   create: function(name, email, password, cb) {
@@ -7,6 +8,17 @@ module.exports = {
     user.email = email;
     user.password = password;
     user.save(cb);
+  },
+  findUsersByIds: function(ids, fields, cb) {
+    async.map(ids, function(id, callback) {
+      User.findById(id, fields, function(err, user) {
+        if (err) callback(err);
+        callback(null, user);
+      })
+    }, function(err, results) {
+      if (err) return cb(err);
+      return cb(null, results);
+    })
   },
   findUsersByName: function(name, cb) {
     User.find({name: name}, cb);
@@ -40,5 +52,8 @@ module.exports = {
       ];
       User.populate(user, options, cb);
     })
+  },
+  saveNewNotification: function(userIds, notiId, cb) {
+    User.update({_id: {'$in': userIds}}, {'$push': {notifications: notiId}}, { multi: true }, cb);
   }
 }

@@ -7,6 +7,7 @@ var EmailService = require('../services/email');
 var qiniuService = require('../services/qiniu');
 var config = require('../config');
 var utils = require('../services/utils');
+var NotiProxy = require('../proxy/notification');
 
 module.exports = {
   create: function(req, res, next) {
@@ -312,35 +313,50 @@ module.exports = {
   },
   follow: function(req, res, next) {
     var userId = req.session.user;
-
     var followId = req.body.followId;
-
     if (!followId) {
       return res.sendStatus(403);
     }
-
-    async.parallel({
-      follower: function(cb1) {
-        UserProxy.getUserById(userId, 'followers', function(err, user) {
+    async.waterfall([
+      function(cb1) {
+        UserProxy.getUserById(userId, '_id name avatar followers', function(err, user) {
           if (err) return cb1(err);
           user.followers.push(followId);
           user.save(function(err, user) {
             if (err) return cb1(err);
-            return cb1(null, user.followers);
+            return cb1(null, user);
           })
         })
       },
-      followee: function(cb2) {
-        UserProxy.getUserById(followId, 'followees', function(err, user) {
+      function(c_user, cb2) {
+        UserProxy.getUserById(followId, '_id followees notifications', function(err, user) {
           if (err) return cb2(err);
+          f_user = user;
           user.followees.push(userId);
           user.save(function(err, user) {
             if (err) return cb2(err);
-            return cb2(null);
+            return cb2(null, {c_user: c_user, f_user: user});
+          })
+        })
+      },
+      function(noti, cb3) {
+        //here send notification
+        var noti_obj = {
+          type: 'FOLLOW',
+          sender: userId,
+          text: ' followed you!',
+          feed: null
+        };
+        NotiProxy.create(noti_obj, function(err, new_noti) {
+          if (err) return cb3(err);
+          noti.f_user.notifications.push(new_noti._id);
+          noti.f_user.save(function(err) {
+            if (err) return cb3(err);
+            return cb3(null);
           })
         })
       }
-    }, function(err, result) {
+    ], function(err, result) {
       if (err) return next(err);
       return res.json({
         status: 'success'
