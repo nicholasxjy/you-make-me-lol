@@ -151,14 +151,13 @@ module.exports = {
     if (!sess || !sess.user) {
       return res.sendStatus(404);
     }
-    var fields = '_id name avatar bg_image gender location profile followers followees post_count';
-    UserProxy.getUserById(sess.user, fields,function(err, user) {
+    UserProxy.getCurrentUserInfo(sess.user, function(err, user) {
       if (err) return next(err);
       return res.json({
         status: 'success',
         user: user
       })
-    })
+    });
   },
   getInfo: function(req, res, next) {
     var userId = req.session.user;

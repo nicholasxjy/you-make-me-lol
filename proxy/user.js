@@ -55,5 +55,32 @@ module.exports = {
   },
   saveNewNotification: function(userIds, notiId, cb) {
     User.update({_id: {'$in': userIds}}, {'$push': {notifications: notiId}}, { multi: true }, cb);
+  },
+  getCurrentUserInfo: function(userId, cb) {
+    var fields = '_id name avatar bg_image gender location profile followers followees post_count notifications';
+    async.waterfall([
+      function(cb1) {
+        User.findById(userId, fields, function(err, user) {
+          if (err) return cb1(err);
+          cb1(null, user);
+        })
+      },
+      function(user, cb2) {
+        var opts = [
+          {path: 'notifications', model: 'Notification', match: {read: false}}
+        ];
+        User.populate(user, opts, function(err, p_user) {
+          if (err) return cb2(err);
+          return cb2(null, p_user);
+        })
+      }
+    ], function(err, result) {
+      if (err) return cb(err);
+      var opts = [
+        {path: 'notifications.sender', model:'User', select: '_id name avatar'}
+      ];
+      User.populate(result, opts, cb);
+    })
+
   }
 }

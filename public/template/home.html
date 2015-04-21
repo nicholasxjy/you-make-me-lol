@@ -51,7 +51,7 @@
                 <div class="sf-feed-inner">
                   <div class="feed-top">
                     <div class="user-avatar">
-                      <img ng-src="{{feed.creator.avatar}}" class="sf-img-circle feed-avatar" sf-user-card-popover user="feed.creator" current-user="ctrl.current_user">
+                      <img ng-src="{{feed.creator.avatar}}" class="img-circle" sf-user-card-popover user="feed.creator" current-user="ctrl.current_user">
                     </div>
                     <div class="user-other">
                       <div class="user-name">
@@ -112,7 +112,7 @@
                     <div class="feed-comment-item" ng-repeat="comment in feed.comments">
                       <div class="comment-user-avatar">
                         <a ui-sref="user({name: comment.creator.name})">
-                          <img ng-src="{{comment.creator.avatar}}" alt="" class="sf-img-rounded">
+                          <img ng-src="{{comment.creator.avatar}}" alt="" class="img-rounded">
                         </a>
                       </div>
                       <div class="comment-content">
