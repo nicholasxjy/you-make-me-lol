@@ -6,6 +6,7 @@ exports.checkFeedsLike = function(feeds, userId) {
       return userId.toString() === liker._id.toString();
     });
     feed = feed.toObject();
+    feed.likes_count = feed.likes.length;
     feed.isLike = isLike;
     feed.likes = feed.likes.slice(-5);
     return feed;
@@ -14,7 +15,6 @@ exports.checkFeedsLike = function(feeds, userId) {
 };
 
 exports.checkFeedLike = function(feed, userId) {
-  feed = feed.toObject();
   var isLike = feed.likes.some(function(liker) {
     return userId.toString() === liker._id.toString();
   });

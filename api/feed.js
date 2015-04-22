@@ -308,10 +308,11 @@ module.exports = {
       if (!feed) {
         return res.sendStatus(404);
       }
+      feed = feed.toObject();
       if (req.session && req.session.user) {
         feed = utils.checkFeedLike(feed, req.session.user);
       }
-
+      feed.likes_count = feed.likes.length;
       feed.likes = feed.likes.slice(-6);
       res.json(feed);
     })
@@ -319,7 +320,7 @@ module.exports = {
   toggleLike: function(req, res, next) {
     var userId = req.session.user;
     var feedId = req.body.feedId;
-    var isLike = req.body.isLike;
+
 
     if (!feedId) {
       return res.sendStatus(403);
@@ -328,37 +329,39 @@ module.exports = {
       function(cb1) {
         feedProxy.getFeedById(feedId, function(err, feed) {
           if (err) return cb1(err);
-          return cb1(null, feed);
+          var isLike = feed.likes.some(function(likeId) {
+            return userId.toString() === likeId.toString();
+          });
+          return cb1(null, {feed: feed, isLike: isLike});
         })
       },
-      function(feed, cb2) {
+      function(doc, cb2) {
         var likeUsers = [];
-        if (isLike) {
-          feed.likes.pull(userId);
+        if (doc.isLike) {
+          doc.feed.likes.pull(userId);
         } else {
-          feed.likes.push(userId);
+          doc.feed.likes.unshift(userId);
         }
-        feed.save(function(err, new_feed) {
+        doc.feed.save(function(err, new_feed) {
           if (err) return cb2(err);
-          return cb2(null, new_feed);
+          return cb2(null, {new_feed: new_feed, isLike: doc.isLike});
         });
       },
-      function(feed, cb3) {
-        if (!isLike) {
+      function(doc, cb3) {
+        if (!doc.isLike) {
           var ids = [];
           ids.push(userId);
-          ids.push(feed.creator);
-          var noti_type = 'LIKE';
+          ids.push(doc.new_feed.creator);
           UserProxy.findUsersByIds(ids, '_id name avatar notifications', function(err, docs) {
             if (err) return cb3(err);
             if (docs && docs.length === 2) {
-              cb3(null, {c_user: docs[0], f_user: docs[1], feed: feed})
+              cb3(null, {c_user: docs[0], f_user: docs[1], feed: doc.new_feed})
             } else {
               cb3(new Error('users length not right...'))
             }
           })
         } else {
-          cb3(null);
+          cb3(null, null);
         }
       },
       function(noti, cb4) {
@@ -371,7 +374,7 @@ module.exports = {
           }
           NotiProxy.create(noti_obj, function(err, new_noti) {
             if (err) return cb4(err);
-            noti.f_user.notifications.push(new_noti._id);
+            noti.f_user.notifications.unshift(new_noti._id);
             noti.f_user.save(function(err) {
               if (err) return cb4(err);
               return cb4(null);

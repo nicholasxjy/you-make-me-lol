@@ -717,7 +717,7 @@ a {
 }
  */
 body.sf-feed-detail-open {
-  position: fixed; }
+  overflow: hidden; }
 
 body.create-open {
   overflow: hidden; }
@@ -1031,7 +1031,8 @@ mentio-menu .dropdown-menu {
     display: table-cell;
     vertical-align: top;
     padding-left: 8px;
-    width: 100%; }
+    width: 100%;
+    padding-top: 2px; }
     .feed-top .user-other .user-name a.user-name-link {
       font-size: 14px;
       font-weight: 700;
@@ -1110,23 +1111,31 @@ mentio-menu .dropdown-menu {
 .feed-actions {
   margin-bottom: 10px;
   position: relative;
-  height: 25px;
-  padding: 0 10px; }
+  height: 30px;
+  padding: 0 15px; }
   .feed-actions .toggle-like-link {
     display: table-cell;
     vertical-align: top;
     height: 24px;
-    width: 23px; }
-  .feed-actions .feed-like-tip {
-    display: table-cell;
-    vertical-align: top;
-    padding-left: 15px;
-    font-size: 14px; }
-    .feed-actions .feed-like-tip a {
-      text-decoration: none;
-      color: #02A8F3; }
-      .feed-actions .feed-like-tip a span {
-        color: #cccccc; }
+    width: 70px;
+    padding-top: 2px;
+    text-decoration: none; }
+    .feed-actions .toggle-like-link .likes-count {
+      position: relative;
+      top: -5px;
+      left: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.8); }
+  .feed-actions .likes-list {
+    position: absolute;
+    top: 0;
+    right: 15px; }
+    .feed-actions .likes-list li {
+      padding: 0 3px; }
+    .feed-actions .likes-list img {
+      width: 30px;
+      height: 30px; }
 
 .feed-comments {
   padding: 20px 13px;

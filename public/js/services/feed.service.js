@@ -60,8 +60,7 @@
             method: 'POST',
             url: '/feed/toggle_like',
             data: {
-              feedId: feed._id,
-              isLike: feed.isLike
+              feedId: feed._id
             }
           }).success(function(data, status, headers, config) {
             deferred.resolve(data);
