@@ -5,6 +5,7 @@ public/images
 public/dist
 public/lib
 public/media
+public/fonts
 .sass-cache
 config.js
 .git

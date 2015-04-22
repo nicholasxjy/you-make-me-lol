@@ -1033,10 +1033,10 @@ mentio-menu .dropdown-menu {
     padding-left: 8px;
     width: 100%; }
     .feed-top .user-other .user-name a.user-name-link {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
       color: rgba(0, 0, 0, 0.8);
-      line-height: 20px;
+      line-height: 1.4;
       text-decoration: none; }
       .feed-top .user-other .user-name a.user-name-link:hover {
         color: rgba(0, 0, 0, 0.6); }
@@ -1083,8 +1083,10 @@ mentio-menu .dropdown-menu {
   margin-bottom: 15px; }
 
 .feed-text-words {
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 13px;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
   color: rgba(0, 0, 0, 0.8);
   margin-bottom: 20px; }
 
@@ -1229,7 +1231,8 @@ mentio-menu .dropdown-menu {
  */
 body {
   background-color: #E5E5E5;
-  font-family: 'Source Sans Pro', sans-serif; }
+  /* font-family: 'Source Sans Pro', sans-serif; */
+  font-family: 'Roboto', sans-serif; }
 
 /****** top feed ******/
 .top-feed {
@@ -1287,6 +1290,22 @@ body {
     width: 64px;
     height: 64px;
     fill: #cccccc; }
+
+.load-more {
+  position: relative;
+  height: 36px;
+  margin-bottom: 15px;
+  background-color: #ffffff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-clip: padding-box;
+  text-align: center;
+  line-height: 36px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.44);
+  cursor: pointer; }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
@@ -3037,6 +3056,23 @@ tags-input .autocomplete .suggestion-item em {
   color: rgba(0, 0, 0, 0.9);
   background-color: #ffffff; }
 
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto/Roboto-Light.ttf") format("truetype");
+  font-weight: 300; }
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  font-weight: 400; }
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto/Roboto-Medium.ttf") format("truetype");
+  font-weight: 500; }
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto/Roboto-Bold.ttf") format("truetype");
+  font-weight: 700; }
+
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3));
@@ -3462,7 +3498,7 @@ tags-input .autocomplete .suggestion-item em {
   color: rgba(0, 0, 0, 0.3); }
   .user-card .user-other i {
     font-size: 14px; }
-  .user-card .user-other i.fa-map-marker {
+  .user-card .user-other i.ti-location-pin {
     padding-left: 10px; }
   .user-card .user-other span {
     font-size: 12px;
@@ -3485,9 +3521,9 @@ tags-input .autocomplete .suggestion-item em {
   .user-card .user-info-list .info-item {
     padding: 0 10px; }
   .user-card .user-info-list .info-item-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: rgba(0, 0, 0, 0.6); }
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.44); }
   .user-card .user-info-list .info-item-count {
     font-size: 12px;
     font-weight: 700;

@@ -43,7 +43,7 @@
                   </div>
                 </div>
               </article>
-              <article class="noti-item" ng-if="noti.noti_type=='FOLLOW'">
+              <article class="noti-item-{{$index}}" ng-if="noti.noti_type=='FOLLOW'">
                 <a class="noti-item-link" ui-sref="user({name: noti.sender.name})"></a>
                 <div class="media">
                   <div class="media-left">
@@ -57,7 +57,7 @@
                   </div>
                 </div>
               </article>
-              <article class="noti-item" ng-if="noti.noti_type=='COMMENT'">
+              <article class="noti-item-{{$index}}" ng-if="noti.noti_type=='COMMENT'">
                 <a class="noti-item-link" ui-sref="feed({id: noti.to_feed})"></a>
                 <div class="media">
                   <div class="media-left">

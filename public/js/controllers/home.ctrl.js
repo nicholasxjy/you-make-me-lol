@@ -9,7 +9,8 @@
       '$state',
       'ngCoolNoti',
       '$rootScope',
-      function(UserService, FeedService, $state, ngCoolNoti, $rootScope) {
+      '$timeout',
+      function(UserService, FeedService, $state, ngCoolNoti, $rootScope, $timeout) {
         var self = this;
         self.feeds = [];
 
@@ -18,8 +19,15 @@
         })
 
         var loadFeeds = function(after) {
+          self.loadMoreSpinnerShow = true;
+
           FeedService.getFeeds(after)
             .then(function(data) {
+              self.loadMoreSpinnerShow = false;
+              if (data.feeds && data.feeds.length === 0) {
+                self.loadMoreTip = '没有更多:(';
+              }
+
               angular.forEach(data.feeds, function(feed) {
                 if (feed.category === 'video') {
                   var attach_file = feed.attach_files[0];

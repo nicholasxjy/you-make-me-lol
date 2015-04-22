@@ -127,6 +127,12 @@
                   </div>
                 </div>
               </div>
+
+              <div class="load-more" ng-click="ctrl.loadMore()">
+                <div ng-include="template/spinner.html" ng-show="ctrl.loadMoreSpinnerShow"></div>
+                <span ng-show="!ctrl.loadMoreSpinnerShow">{{ctrl.loadMoreTip || '加载更多'}}</span>
+              </div>
+
             </div>
             <div class="col-md-3">
               <svg display="none" width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
