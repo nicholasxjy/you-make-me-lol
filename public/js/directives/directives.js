@@ -708,4 +708,24 @@
         }
       }
     ])
+    .directive('sfLogout', [
+      'UserService',
+      '$state',
+      function(UserService, $state) {
+        return {
+          restrict: 'AE',
+          template: '<a ng-click="logout()">Logout</a>',
+          link: function(scope, ele, attrs) {
+            scope.logout = function() {
+              UserService.logout()
+                .then(function(data) {
+                  $state.go('welcome');
+                }, function(err) {
+                  console.log(err);
+                })
+            }
+          }
+        }
+      }
+    ])
 })();
