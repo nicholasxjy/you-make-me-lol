@@ -456,10 +456,13 @@
               if (scope.commentWord === '') {
                 return;
               } else {
+                console.log(scope.feed)
+                console.log(scope.commentWord)
                 FeedService.addComment(scope.feed._id, scope.commentWord)
                   .then(function(data) {
                     if (data.status === 'success') {
                       var new_c = data.new_comment;
+                      console.log(new_c)
                       scope.feed.comments.unshift(new_c);
 
                       //remove input
@@ -653,6 +656,54 @@
                   })
               }
             })
+          }
+        }
+      }
+    ])
+    .directive('sfFeedActionMore', [
+      'FeedService',
+      'UserService',
+      function(FeedService, UserService) {
+        return {
+          retrict: 'AE',
+          scope: {
+            feed: '=feed',
+            current_user: '=currentUser'
+          },
+          template: '<div class="dropdown feed-right-dropdown">\
+                      <a class="dropdown-toggle ti-angle-down" data-toggle="dropdown" role="button" aria-expanded="false"></a>\
+                      <ul class="dropdown-menu" role="menu">\
+                        <li class="dropdown-arrow feed-drop-arrow"></li>\
+                        <li><a ng-if="(current_user._id != feed.creator._id) && feed.creator.hasFollowed" ng-click="unfollow(feed)">unfollow {{feed.creator.name}}</a></li>\
+                        <li><a ng-if="(current_user._id != feed.creator._id) && !feed.creator.hasFollowed" ng-click="follow(feed)">follow {{feed.creator.name}}</a></li>\
+                        <li><a ng-if="current_user._id == feed.creator._id">delete post</a></li>\
+                        <li><a >share feed</a></li>\
+                        <li><a ui-sref="feed({id: feed._id})">view detail</a></li>\
+                      </ul>\
+                    </div>',
+          link: function(scope, ele, attrs) {
+            console.log(scope.feed)
+            scope.follow = function(feed) {
+              UserService.follow(feed.creator._id)
+                .then(function(data) {
+                  if (data.status === 'success') {
+                    scope.current_user.followers.push(feed.creator._id);
+                    feed.creator.hasFollowed = true;
+                  }
+                })
+            };
+
+            scope.unfollow = function(feed) {
+              UserService.unfollow(feed.creator._id)
+                .then(function(data) {
+                  if (data.status === 'success') {
+                    feed.creator.followees = feed.creator.followees.filter(function(item) {
+                      return item._id != scope.current_user._id;
+                    });
+                    feed.creator.hasFollowed = false;
+                  }
+                })
+            };
           }
         }
       }

@@ -80,54 +80,6 @@
           loadFeeds(self.last_feed_createdAt);
         }
 
-        //toggle feed like
-        self.toggleFeedLike = function(feed) {
-          if (feed) {
-            FeedService.toggleLike(feed)
-              .then(function(data) {
-                if (data.status === 'success') {
-                  //dom
-                  if (feed.isLike) {
-                    feed.likes = feed.likes.filter(function(liker) {
-                      return liker.id !== self.current_user.id;
-                    })
-                  } else {
-                    feed.likes.unshift({
-                      id: self.current_user.id,
-                      name: self.current_user.name,
-                      avatar: self.current_user.avatar
-                    });
-                  }
-                  feed.isLike = !feed.isLike;
-                }
-              }, function(err) {
-                console.log(err);
-              })
-          }
-        };
-
-        self.follow = function(feed) {
-          UserService.follow(feed.creator._id)
-            .then(function(data) {
-              if (data.status === 'success') {
-                self.current_user.followers.push(feed.creator._id);
-                feed.creator.hasFollowed = true;
-              }
-            })
-        };
-
-        self.unfollow = function(feed) {
-          UserService.unfollow(feed.creator._id)
-            .then(function(data) {
-              if (data.status === 'success') {
-                feed.creator.followees = feed.creator.followees.filter(function(item) {
-                  return item._id != self.current_user._id;
-                });
-                feed.creator.hasFollowed = false;
-              }
-            })
-        };
-
         self.logout = function() {
           UserService.logout()
             .then(function(data) {

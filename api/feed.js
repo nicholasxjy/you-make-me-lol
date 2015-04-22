@@ -311,6 +311,7 @@ module.exports = {
       feed = feed.toObject();
       if (req.session && req.session.user) {
         feed = utils.checkFeedLike(feed, req.session.user);
+        feed.creator = utils.checkFollowRelationByFollowees(feed.creator, req.session.user);
       }
       feed.likes_count = feed.likes.length;
       feed.likes = feed.likes.slice(-6);
@@ -430,6 +431,10 @@ module.exports = {
             doc.feed = feed;
             return cb2(null, doc);
           })
+        } else {
+          var users = [];
+          users.push(feed.creator);
+          return cb2(null, {feed: feed, content: content, users: users});
         }
       },
       function(doc, cb3) {

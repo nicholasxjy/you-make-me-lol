@@ -59,7 +59,6 @@ exports.formatCommentContentByUserNames = function(names, content, cb) {
 };
 
 exports.checkFollowRelationByFollowees = function(user, currentUserId) {
-  user = user.toObject();
   var hasFollowed = user.followees.some(function(followee) {
     return currentUserId.toString() === followee.toString();
   });

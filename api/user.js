@@ -277,7 +277,7 @@ module.exports = {
           if (req.session && req.session.user) {
             if (req.session.user.toString() !== user._id.toString()) {
               //check user follow relation
-              user = utils.checkFollowRelationByFollowees(user, req.session.user);
+              user = utils.checkFollowRelationByFollowees(user.toObject(), req.session.user);
             }
           }
           return cb1(null, user);

@@ -91,7 +91,7 @@ module.exports = {
       function(feed, cb2) {
         var options = [
           {path: 'attach_files', model: 'File', select: 'caption url title singer_name cover_url'},
-          {path: 'creator', model: 'User', select: '_id name avatar'},
+          {path: 'creator', model: 'User', select: '_id name avatar followers followees'},
           {path: 'comments', model: 'Comment', options: {sort: {'createdAt': -1}, limit: 10}, select:'_id creator to_user content createdAt'},
           {path: 'likes', model: 'User', select: '_id name avatar'},
           {path: 'tags', model: 'Tag', select: 'text'}

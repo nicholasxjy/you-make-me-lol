@@ -39,7 +39,7 @@
             <a class="tag-item" ng-repeat="tag in feed.tags">{{tag.text}}</a>
           </div>
 
-          <div class="feed-detail-comments">
+          <div class="feed-detail-comments" ng-if="feed.comments && feed.comments.length > 0">
             <div class="feed-comment-item" ng-repeat="comment in feed.comments">
 
               <div class="comment-user-avatar">
