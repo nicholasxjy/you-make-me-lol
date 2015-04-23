@@ -14,55 +14,93 @@ module.exports = {
     var userId = req.session.user;
     var file = req.files.file;
     var category = req.body.category;
-    var title = req.body.title;
-    var artist = req.body.artist || '';
-    var comment = req.body.comment;
-    var audio_data = req.body.audio_data || '';
 
-    var fileObj = {};
-    fileObj.category = category;
-    fileObj.artist = artist;
-    fileObj.audio_data = audio_data;
-    fileObj.title = title;
-    if (category === 'audio' && comment && comment !== '') {
-      var _comment = JSON.parse(comment);
-      fileObj.comment = _comment;
-    }
     if (file === null || file === undefined) {
       return res.json({
         status: 'fail',
         msg: 'No file found!'
       });
     }
-    async.waterfall([
-      function(cb1) {
-        var uptoken = qiniuService.generateUpToken();
-        qiniuService.uploadFileLocalFile(fileObj, file.path, file.name, uptoken, null, function(err, file_info) {
-          if (err) return cb1(err);
-          cb1(null, file_info);
-        });
-      },
-      function(file_info, cb2) {
-        var _file_obj = null;
-        if (category === 'audio') {
-          var file_obj = {
-            key: file_info.audio.key,
-            url: file_info.audio.url,
-            author: userId,
-            hash: file_info.audio.hash,
-            mimeType: file.mimetype,
-            category: category,
-            singer_name: fileObj.artist || '',
-          };
-          if (comment) {
-            file_obj.title = title || fileObj.comment['musicName'];
-            file_obj.album = fileObj['album'] || '';
+    var fileObj = {};
+    fileObj.category = category;
+    if (category === 'audio') {
+      var title = req.body.title || '';
+      var artist = req.body.artist || '';
+      var comment = req.body.comment || '';
+      var audio_data = req.body.audio_data || '';
+      fileObj.artist = artist;
+      fileObj.audio_data = audio_data;
+      fileObj.title = title;
+      if (category === 'audio' && comment && comment !== '') {
+        var _comment = JSON.parse(comment);
+        fileObj.comment = _comment;
+      }
+
+      async.waterfall([
+        function(cb1) {
+          var uptoken = qiniuService.generateUpToken();
+          qiniuService.uploadFileLocalFile(fileObj, file.path, file.name, uptoken, null, function(err, file_info) {
+            if (err) return cb1(err);
+            cb1(null, file_info);
+          });
+        },
+        function(file_info, cb2) {
+          var _file_obj = null;
+          if (category === 'audio') {
+            var file_obj = {
+              key: file_info.audio.key,
+              url: file_info.audio.url,
+              author: userId,
+              hash: file_info.audio.hash,
+              mimeType: file.mimetype,
+              category: category,
+              singer_name: fileObj.artist || '',
+            };
+            if (comment) {
+              file_obj.title = title || fileObj.comment['musicName'];
+              file_obj.album = fileObj['album'] || '';
+            }
+            if (file_info.cover && file_info.cover.url) {
+              file_obj.cover_url = file_info.cover.url || '';
+            }
+            _file_obj = file_obj;
+          } else {
+            var file_obj = {
+              key: file_info.key,
+              url: file_info.url,
+              author: userId,
+              hash: file_info.hash,
+              mimeType: file.mimetype,
+              category: category,
+            };
+            _file_obj = file_obj;
           }
-          if (file_info.cover && file_info.cover.url) {
-            file_obj.cover_url = file_info.cover.url || '';
+
+          fileProxy.create(_file_obj, function(err, newFile) {
+            if (err) return cb2(err);
+            file_info.fileId = newFile._id;
+            cb2(null, file_info);
+          })
+        }
+      ], function(err, result) {
+        if (err) return next(err);
+        res.json({
+          status: 'success',
+          file_info: {
+            fileId: result.fileId
           }
-          _file_obj = file_obj;
-        } else {
+        })
+      })
+    } else {
+      async.waterfall([
+        function(cb1) {
+          var uptoken = qiniuService.generateUpToken();
+          qiniuService.uploadFileLocalFile(fileObj, file.path, file.name, uptoken, null, function(err, file_info) {
+            if (err) return cb1(err);
+            cb1(null, file_info);
+          });
+        },
+        function(file_info, cb2) {
           var file_obj = {
             key: file_info.key,
             url: file_info.url,
@@ -71,35 +109,33 @@ module.exports = {
             mimeType: file.mimetype,
             category: category,
           };
-          _file_obj = file_obj;
+          fileProxy.create(file_obj, function(err, newFile) {
+            if (err) return cb2(err);
+            file_info.fileId = newFile._id;
+            cb2(null, file_info);
+          })
         }
-
-        fileProxy.create(_file_obj, function(err, newFile) {
-          if (err) return cb2(err);
-          file_info.fileId = newFile._id;
-          cb2(null, file_info);
-        })
-      }
-    ], function(err, result) {
-      if (err) return next(err);
-      if (category === 'image') {
-        res.json({
-          status: 'success',
-          file_info: {
-            fileId: result.fileId,
-            key: result.key,
-            url: result.url
-          }
-        })
-      } else {
-        res.json({
-          status: 'success',
-          file_info: {
-            fileId: result.fileId
-          }
-        })
-      }
-    })
+      ], function(err, result) {
+        if (err) return next(err);
+        if (category === 'image') {
+          res.json({
+            status: 'success',
+            file_info: {
+              fileId: result.fileId,
+              key: result.key,
+              url: result.url
+            }
+          })
+        } else {
+          res.json({
+            status: 'success',
+            file_info: {
+              fileId: result.fileId
+            }
+          })
+        }
+      })
+    }
   },
   removeFile: function(req, res, next) {
     //should check the authority
@@ -193,16 +229,72 @@ module.exports = {
 
         data.location = location || 'Unknow';
 
-        feedProxy.create(userId, data, function(err, newFeed) {
+        // format content if has at users
+        async.waterfall([
+          function(cb11) {
+            var regex = /@\w+\s/g;
+            var atUsers = data.content.match(regex);
+            if (atUsers && atUsers.length > 0) {
+              var userNames = atUsers.map(function(atUser) {
+                var arr = atUser.trim().split('@');
+                return arr[arr.length -1];
+              });
+              utils.formatCommentContentByUserNames(userNames, data.content, function(err, doc) {
+                if (err) return cb11(err);
+                return cb11(null, doc);
+              })
+            } else {
+              cb11(null, null);
+            }
+          },
+          function (doc, cb12) {
+            if (doc && doc.users && doc.content) {
+              data.content = doc.content;
+              data.at_users = doc.users;
+            } else {
+              data.at_users = [];
+            }
+            feedProxy.create(userId, data, function(err, newFeed) {
+              if (err) return next(err);
+              UserProxy.addPost(userId, function(err) {
+                if (err) return cb12(err);
+                return cb12(null, newFeed);
+              })
+            })
+          },
+          function(newfeed, cb13) {
+            if (newfeed.at_users && newfeed.at_users.length > 0) {
+              //create new notis
+              var noti_obj = {
+                type: 'AT',
+                text: '在Feed里@了你',
+                sender: userId,
+                feed: newfeed._id
+              };
+              NotiProxy.create(noti_obj, function(err, noti) {
+                if (err) return cb13(err);
+                return cb13(null, {newNoti: noti, newFeed: newfeed});
+              })
+            } else {
+              return cb13(null, {newFeed: newfeed});
+            }
+          },
+          function(doc, cb14) {
+            if (doc.newNoti) {
+              UserProxy.saveNewNotification(doc.newFeed.at_users, doc.newNoti._id, function(err) {
+                if (err) return cb14(err);
+                return cb14(null, doc.newFeed);
+              })
+            } else {
+              return cb14(null, doc.newFeed);
+            }
+          }
+        ], function(err, result) {
           if (err) return next(err);
-          //here user post_count +1
-          UserProxy.addPost(userId, function(err) {
-            if (err) return next(err);
-            res.json({
-              status: 'success',
-              new_feed_id: newFeed._id
-            });
-          })
+          res.json({
+            status: 'success',
+            new_feed_id: result._id
+          });
         })
       })
     } else {
@@ -246,17 +338,73 @@ module.exports = {
           return tag._id;
         });
 
-        feedProxy.create(userId, data, function(err, newFeed) {
+        // format content if has at users
+        async.waterfall([
+          function(cb11) {
+            var regex = /@\w+\s/g;
+            var atUsers = data.content.match(regex);
+            if (atUsers && atUsers.length > 0) {
+              var userNames = atUsers.map(function(atUser) {
+                var arr = atUser.trim().split('@');
+                return arr[arr.length -1];
+              });
+              utils.formatCommentContentByUserNames(userNames, data.content, function(err, doc) {
+                if (err) return cb11(err);
+                return cb11(null, doc);
+              })
+            } else {
+              cb11(null, null);
+            }
+          },
+          function (doc, cb12) {
+            if (doc && doc.users && doc.content) {
+              data.content = doc.content;
+              data.at_users = doc.users;
+            } else {
+              data.at_users = [];
+            }
+            feedProxy.create(userId, data, function(err, newFeed) {
+              if (err) return next(err);
+              UserProxy.addPost(userId, function(err) {
+                if (err) return cb12(err);
+                return cb12(null, newFeed);
+              })
+            })
+          },
+          function(newfeed, cb13) {
+            if (newfeed.at_users && newfeed.at_users.length > 0) {
+              //create new notis
+              var noti_obj = {
+                type: 'AT',
+                text: '在Feed里@了你',
+                sender: userId,
+                feed: newfeed._id
+              };
+              NotiProxy.create(noti_obj, function(err, noti) {
+                if (err) return cb13(err);
+                return cb13(null, {newNoti: noti, newFeed: newfeed});
+              })
+            } else {
+              return cb13(null, {newFeed: newfeed});
+            }
+          },
+          function(doc, cb14) {
+            if (doc.newNoti) {
+              UserProxy.saveNewNotification(doc.newFeed.at_users, doc.newNoti._id, function(err) {
+                if (err) return cb14(err);
+                return cb14(null, doc.newFeed);
+              })
+            } else {
+              return cb14(null, doc.newFeed);
+            }
+          }
+        ], function(err, result) {
           if (err) return next(err);
-          UserProxy.addPost(userId, function(err) {
-            if (err) return next(err);
-            res.json({
-              status: 'success',
-              new_feed_id: newFeed._id
-            });
-          })
+          res.json({
+            status: 'success',
+            new_feed_id: result._id
+          });
         })
-
       })
     }
   },

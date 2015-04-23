@@ -10,10 +10,10 @@ module.exports = {
     file.mimeType = file_obj.mimeType;
     file.category = file_obj.category;
     file.caption = '';
-    file.singer_name = file_obj.singer_name;
-    file.title = file_obj.title;
-    file.cover_url = file_obj.cover_url;
-    file.album = file_obj.album;
+    file.singer_name = file_obj.singer_name || '';
+    file.title = file_obj.title || '';
+    file.cover_url = file_obj.cover_url || '';
+    file.album = file_obj.album || '';
     file.save(cb);
   },
   findFileByQuery: function(query, opt, cb) {

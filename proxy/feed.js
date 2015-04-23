@@ -12,6 +12,7 @@ module.exports = {
     feed.location = data.location;
     feed.comments = [];
     feed.likes = [];
+    feed.at_users = data.at_users || [];
     feed.save(cb);
   },
   getFeeds: function(query, opts, cb) {

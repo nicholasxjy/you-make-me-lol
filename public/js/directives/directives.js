@@ -68,15 +68,24 @@
                 }
               }
             });
+
+            $scope.$watch('feedWords', function(val) {
+              if (val && val !== '') {
+                $scope.canPosted = true;
+              } else {
+                $scope.canPosted = false;
+              }
+            })
+
             $scope.upload = function(files, type) {
 
               $scope.selectedFiles = files;
               $scope.file_count = 0;
               if (files && files.length > 0) {
                 if (type === 'image') {
-                  if (files && files.length > 5) {
+                  if (files && files.length > 3) {
                     ngCoolNoti.create({
-                      message: 'Images length should not be more than 5',
+                      message: 'Images length should not be more than 3',
                       position: 'top-right',
                       animation: 'jelly',
                       type: 'warning'
@@ -705,7 +714,7 @@
             };
 
             scope.bookmark = function(feed) {
-              
+
             }
 
             scope.delete = function(feed) {

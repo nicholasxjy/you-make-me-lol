@@ -47,7 +47,6 @@ exports.formatCommentContentByUserNames = function(names, content, cb) {
       } else {
         callback(null);
       }
-
     })
   }, function(err, results) {
     if (err) return cb(err);
