@@ -40,25 +40,8 @@
           </div>
 
           <div class="feed-detail-comments" ng-if="feed.comments && feed.comments.length > 0">
-            <div class="feed-comment-item" ng-repeat="comment in feed.comments">
-
-              <div class="comment-user-avatar">
-                <a ui-sref="user({name: comment.creator.name})">
-                  <img ng-src="{{comment.creator.avatar}}" alt="" class="img-rounded">
-                </a>
-              </div>
-
-              <div class="comment-content">
-                <div class="top">
-                  <a class="comment-user-name" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a>
-                  <span class="comment-time">{{comment.createdAt | sinceTime}}</span>
-                </div>
-                <div class="comment-words" ng-bind-html="comment.content">
-                </div>
-              </div>
-            </div>
+            <div sf-feed-comments feed="feed" current-user="current_user"></div>
           </div>
-
           <div class="fd-add-comment-wrap" feed="feed" users-at="usersAt" sf-feed-add-comment>
           </div>
         </div>

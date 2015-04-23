@@ -770,6 +770,8 @@ body.create-open {
   background-color: #ffffff;
   display: table-cell;
   vertical-align: middle; }
+  .feed-detail-inner .feed-add-comment {
+    padding: 0; }
 
 .feed-detail-content {
   position: absolute;
@@ -865,7 +867,16 @@ body.create-open {
   .feed-detail-intro .comment-content {
     display: table-cell;
     vertical-align: top;
-    padding-left: 6px; }
+    padding-left: 6px;
+    width: 100%; }
+    .feed-detail-intro .comment-content i.ti-trash {
+      position: relative;
+      top: 5px;
+      font-size: 12px;
+      cursor: pointer;
+      color: rgba(0, 0, 0, 0.44); }
+      .feed-detail-intro .comment-content i.ti-trash:hover {
+        color: rgba(0, 0, 0, 0.8); }
     .feed-detail-intro .comment-content .comment-user-name {
       font-size: 14px;
       font-weight: 700;
@@ -1131,10 +1142,11 @@ mentio-menu .dropdown-menu {
       height: 30px; }
 
 .feed-comments {
-  padding: 20px 13px;
+  padding: 20px 0;
   background-color: #f5f5f5; }
   .feed-comments .feed-comment-item {
-    margin-bottom: 15px; }
+    margin-bottom: 15px;
+    padding: 0 15px; }
     .feed-comments .feed-comment-item .comment-user-avatar {
       display: table-cell;
       vertical-align: top;
@@ -1149,7 +1161,17 @@ mentio-menu .dropdown-menu {
     .feed-comments .feed-comment-item .comment-content {
       display: table-cell;
       vertical-align: top;
-      padding-top: 3px; }
+      padding-top: 3px;
+      padding-right: 5px;
+      width: 100%; }
+      .feed-comments .feed-comment-item .comment-content i.ti-trash {
+        position: relative;
+        top: 5px;
+        font-size: 12px;
+        cursor: pointer;
+        color: rgba(0, 0, 0, 0.44); }
+        .feed-comments .feed-comment-item .comment-content i.ti-trash:hover {
+          color: rgba(0, 0, 0, 0.8); }
       .feed-comments .feed-comment-item .comment-content .comment-user-name {
         font-size: 14px;
         font-weight: 700;
@@ -1171,16 +1193,18 @@ mentio-menu .dropdown-menu {
           text-decoration: none; }
 
 .comments-more {
-  padding-left: 5px; }
+  padding-left: 15px; }
   .comments-more a {
-    font-size: 12px;
-    font-weight: 700;
-    color: rgba(0, 0, 0, 0.8);
-    text-decoration: none; }
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.44); }
 
 .feed-normal .feed-image-container img {
   cursor: pointer;
   width: 100%; }
+
+.feed-add-comment {
+  padding: 0 13px; }
 
 .feed-add-comment-inner input.form-control {
   font-size: 12px;

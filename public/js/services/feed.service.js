@@ -135,6 +135,23 @@
           return deferred.promise;
         }
 
+        function deleteComment(feedId, commentId) {
+          var deferred = $q.defer();
+          $http({
+            method: 'POST',
+            url: '/feed/delete_comment',
+            data: {
+              feedId: feedId,
+              commentId: commentId
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
         return {
           create: create,
           getFeeds: getFeeds,
@@ -143,7 +160,8 @@
           addComment: addComment,
           getFeedDetail: getFeedDetail,
           getFeedsByUser: getFeedsByUser,
-          deleteFeed: deleteFeed
+          deleteFeed: deleteFeed,
+          deleteComment: deleteComment
         }
       }
     ])

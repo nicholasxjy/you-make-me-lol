@@ -58,24 +58,8 @@
                   </div>
                   <div sf-feed-action feed="ctrl.feed" current-user="ctrl.current_user"></div>
                   <div class="feed-comments">
-                    <div class="comments-more" ng-if="ctrl.feed.comments.length>3">
-                      <a href="">More Comments</a>
-                    </div>
-                    <div class="feed-comment-item" ng-repeat="comment in ctrl.feed.comments">
-                      <div class="comment-user-avatar">
-                        <a ui-sref="user({name: comment.creator.name})">
-                          <img ng-src="{{comment.creator.avatar}}" alt="" class="img-rounded">
-                        </a>
-                      </div>
-                      <div class="comment-content">
-                        <div class="top">
-                          <a class="comment-user-name" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a><span class="comment-time">{{comment.createdAt | sinceTime}}</span>
-                        </div>
-                        <div class="comment-words" ng-bind-html="comment.content">
-                        </div>
-                      </div>
-                    </div>
-                  <div class="feed-add-comment-wrap" sf-feed-add-comment feed="ctrl.feed" users-at="ctrl.usersAt"></div>
+                    <div sf-feed-comments feed="ctrl.feed" current-user="ctrl.current_user"></div>
+                    <div class="feed-add-comment-wrap" sf-feed-add-comment feed="ctrl.feed" users-at="ctrl.usersAt"></div>
                   </div>
                 </div>
               </div>

@@ -16,5 +16,8 @@ module.exports = {
       ];
       Comment.populate(newComment, options, cb);
     });
+  },
+  findById: function(id, cb) {
+    Comment.findById(id, cb);
   }
 }

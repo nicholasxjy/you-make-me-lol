@@ -7,6 +7,7 @@ router.post('/upload_file', middleware.checkUser, feed.uploadFile);
 router.post('/remove_file', middleware.checkUser, feed.removeFile);
 router.post('/create', middleware.checkUser, feed.create);
 router.post('/delete', middleware.checkUser, feed.delete);
+router.post('/delete_comment', middleware.checkUser, feed.deleteComment);
 
 router.post('/toggle_like', middleware.checkUser, feed.toggleLike);
 router.post('/add_comment', middleware.checkUser, feed.addComment);

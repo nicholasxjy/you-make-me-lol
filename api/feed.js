@@ -298,7 +298,47 @@ module.exports = {
         status: 'success'
       })
     })
+  },
+  deleteComment: function(req, res, next) {
+    var userId = req.session.user;
+    var feedId = req.body.feedId;
+    var commentId = req.body.commentId;
 
+    if (!feedId || !commentId) {
+      return res.sendStatus(403);
+    }
+    async.waterfall([
+      function(cb1) {
+        commentProxy.findById(commentId, function(err, comment) {
+          if (err) return cb1(err);
+          if (userId.toString() !== comment.creator.toString()) {
+            return res.sendStatus(403);
+          }
+          return cb1(null, comment);
+        })
+      },
+      function(comment, cb2) {
+        feedProxy.getFeedById(feedId, function(err, feed) {
+          if (err) return cb2(err);
+          feed.comments.pull(comment._id);
+          feed.save(function(err) {
+            if (err) return cb2(err);
+            return cb2(null, comment);
+          })
+        })
+      },
+      function(comment, cb3) {
+        comment.remove(function(err) {
+          if (err) return cb3(err);
+          return cb3(null);
+        })
+      }
+    ], function(err) {
+      if (err) return next(err);
+      return res.json({
+        status: 'success'
+      })
+    })
   },
   getFeeds: function(req, res, next) {
     var after = req.query.after;
@@ -482,7 +522,7 @@ module.exports = {
           if (err) return cb3(err);
           doc.feed.comments.push(comment._id);
           var _comment = {
-            id: comment._id,
+            _id: comment._id,
             creator: comment.creator,
             to_users: comment.to_users,
             content: comment.content,

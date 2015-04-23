@@ -456,8 +456,6 @@
               if (scope.commentWord === '') {
                 return;
               } else {
-                console.log(scope.feed)
-                console.log(scope.commentWord)
                 FeedService.addComment(scope.feed._id, scope.commentWord)
                   .then(function(data) {
                     if (data.status === 'success') {
@@ -739,6 +737,49 @@
                     $sfFeed.remove();
                   });
 
+                }, function(err) {
+                  console.log(err);
+                })
+            }
+          }
+        }
+      }
+    ])
+    .directive('sfFeedComments', [
+      'FeedService',
+      function(FeedService) {
+        return {
+          restrict: 'AE',
+          scope: {
+            feed: '=feed',
+            current_user: '=currentUser'
+          },
+          template: '<div class="comments-more" ng-if="feed.comments.length > 3">\
+            <a href="">More Comments</a>\
+          </div>\
+          <div class="feed-comment-item" ng-repeat="comment in feed.comments">\
+            <div class="comment-user-avatar">\
+              <a ui-sref="user({name: comment.creator.name})">\
+                <img ng-src="{{comment.creator.avatar}}" alt="" class="img-rounded">\
+              </a>\
+            </div>\
+            <div class="comment-content">\
+              <div class="top">\
+                <a class="comment-user-name" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a>\
+                <span class="comment-time">{{comment.createdAt | sinceTime}}</span>\
+                <i class="ti-trash pull-right" ng-if="comment.creator._id == current_user._id" ng-click="deleteComment(comment)"></i>\
+              </div>\
+              <div class="comment-words" ng-bind-html="comment.content">\
+              </div>\
+            </div>\
+          </div>',
+          link: function(scope, ele, attrs) {
+            scope.deleteComment = function(comment) {
+              FeedService.deleteComment(scope.feed._id, comment._id)
+                .then(function(data) {
+                  scope.feed.comments = scope.feed.comments.filter(function(item) {
+                    return item._id !== comment._id;
+                  })
                 }, function(err) {
                   console.log(err);
                 })
