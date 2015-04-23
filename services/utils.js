@@ -65,3 +65,14 @@ exports.checkFollowRelationByFollowees = function(user, currentUserId) {
   user.hasFollowed = hasFollowed;
   return user;
 };
+
+exports.checkFollowRelationOfCuser = function(users, cuserId) {
+  var _users = users.map(function(user) {
+    var hasFollowed = user.followees.some(function(followee) {
+      return followee.toString() === cuserId.toString();
+    });
+    user.hasFollowed = hasFollowed;
+    return user;
+  });
+  return _users;
+}

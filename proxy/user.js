@@ -78,6 +78,82 @@ module.exports = {
       if (err) return cb(err);
       return cb(null, result);
     })
-
+  },
+  getUnReadNotis: function(userId, cb) {
+    var fields = '_id notifications';
+    async.waterfall([
+      function(cb1) {
+        User.findById(userId, function(err, user) {
+          if (err) return cb1(err);
+          return cb1(null, user);
+        })
+      },
+      function(user, cb2) {
+        var opts = [
+          {path: 'notifications', model: 'Notification', match: {read: false}}
+        ];
+        User.populate(user, opts, function(err, p_user) {
+          if (err) return cb2(err);
+          return cb2(null, p_user);
+        })
+      },
+      function(p_user, cb3) {
+        var opts = [
+          {path: 'notifications.sender', model: 'User', select: '_id name avatar'}
+        ];
+        User.populate(p_user, opts, function(err, f_user) {
+          if (err) return cb3(err);
+          return cb3(null, f_user.notifications);
+        })
+      }
+    ], function(err, results) {
+      if (err) return cb(err);
+      return cb(null, results);
+    })
+  },
+  getUserFollowers: function(name, cb) {
+    async.waterfall([
+      function(cb1) {
+        User.findOne({name: name}, '_id name avatar bg_image gender location profile followers followees post_count', function(err, user) {
+          if (err) return cb1(err);
+          return cb1(null, user);
+        })
+      },
+      function(user, cb2) {
+        var opts = [
+          {path: 'followers', model: 'User', select: '_id name avatar bg_image gender location profile followers followees'}
+        ];
+        User.populate(user, opts, function(err, p_user) {
+          if (err) return cb2(err);
+          return cb2(null, p_user);
+        })
+      }
+    ], function(err, result) {
+      if (err) return cb(err);
+      return cb(null, result);
+    })
+  },
+  getUserFollowees: function(name, cb) {
+    async.waterfall([
+      function(cb1) {
+        User.findOne({name: name}, '_id name avatar bg_image gender location profile followers followees post_count', function(err, user) {
+          if (err) return cb1(err);
+          return cb1(null, user);
+        })
+      },
+      function(user, cb2) {
+        var opts = [
+          {path: 'followees', model: 'User', select: '_id name avatar bg_image gender location profile followers followees'}
+        ];
+        User.populate(user, opts, function(err, p_user) {
+          if (err) return cb2(err);
+          return cb2(null, p_user);
+        })
+      }
+    ], function(err, result) {
+      if (err) return cb(err);
+      return cb(null, result);
+    })
   }
+
 }

@@ -19,7 +19,7 @@
         </li>
         <li ui-sref-active="active">
           <a ui-sref="messages">Messages
-            <span class="badge noti-badge">{{ctrl.current_user.notifications.length}}</span>
+            <span class="badge noti-badge" ng-if="ctrl.current_user.notifications.length > 0">{{ctrl.current_user.notifications.length}}</span>
           </a>
         </li>
       </ul>
@@ -38,7 +38,7 @@
             <li class="dropdown-arrow user-arrow"></li>
             <li><a ui-sref="user({name: ctrl.current_user.name})">{{ctrl.current_user.name}}</a></li>
             <li><a ui-sref="setting">settings</a></li>
-            <li><a href="#">Something else here</a></li>
+            <li><a ui-sref="bookmarks">bookmarks</a></li>
             <li class="divider"></li>
             <li sf-logout></li>
           </ul>

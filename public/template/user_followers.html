@@ -1,0 +1,83 @@
+<div ng-controller="FollowerCtrl as ctrl" class="main">
+  <div ng-include="'template/partials/navbar.html'"></div>
+  <div class="main-content">
+    <div class="main-content-inner">
+      <div class="main-container">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="sf-card user-card">
+                <div class="card-top">
+                  <div class="user-card-banner" style="background-image: url('{{ctrl.user.bg_image}}')">
+                  </div>
+                  <div class="user-avatar">
+                    <img ng-src="{{ctrl.user.avatar}}" alt="Avatar" class="img-responsive img-circle">
+                  </div>
+                  <div class="user-link">
+                    <a ui-sref="user({name: ctrl.user.name})">{{ctrl.user.name}}</a>
+                  </div>
+                  <div class="user-other">
+                    <i class="ti-user"></i><span>{{ctrl.user.gender}}</span>
+                    <i class="ti-location-pin"></i><span>{{ctrl.user.location}}</span>
+                  </div>
+                  <div class="user-profile">
+                    {{ctrl.user.profile}}
+                  </div>
+                  <ul class="list-inline user-info-list">
+                    <li class="info-item">
+                      <a ui-sref="user({name: ctrl.user.name})">
+                        <div class="info-item-title">Posts</div>
+                        <div class="info-item-count">{{ctrl.user.post_count}}</div>
+                      </a>
+                    </li>
+                    <li class="info-item">
+                      <a ui-sref="followers({name: ctrl.user.name})">
+                        <div class="info-item-title">Followers</div>
+                        <div class="info-item-count">{{ctrl.user.followers.length}}</div>
+                      </a>
+                    </li>
+                    <li class="info-item">
+                      <a ui-sref="followees({name: ctrl.user.name})">
+                        <div class="info-item-title">Followees</div>
+                        <div class="info-item-count">{{ctrl.user.followees.length}}</div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <div class="row">
+                <div class="col-md-4" ng-repeat="follower in ctrl.user.followers">
+                  <div class="sf-card user-card sf-follow-card">
+                    <div class="card-top">
+                      <div class="user-card-banner" style="background-image: url('{{follower.bg_image}}')">
+                      </div>
+                      <div class="user-avatar">
+                        <img ng-src="{{follower.avatar}}" alt="Avatar" class="img-responsive img-circle">
+                      </div>
+                      <div class="user-link">
+                        <a ui-sref="user({name: follower.name})">{{follower.name}}</a>
+                      </div>
+                      <div class="user-other">
+                        <i class="ti-user"></i><span>{{follower.gender}}</span>
+                        <i class="ti-location-pin"></i><span>{{follower.location}}</span>
+                      </div>
+                      <div class="user-profile">
+                        {{follower.profile | overflowFormat}}
+                      </div>
+                      <div class="follow-action">
+                        <button class="btn btn-primary" ng-if="!follower.hasFollowed">Follow</button>
+                        <button class="btn btn-danger" ng-if="follower.hasFollowed">Unfollow</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

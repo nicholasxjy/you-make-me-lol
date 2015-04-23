@@ -1,1 +1,46 @@
-<h1>messages</h1>
+<div ng-controller="MessageCtrl as ctrl" class="main">
+  <div ng-include="'template/partials/navbar.html'"></div>
+  <div class="main-content">
+    <div class="main-content-inner">
+      <div class="main-container">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-3">
+              <div ng-include="'template/partials/side-bar-left.html'"></div>
+            </div>
+            <div class="col-md-6">
+              <div class="panel panel-default noti-panel">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Your unread messages
+                    <i ng-if="ctrl.notifications.length > 0" class="ti-check-box pull-right" ng-cool-tooltip="marked all read" ng-click="ctrl.markAllNoti()"></i>
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <p ng-if="ctrl.notifications.length <= 0">No unread notifications!</p>
+                  <ul class="list-group" ng-if="ctrl.notifications.length > 0">
+                    <li class="list-group-item" ng-class="{'hasRead': ctrl.markedAll}" ng-repeat="noti in ctrl.notifications">
+                      <a ui-sref="feed({id: noti.to_feed})" ng-if="noti.noti_type != 'FOLLOW'" class="noti-link"></a>
+                      <div class="media">
+                        <div class="media-left">
+                          <a ui-sref="user({name: noti.sender.name})">
+                            <img class="media-object img-rounded" ng-src="{{noti.sender.avatar}}" alt="avatar">
+                          </a>
+                        </div>
+                        <div class="media-body">
+                          <h4 class="media-heading">
+                            <a ui-sref="user({name: noti.sender.name})">{{noti.sender.name}}</a>
+                          </h4>
+                          <p ng-bind-html="noti.noti_text"></p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

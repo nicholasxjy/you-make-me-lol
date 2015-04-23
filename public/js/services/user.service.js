@@ -167,6 +167,64 @@
           return deferred.promise;
         }
 
+        function getNotifications() {
+          var deferred = $q.defer();
+          $http({
+            method: 'GET',
+            url: '/user/notifications'
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
+        function markAllNoti() {
+          var deferred = $q.defer();
+          $http({
+            method: 'POST',
+            url: '/user/mark_notis',
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
+        function getUserFollowers(name) {
+          var deferred = $q.defer();
+          $http({
+            method: 'GET',
+            url: '/user/followers',
+            params: {
+              name: name
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
+        function getUserFollowees(name) {
+          var deferred = $q.defer();
+          $http({
+            method: 'GET',
+            url: '/user/followees',
+            params: {
+              name: name
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
         return {
           signUp: signUp,
           currentUser: currentUser,
@@ -177,7 +235,11 @@
           getUserInfoByName: getUserInfoByName,
           getUserFollowersForAt: getUserFollowersForAt,
           follow: follow,
-          unfollow: unfollow
+          unfollow: unfollow,
+          getNotifications: getNotifications,
+          markAllNoti: markAllNoti,
+          getUserFollowers: getUserFollowers,
+          getUserFollowees: getUserFollowees
         }
       }
     ])

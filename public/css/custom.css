@@ -241,7 +241,11 @@ a {
 /**** noti *****/
 .noti-badge {
   background-color: #F34235;
-  color: #ffffff; }
+  color: #ffffff;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  line-height: 20px; }
 
 .noti-drop-menu {
   min-width: 300px; }
@@ -1355,6 +1359,47 @@ body {
   font-weight: 500;
   color: rgba(0, 0, 0, 0.44);
   cursor: pointer; }
+
+/***** noti ******/
+.noti-panel .panel-title {
+  padding: 6px;
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.44); }
+  .noti-panel .panel-title .ti-check-box {
+    cursor: pointer; }
+.noti-panel .list-group-item.hasRead {
+  background-color: #f5f5f5; }
+.noti-panel .media {
+  margin-top: 0; }
+.noti-panel .media-object {
+  width: 40px;
+  height: 40px; }
+.noti-panel .media-heading {
+  font-size: 14px;
+  font-weight: 500; }
+  .noti-panel .media-heading a {
+    color: rgba(0, 0, 0, 0.8); }
+.noti-panel .media-body p {
+  margin-bottom: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(0, 0, 0, 0.6); }
+.noti-panel .noti-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000; }
+
+/**** follow card ******/
+.sf-follow-card .user-profile {
+  height: 64px;
+  overflow: hidden; }
+
+.follow-action {
+  text-align: center; }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;

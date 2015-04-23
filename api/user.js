@@ -396,5 +396,59 @@ module.exports = {
         status: 'success'
       })
     })
+  },
+  getNotis: function(req, res, next) {
+    var userId = req.session.user;
+    UserProxy.getUnReadNotis(userId, function(err, docs) {
+      if (err) return next(err);
+      return res.json(docs);
+    })
+  },
+  markNotis: function(req, res, next) {
+    var userId = req.session.user;
+
+    UserProxy.getUserById(userId, null, function(err, user) {
+      if (err) return next(err);
+      NotiProxy.markAllNoti(user, function(err) {
+        if (err) return next(err);
+        return res.json({
+          status: 'success'
+        })
+      })
+    })
+  },
+  getFollowers: function(req, res, next) {
+    var name = req.query.name;
+    if (!name) {
+      return res.sendStatus(404);
+    }
+    UserProxy.getUserFollowers(name, function(err, user) {
+      if (err) return next(err);
+      user = user.toObject();
+      if (req.session && req.session.user) {
+        user.followers = utils.checkFollowRelationOfCuser(user.followers, req.session.user);
+      }
+      return res.json({
+        status: 'success',
+        user: user
+      })
+    })
+  },
+  getFollowees: function(req, res, next) {
+    var name = req.query.name;
+    if (!name) {
+      return res.sendStatus(404);
+    }
+    UserProxy.getUserFollowees(name, function(err, user) {
+      if (err) return next(err);
+      user = user.toObject();
+      if (req.session && req.session.user) {
+        user.followees = utils.checkFollowRelationOfCuser(user.followees, req.session.user);
+      }
+      return res.json({
+        status: 'success',
+        user: user
+      })
+    })
   }
 }

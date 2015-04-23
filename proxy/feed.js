@@ -82,9 +82,6 @@ module.exports = {
       function(cb1) {
         Feed.findById(id, function(err, feed) {
           if (err) return cb1(err);
-          if (!feed) {
-            return cb1(new Error('Feed not found'));
-          }
           return cb1(null, feed);
         })
       },

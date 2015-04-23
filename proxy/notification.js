@@ -8,5 +8,8 @@ module.exports = {
     noti.sender = obj.sender;
     noti.to_feed = obj.feed;
     noti.save(cb);
+  },
+  markAllNoti: function(user, cb) {
+    Noti.update({_id: {'$in': user.notifications}}, {read: true}, {multi: true}, cb);
   }
 }

@@ -88,6 +88,10 @@ var User = new Schema({
     type: ObjectId,
     ref: 'Notification'
   }],
+  bookmarks: [{
+    type: ObjectId,
+    ref: 'Feed'
+  }],
   createdAt: {
     type: Date,
     default: Date.now

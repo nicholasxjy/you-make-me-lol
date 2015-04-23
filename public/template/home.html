@@ -11,7 +11,7 @@
                   <div class="user-card-banner" style="background-image: url('{{ctrl.current_user.bg_image}}')">
                   </div>
                   <div class="user-avatar">
-                    <img src="{{ctrl.current_user.avatar}}" alt="Avatar" class="img-responsive img-circle">
+                    <img ng-src="{{ctrl.current_user.avatar}}" alt="Avatar" class="img-responsive img-circle">
                   </div>
                   <div class="user-link">
                     <a ui-sref="user({name: ctrl.current_user.name})">{{ctrl.current_user.name}}</a>
@@ -25,19 +25,19 @@
                   </div>
                   <ul class="list-inline user-info-list">
                     <li class="info-item">
-                      <a href="">
+                      <a ui-sref="user({name: ctrl.current_user.name})">
                         <div class="info-item-title">Posts</div>
                         <div class="info-item-count">{{ctrl.current_user.post_count}}</div>
                       </a>
                     </li>
                     <li class="info-item">
-                      <a href="">
+                      <a ui-sref="followers({name: ctrl.current_user.name})">
                         <div class="info-item-title">Followers</div>
                         <div class="info-item-count">{{ctrl.current_user.followers.length}}</div>
                       </a>
                     </li>
                     <li class="info-item">
-                      <a href="">
+                      <a ui-sref="followees({name: ctrl.current_user.name})">
                         <div class="info-item-title">Followees</div>
                         <div class="info-item-count">{{ctrl.current_user.followees.length}}</div>
                       </a>

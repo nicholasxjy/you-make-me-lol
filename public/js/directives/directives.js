@@ -704,6 +704,10 @@
                 })
             };
 
+            scope.bookmark = function(feed) {
+              
+            }
+
             scope.delete = function(feed) {
               FeedService.deleteFeed(feed._id)
                 .then(function(data) {
