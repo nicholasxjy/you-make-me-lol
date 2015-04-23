@@ -17,68 +17,10 @@
         <li ui-sref-active="active">
           <a ui-sref="explore">Explore</a>
         </li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Messages
-            <span class="badge noti-badge">{{ctrl.current_user.notifications.length}}</span></a>
-          <ul class="dropdown-menu noti-drop-menu" role="menu">
-            <li class="dropdown-arrow noti-arrow"></li>
-            <li>
-              <div class="check-unread-notis">
-                Marked all unread notifications <i class="ti-check-box pull-right"></i>
-              </div>
-            </li>
-            <li class="divider"></li>
-            <li class="noti-list-item" ng-repeat="noti in ctrl.current_user.notifications">
-              <article class="noti-item-{{$index}}" ng-if="noti.noti_type=='LIKE'">
-                <a class="noti-item-link" ui-sref="feed({id: noti.to_feed})"></a>
-                <div class="media">
-                  <div class="media-left">
-                    <a ui-sref="user({name: noti.sender.name})">
-                      <img class="media-object img-responsive img-rounded" ng-src="{{noti.sender.avatar}}">
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <h4 class="media-heading">{{noti.sender.name}}<span class="noti-time pull-right">{{noti.createdAt | date: 'yyyy-MM-dd HH:mm'}}</span></h4>
-                    <p>{{noti.noti_text}}</p>
-                  </div>
-                </div>
-              </article>
-              <article class="noti-item-{{$index}}" ng-if="noti.noti_type=='FOLLOW'">
-                <a class="noti-item-link" ui-sref="user({name: noti.sender.name})"></a>
-                <div class="media">
-                  <div class="media-left">
-                    <a ui-sref="user({name: noti.sender.name})">
-                      <img class="media-object img-responsive img-rounded" ng-src="{{noti.sender.avatar}}">
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <h4 class="media-heading">{{noti.sender.name}}<span class="noti-time pull-right">{{noti.createdAt | date: 'yyyy-MM-dd HH:mm'}}</span></h4>
-                    <p>{{noti.noti_text}}</p>
-                  </div>
-                </div>
-              </article>
-              <article class="noti-item-{{$index}}" ng-if="noti.noti_type=='COMMENT'">
-                <a class="noti-item-link" ui-sref="feed({id: noti.to_feed})"></a>
-                <div class="media">
-                  <div class="media-left">
-                    <a ui-sref="user({name: noti.sender.name})">
-                      <img class="media-object img-responsive img-rounded" ng-src="{{noti.sender.avatar}}">
-                    </a>
-                  </div>
-                  <div class="media-body">
-                    <h4 class="media-heading">{{noti.sender.name}}<span class="noti-time pull-right">{{noti.createdAt | date: 'yyyy-MM-dd HH:mm'}}</span></h4>
-                    <p ng-bind-html="noti.noti_text"></p>
-                  </div>
-                </div>
-              </article>
-            </li>
-            <li class="divider"></li>
-            <li>
-              <div class="see-all-noti">
-                <a ui-sref="messages">see all messages</a>
-              </div>
-            </li>
-          </ul>
+        <li ui-sref-active="active">
+          <a ui-sref="messages">Messages
+            <span class="badge noti-badge">{{ctrl.current_user.notifications.length}}</span>
+          </a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">

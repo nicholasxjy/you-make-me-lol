@@ -67,7 +67,7 @@ module.exports = {
       },
       function(user, cb2) {
         var opts = [
-          {path: 'notifications', model: 'Notification', match: {read: false}}
+          {path: 'notifications', model: 'Notification', match: {read: false}, select: '_id read'}
         ];
         User.populate(user, opts, function(err, p_user) {
           if (err) return cb2(err);
@@ -76,10 +76,7 @@ module.exports = {
       }
     ], function(err, result) {
       if (err) return cb(err);
-      var opts = [
-        {path: 'notifications.sender', model:'User', select: '_id name avatar'}
-      ];
-      User.populate(result, opts, cb);
+      return cb(null, result);
     })
 
   }

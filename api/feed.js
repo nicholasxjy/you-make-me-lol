@@ -260,6 +260,46 @@ module.exports = {
       })
     }
   },
+  delete: function(req, res, next) {
+    var userId = req.session.user;
+    var feedId = req.body.feedId;
+    if (!feedId) {
+      return res.sendStatus(403);
+    }
+    async.waterfall([
+      function(cb1) {
+        feedProxy.getFeedById(feedId, function(err, feed) {
+          if (err) return cb1(err);
+          if (userId.toString() !== feed.creator.toString()) {
+            return res.sendStatus(403);
+          }
+          feed.remove(function(err) {
+            if (err) return cb1(err);
+            return cb1(null);
+          })
+        })
+      },
+      function(cb2) {
+        UserProxy.getUserById(userId, 'post_count', function(err, user) {
+          if (err) return cb2(err);
+          user.post_count -= 1;
+          if (user.post_count < 0) {
+            user.post_count = 0;
+          }
+          user.save(function(err) {
+            if (err) return cb2(err);
+            return cb2(null);
+          })
+        })
+      }
+    ], function(err) {
+      if (err) return next(err);
+      return res.json({
+        status: 'success'
+      })
+    })
+
+  },
   getFeeds: function(req, res, next) {
     var after = req.query.after;
     var query = null;

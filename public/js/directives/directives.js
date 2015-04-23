@@ -663,7 +663,8 @@
     .directive('sfFeedActionMore', [
       'FeedService',
       'UserService',
-      function(FeedService, UserService) {
+      'ngCoolNoti',
+      function(FeedService, UserService, ngCoolNoti) {
         return {
           retrict: 'AE',
           scope: {
@@ -674,15 +675,15 @@
                       <a class="dropdown-toggle ti-angle-down" data-toggle="dropdown" role="button" aria-expanded="false"></a>\
                       <ul class="dropdown-menu" role="menu">\
                         <li class="dropdown-arrow feed-drop-arrow"></li>\
-                        <li><a ng-if="(current_user._id != feed.creator._id) && feed.creator.hasFollowed" ng-click="unfollow(feed)">unfollow {{feed.creator.name}}</a></li>\
-                        <li><a ng-if="(current_user._id != feed.creator._id) && !feed.creator.hasFollowed" ng-click="follow(feed)">follow {{feed.creator.name}}</a></li>\
-                        <li><a ng-if="current_user._id == feed.creator._id">delete post</a></li>\
-                        <li><a >share feed</a></li>\
+                        <li ng-if="(current_user._id != feed.creator._id) && feed.creator.hasFollowed"><a ng-click="unfollow(feed)">unfollow {{feed.creator.name}}</a></li>\
+                        <li ng-if="(current_user._id != feed.creator._id) && !feed.creator.hasFollowed"><a ng-click="follow(feed)">follow {{feed.creator.name}}</a></li>\
+                        <li ng-if="current_user._id == feed.creator._id"><a ng-click="delete(feed)">delete post</a></li>\
+                        <li><a ng-click="share(feed)">share feed</a></li>\
+                        <li><a ng-click="bookmark(feed)">bookmark feed</a></li>\
                         <li><a ui-sref="feed({id: feed._id})">view detail</a></li>\
                       </ul>\
                     </div>',
           link: function(scope, ele, attrs) {
-            console.log(scope.feed)
             scope.follow = function(feed) {
               UserService.follow(feed.creator._id)
                 .then(function(data) {
@@ -704,6 +705,44 @@
                   }
                 })
             };
+
+            scope.delete = function(feed) {
+              FeedService.deleteFeed(feed._id)
+                .then(function(data) {
+                  // cound down post count of currentUser
+                  scope.current_user.post_count -= 1;
+
+                  //here modify the dom
+
+                  var $sfFeed = $(ele[0]).parents('.sf-feed');
+                  var tpl = '<div class="feed-delete-overlay">\
+                    <div class="delete-wrap">\
+                    <div class="delete-icon">\
+                      <i class="ti-check"></i>\
+                    </div>\
+                    <div class="delete-tip">\
+                      Post deleted\
+                    </div>\
+                    <div class="remove-feed">\
+                      <a class="remove-feed-link">dismiss</a>\
+                    </div>\
+                    </div>\
+                  </div>';
+                  $sfFeed.prepend(tpl);
+                  var $wrap = $sfFeed.find('.delete-wrap');
+                  var height = $wrap.height();
+                  var width = $wrap.width();
+                  $wrap.css('margin-top', (-height/2) + 'px');
+                  $wrap.css('margin-left', (-width/2) + 'px');
+                  var $removelink = $sfFeed.find('.remove-feed-link');
+                  $removelink.on('click', function() {
+                    $sfFeed.remove();
+                  });
+
+                }, function(err) {
+                  console.log(err);
+                })
+            }
           }
         }
       }

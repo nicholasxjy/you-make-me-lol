@@ -1003,7 +1003,9 @@ mentio-menu .dropdown-menu {
   border: 1px solid #d3d3d3;
   background-color: #ffffff;
   margin-bottom: 30px;
-  border-bottom-width: 2px; }
+  border-bottom-width: 2px;
+  position: relative;
+  z-index: 500; }
 
 .feed-top {
   padding: 15px 10px; }
@@ -1183,6 +1185,37 @@ mentio-menu .dropdown-menu {
 .feed-add-comment-inner input.form-control {
   font-size: 12px;
   color: rgba(0, 0, 0, 0.8); }
+
+.feed-delete-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 510;
+  background-color: #f5f5f5; }
+  .feed-delete-overlay .delete-wrap {
+    position: absolute;
+    z-index: 510;
+    top: 50%;
+    left: 50%; }
+  .feed-delete-overlay .delete-icon {
+    text-align: center;
+    margin-top: 20px;
+    color: #4CAF50;
+    font-size: 50px;
+    font-weight: 700; }
+  .feed-delete-overlay .delete-tip {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.8); }
+  .feed-delete-overlay .remove-feed {
+    text-align: center;
+    margin-top: 10px; }
+    .feed-delete-overlay .remove-feed a {
+      font-size: 14px; }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;

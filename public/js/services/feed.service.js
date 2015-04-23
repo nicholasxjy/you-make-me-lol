@@ -119,6 +119,22 @@
           return deferred.promise;
         }
 
+        function deleteFeed(feedId) {
+          var deferred = $q.defer();
+          $http({
+            method: 'POST',
+            url: '/feed/delete',
+            data: {
+              feedId: feedId
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
         return {
           create: create,
           getFeeds: getFeeds,
@@ -126,7 +142,8 @@
           toggleLike: toggleLike,
           addComment: addComment,
           getFeedDetail: getFeedDetail,
-          getFeedsByUser: getFeedsByUser
+          getFeedsByUser: getFeedsByUser,
+          deleteFeed: deleteFeed
         }
       }
     ])
