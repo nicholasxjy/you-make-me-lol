@@ -8,7 +8,7 @@ exports.checkFeedsLike = function(feeds, userId) {
     feed = feed.toObject();
     feed.likes_count = feed.likes.length;
     feed.isLike = isLike;
-    feed.likes = feed.likes.slice(-5);
+    feed.likes = feed.likes.slice(-6);
     return feed;
   });
   return _feeds;

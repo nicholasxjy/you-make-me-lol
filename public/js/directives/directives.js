@@ -767,8 +767,8 @@
             feed: '=feed',
             current_user: '=currentUser'
           },
-          template: '<div class="comments-more" ng-if="feed.comments.length > 3">\
-            <a href="">More Comments</a>\
+          template: '<div class="comments-more" ng-if="feed.comments.length > 0">\
+            <a ng-click="loadMoreComments()">More Comments</a>\
           </div>\
           <div class="feed-comment-item" ng-repeat="comment in feed.comments">\
             <div class="comment-user-avatar">\
@@ -787,6 +787,14 @@
             </div>\
           </div>',
           link: function(scope, ele, attrs) {
+
+            function checkCommentsExist(comment) {
+              var isExist = scope.feed.comments.some(function(item) {
+                return item._id === comment._id;
+              });
+              return isExist;
+            }
+
             scope.deleteComment = function(comment) {
               FeedService.deleteComment(scope.feed._id, comment._id)
                 .then(function(data) {
@@ -795,6 +803,20 @@
                   })
                 }, function(err) {
                   console.log(err);
+                })
+            }
+
+            scope.loadMoreComments = function() {
+              var count = scope.feed.comments.length;
+              FeedService.loadMoreComments(scope.feed._id, count)
+                .then(function(data) {
+                  data.comments.forEach(function(comment) {
+                    if(!checkCommentsExist(comment)) {
+                      scope.feed.comments.push(comment);
+                    }
+                  }, function(err) {
+                    console.log(err);
+                  })
                 })
             }
           }

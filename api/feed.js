@@ -496,13 +496,13 @@ module.exports = {
         createdAt: {$lt: after}
       };
     }
-
     var options = {
       sort: {
         createdAt: '-1'
       },
-      limit: 30
+      limit: 10
     }
+
     feedProxy.getFeeds(query, options, function(err, feeds) {
       if (err) return next(err);
 
@@ -542,7 +542,7 @@ module.exports = {
         feed.creator = utils.checkFollowRelationByFollowees(feed.creator, req.session.user);
       }
       feed.likes_count = feed.likes.length;
-      feed.likes = feed.likes.slice(-6);
+      feed.likes = feed.likes.slice(-10);
       res.json(feed);
     })
   },
@@ -729,5 +729,33 @@ module.exports = {
         })
       }
     ])
+  },
+  moreComments: function(req, res, next) {
+    var feedId = req.query.feedId;
+    var skip = req.query.skip;
+    if (!feedId) {
+      return res.sendStatus(404);
+    }
+    async.waterfall([
+      function(cb1) {
+        feedProxy.getFeedById(feedId, function(err, feed) {
+          if (err) return cb1(err);
+          if (!feed) return res.sendStatus(404);
+          return cb1(null, feed);
+        })
+      },
+      function(feed, cb2) {
+        feedProxy.moreComments(feed, skip, function(err, pfeed) {
+          if (err) return cb2(err);
+          return cb2(null, pfeed.comments);
+        })
+      }
+    ], function(err, results) {
+      if (err) return next(err);
+      return res.json({
+        status: 'success',
+        comments: results
+      })
+    })
   }
 }

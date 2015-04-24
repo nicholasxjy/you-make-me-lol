@@ -47,7 +47,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              <div class="sf-feed slide-down" ng-repeat="feed in ctrl.feeds">
+              <div class="sf-feed card" ng-repeat="feed in ctrl.feeds">
                 <div class="sf-feed-inner">
                   <div class="feed-top">
                     <div class="user-avatar">
@@ -96,7 +96,7 @@
                   </div>
                   <div sf-feed-action feed="feed" current-user="ctrl.current_user"></div>
                   <div class="feed-comments">
-                    <div sf-feed-comments feed="feed" current-user="ctrl.current_user"></div>
+                    <div class="sf-comments-scroll" sf-feed-comments feed="feed" current-user="ctrl.current_user"></div>
                     <div class="feed-add-comment-wrap" sf-feed-add-comment feed="feed" users-at="ctrl.usersAt"></div>
                   </div>
                 </div>

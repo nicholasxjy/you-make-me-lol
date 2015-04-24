@@ -833,13 +833,6 @@ body.create-open {
     padding-right: 20px;
     margin-bottom: 15px;
     padding-left: 10px; }
-    .feed-detail-intro .feed-detail-likes .like-tip {
-      font-size: 16px;
-      font-weight: 400;
-      color: rgba(0, 0, 0, 0.44);
-      display: table-cell;
-      vertical-align: top;
-      padding-top: 5px; }
     .feed-detail-intro .feed-detail-likes ul {
       display: table-cell;
       vertical-align: top;
@@ -849,8 +842,6 @@ body.create-open {
       .feed-detail-intro .feed-detail-likes .like-item img {
         width: 30px;
         height: 30px; }
-  .feed-detail-intro .feed-likes-more {
-    text-decoration: underline; }
   .feed-detail-intro .fd-add-comment-wrap {
     padding: 0 10px;
     margin-top: 20px;
@@ -859,6 +850,9 @@ body.create-open {
     padding: 15px 10px;
     margin-top: 15px;
     background-color: #f5f5f5; }
+    .feed-detail-intro .feed-detail-comments .comments-more {
+      padding-left: 0;
+      padding-bottom: 10px; }
     .feed-detail-intro .feed-detail-comments .feed-comment-item {
       margin-bottom: 15px; }
   .feed-detail-intro .comment-user-avatar {
@@ -1196,8 +1190,14 @@ mentio-menu .dropdown-menu {
           color: #02A8F3;
           text-decoration: none; }
 
+.sf-comments-scroll {
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: auto; }
+
 .comments-more {
-  padding-left: 15px; }
+  padding-left: 15px;
+  padding-bottom: 10px; }
   .comments-more a {
     font-size: 14px;
     font-weight: 500;
@@ -3204,27 +3204,27 @@ tags-input .autocomplete .suggestion-item em {
     background-image: linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
 }
  */
-.setting-content {
-  background-color: #ffffff;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  background-clip: padding-box;
-  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.135);
-  -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.135);
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.135);
-  padding: 20px 40px;
-  margin-bottom: 30px; }
-
-.setting-section .top-tip {
-  padding-bottom: 5px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
-  .setting-section .top-tip h1 {
+.setting-section .panel-heading {
+  padding-bottom: 10px; }
+  .setting-section .panel-heading h1 {
     margin-top: 0;
     font-size: 24px;
-    margin-bottom: 0; }
+    margin-bottom: 0;
+    color: rgba(0, 0, 0, 0.6); }
+  .setting-section .panel-heading .subtitle {
+    color: rgba(0, 0, 0, 0.5); }
+.setting-section .form-control {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6); }
 .setting-section .form-wrap {
   margin-top: 20px; }
+.setting-section .setting-tip {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.44);
+  padding-top: 3px;
+  padding-left: 3px; }
 
 .account-section {
   padding-bottom: 10px;

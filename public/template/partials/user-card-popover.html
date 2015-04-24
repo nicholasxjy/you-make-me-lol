@@ -3,7 +3,7 @@
     <div class="user-card-banner" style="background-image: url('{{user.bg_image}}')">
     </div>
     <div class="user-avatar">
-      <img src="{{user.avatar}}" alt="Avatar" class="img-responsive img-circle">
+      <img ng-src="{{user.avatar}}" alt="Avatar" class="img-responsive img-circle">
     </div>
     <div class="user-link">
       <a ui-sref="user({name: user.name})">{{user.name}}</a>

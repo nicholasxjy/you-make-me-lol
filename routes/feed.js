@@ -15,4 +15,6 @@ router.get('/getfeeds', feed.getFeeds);
 router.get('/detail', feed.getDetail);
 router.get('/user_feeds', feed.getUserFeeds);
 
+router.get('/more_comments', feed.moreComments);
+
 module.exports = router;

@@ -152,6 +152,23 @@
           return deferred.promise;
         }
 
+        function loadMoreComments(feedId, count) {
+          var deferred = $q.defer();
+          $http({
+            method: 'GET',
+            url: '/feed/more_comments',
+            params: {
+              feedId: feedId,
+              skip: count
+            }
+          }).success(function(data, status, headers, config) {
+            deferred.resolve(data);
+          }).error(function(data, status, headers, config) {
+            deferred.reject(data);
+          });
+          return deferred.promise;
+        }
+
         return {
           create: create,
           getFeeds: getFeeds,
@@ -161,7 +178,8 @@
           getFeedDetail: getFeedDetail,
           getFeedsByUser: getFeedsByUser,
           deleteFeed: deleteFeed,
-          deleteComment: deleteComment
+          deleteComment: deleteComment,
+          loadMoreComments: loadMoreComments
         }
       }
     ])

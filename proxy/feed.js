@@ -90,7 +90,7 @@ module.exports = {
         var options = [
           {path: 'attach_files', model: 'File', select: 'caption url title singer_name cover_url'},
           {path: 'creator', model: 'User', select: '_id name avatar followers followees'},
-          {path: 'comments', model: 'Comment', options: {sort: {'createdAt': -1}, limit: 10}, select:'_id creator to_user content createdAt'},
+          {path: 'comments', model: 'Comment', options: {sort: {'createdAt': -1}, limit: 9}, select:'_id creator to_user content createdAt'},
           {path: 'likes', model: 'User', select: '_id name avatar'},
           {path: 'tags', model: 'Tag', select: 'text'}
         ];
@@ -112,6 +112,20 @@ module.exports = {
     ], function(err, feed) {
       if (err) return cb(err);
       return cb(null, feed);
+    })
+  },
+  moreComments: function(feed, skip, cb) {
+    skip = parseInt(skip, 10);
+    var opts = [
+      {path: 'comments', model: 'Comment', options: {sort: {'createdAt': -1}, skip: skip, limit: 5}, select:'_id creator to_user content createdAt'}
+    ];
+    Feed.populate(feed, opts, function(err, pfeed) {
+      if (err) return cb(err);
+      var opt2 = [
+        {path: 'comments.creator', model: 'User', select: '_id name avatar'},
+        {path: 'comments.to_user', model: 'User', select: '_id name avatar'}
+      ];
+      Feed.populate(pfeed, opt2, cb);
     })
   },
   getCountByUser: function(userId, cb) {
