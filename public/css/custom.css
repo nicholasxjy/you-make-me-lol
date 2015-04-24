@@ -3614,6 +3614,8 @@ tags-input .autocomplete .suggestion-item em {
   border-bottom: 1px solid #f6f6f6; }
   .user-card .user-info-list .info-item {
     padding: 0 10px; }
+    .user-card .user-info-list .info-item a {
+      text-decoration: none; }
   .user-card .user-info-list .info-item-title {
     font-size: 13px;
     font-weight: 500;
