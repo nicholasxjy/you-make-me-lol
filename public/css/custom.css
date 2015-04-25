@@ -73,23 +73,9 @@
     width: 250px;
     margin: 0 auto;
     padding: 0 10px; }
-  .auth-content .sf-form-group {
-    padding: 5px 0;
-    margin-bottom: 15px; }
-  .auth-content .sf-form-control {
-    width: 230px;
-    height: 38px;
-    border: 1px solid #DDE5EE;
-    outline: none;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    background-clip: padding-box;
+  .auth-content .form-control {
     background-color: transparent;
-    padding: 7px 8px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #BEC3C7; }
+    color: rgba(255, 255, 255, 0.6); }
   .auth-content .account-tip {
     margin-top: 15px;
     font-size: 12px;
