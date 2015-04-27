@@ -8,6 +8,8 @@ var qiniuService = require('../services/qiniu');
 var config = require('../config');
 var utils = require('../services/utils');
 var NotiProxy = require('../proxy/notification');
+// var socketService = require('../services/socket');
+
 
 module.exports = {
   create: function(req, res, next) {
@@ -83,6 +85,11 @@ module.exports = {
       UserProxy.create(name, email, password, function(err, new_user) {
         if (err) return next(err);
         sess.user = new_user._id;
+
+        // socketService(function(socket) {
+        //   sess.socket = socket;
+        // });
+
         //create cookie and send active email
         var token = CryptService.md5Hash(new_user.email+config.session_secret);
         EmailService.sendActiveEmail(new_user.email, token, new_user._id);

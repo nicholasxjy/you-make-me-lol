@@ -1,12 +1,14 @@
 .DS_Store
 node_modules
 public/scss
-public/images
+
 public/dist
 public/lib
 public/media
-public/fonts
+
 .sass-cache
 config.js
 .git
 npm-debug.log
+
+views/index.html_bak
