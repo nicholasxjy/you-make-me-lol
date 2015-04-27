@@ -15,7 +15,7 @@ var source_dir = {
 
 
 var build_src = {
-  js: [
+  jsdev: [
     'public/lib/jquery/dist/jquery.js',
     'public/lib/bootstrap/dist/js/bootstrap.js',
     'public/js/custom-module/id3-minimized.js',
@@ -25,7 +25,9 @@ var build_src = {
     'public/lib/ng-file-upload/angular-file-upload-shim.js',
     'public/lib/ng-file-upload/angular-file-upload.js',
     'public/lib/ment.io/dist/mentio.js',
-    'public/lib/ng-tags-input/ng-tags-input.js',
+    'public/lib/ng-tags-input/ng-tags-input.js'
+  ],
+  jscus: [
     'public/js/custom-module/ng-cool-noti.js',
     'public/js/custom-module/ng-cool-video.js',
     'public/js/custom-module/ng-cool-audio.js',
@@ -81,8 +83,17 @@ gulp.task('compress',['concat'],function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest('public/build'));
 
-  return gulp.src(build_src.js)
-    .pipe(concat('build.js'))
+  gulp.src(build_src.jsdev)
+    .pipe(concat('common.js'))
+    .pipe(ngAnnotate())
+    .pipe(uglify())
+    .pipe(rename({
+      suffix: '.min'
+    }))
+    .pipe(gulp.dest('public/build'));
+
+  return gulp.src(build_src.jscus)
+    .pipe(concat('custom.js'))
     .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(rename({
