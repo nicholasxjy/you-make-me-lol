@@ -1,20 +1,66 @@
 var gulp = require('gulp');
-var minifycss = require('gulp-minify-css');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var concat = require('gulp-concat');
-var imagemin = require('gulp-imagemin');
-var sass = require('gulp-ruby-sass');
-var pkg = require('./package.json');
-var ngAnnotate = require('gulp-ng-annotate');
+var browserSync = require('browser-sync').create();
+var reload = browserSync.reload;
+var $ = require('gulp-load-plugins')();
+var del = require('del');
+var runSquence = require('run-sequence');
 
+
+// optimize images
+gulp.task('images', function() {
+  return gulp.src('public/images/*')
+    .pipe($.changed('public/build/images'))
+    .pipe($.imagemin({
+      optimizationLevel: 3,
+      progressive: true,
+      interlaced: true
+    }))
+    .pipe(gulp.dest('public/build/images'));
+});
+
+//browser sync
+gulp.task('browser-sync', function() {
+  browserSync.init({
+    proxy: 'http://localhost:3000'
+  })
+})
+
+// minify js
+gulp.task('minify-js', function() {
+  gulp.src('public/dist/js/*.js')
+    .pipe($.uglify())
+    .pipe($.rename({suffix: '.min'}))
+    .pipe(gulp.dest('public/build/js'));
+})
+
+//minify css
+gulp.task('minify-css', function() {
+  gulp.src('public/dist/css/*.css')
+    .pipe($.minifyCss({keepBreaks: true}))
+    .pipe($.rename({suffix: '.min'}))
+    .pipe(gulp.dest('public/build/css'));
+})
+
+//copy fonts to build
+gulp.task('fonts', function() {
+  gulp.src('public/fonts/*.{ttf,woff,eof,eot,svg}')
+    .pipe($.changed('public/build/fonts'))
+    .pipe(gulp.dest('public/build/fonts'))
+
+})
+
+// clean build dir
+gulp.task('clean:build', function(cb) {
+  del([
+    'public/build'
+  ], cb)
+})
+
+
+
+// dist task
 var source_dir = {
   sass: 'public/scss/',
-  images: 'public/images/*'
-};
-
-
-var build_src = {
   jsdev: [
     'public/lib/jquery/dist/jquery.js',
     'public/lib/bootstrap/dist/js/bootstrap.js',
@@ -50,61 +96,92 @@ var build_src = {
     'public/js/controllers/followee.ctrl.js'
   ]
 }
+//concat js css
+gulp.task('concat', ['sass'], function() {
+  gulp.src(source_dir.jsdev)
+    .pipe($.concat('common.js'))
+    .pipe(gulp.dest('public/dist/js'))
 
+  gulp.src(source_dir.jscus)
+    .pipe($.concat('custom.js'))
+    .pipe(gulp.dest('public/dist/js'))
 
-var dist_dir = 'public/dist';
+  return gulp.src('public/css/*.css')
+    .pipe($.concat('build.css'))
+    .pipe(gulp.dest('public/dist/css'))
+})
 
+//sass task
 gulp.task('sass', function() {
-  return sass(source_dir.sass)
-    .on('error', function(err) {
-      console.log('Error: ', err.message);
-    })
-    .pipe(gulp.dest(dist_dir+'/css'))
+  return gulp.src('./public/scss/build.scss')
+    .pipe($.sourcemaps.init())
+    .pipe($.sass({
+      style: 'expanded'
+    }))
+    .on('error', $.notify.onError({
+      title: 'Sass failed',
+      message: 'Error compile scss'
+    }))
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest('public/css'))
+    .pipe(reload({
+      stream: true
+    }))
+    .pipe($.notify({
+      message: 'css compiled!!!!'
+    }))
 });
 
 
-gulp.task('concat', ['sass'], function() {
-  return gulp.src(dist_dir+'/css/*.css')
-    .pipe(concat('custom.css'))
-    .pipe(gulp.dest('public/css/'));
+//move fonts images for dist
+gulp.task('dist:moveimage', function() {
+  gulp.src('public/images/*')
+    .pipe($.changed('public/dist/images'))
+    .pipe($.imagemin({
+      optimizationLevel: 3,
+      progressive: true,
+      interlaced: true
+    }))
+    .pipe(gulp.dest('public/dist/images'));
+})
+
+gulp.task('dist:movefonts', function() {
+  gulp.src('public/fonts/*.{ttf,woff,eof,eot,svg}')
+    .pipe($.changed('public/dist/fonts'))
+    .pipe(gulp.dest('public/dist/fonts'))
+})
+
+
+gulp.task('reload', function() {
+  browserSync.reload();
 })
 
 gulp.task('watch', function() {
-  gulp.watch(source_dir.sass+'*', ['concat']);
-});
+  gulp.watch('public/scss/*.scss', ['concat']);
+  gulp.watch(['public/js/*.js', 'public/js/**/*.js'], ['concat']);
+  gulp.watch(['views/*.html', 'public/template/**/*.html', 'public/template/*.js'], ['reload']);
+})
 
-
-
-
-gulp.task('compress',['concat'],function() {
-  gulp.src('public/css/*.css')
-    .pipe(concat('build.css'))
-    .pipe(minifycss({compatibility: 'ie8'}))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest('public/build'));
-
-  gulp.src(build_src.jsdev)
-    .pipe(concat('common.js'))
-    .pipe(ngAnnotate())
-    .pipe(uglify())
-    .pipe(rename({
-      suffix: '.min'
-    }))
-    .pipe(gulp.dest('public/build'));
-
-  return gulp.src(build_src.jscus)
-    .pipe(concat('custom.js'))
-    .pipe(ngAnnotate())
-    .pipe(uglify())
-    .pipe(rename({
-      suffix: '.min'
-    }))
-    .pipe(gulp.dest('public/build'));
+gulp.task('default', function(cb) {
+  runSquence(
+    'concat',
+    'dist:moveimage',
+    'dist:movefonts',
+    'browser-sync',
+    'watch',
+    cb)
 })
 
 
 
-
-gulp.task('default', ['concat', 'watch']);
-
-gulp.task('build', ['compress']);
+//build to production
+gulp.task('build', function(cb) {
+  runSquence(
+    'clean:build',
+    'concat',
+    'images',
+    'minify-js',
+    'minify-css',
+    'fonts',
+    cb)
+})
