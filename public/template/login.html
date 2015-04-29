@@ -1,45 +1,51 @@
 <div class="full-page login-page jumbotron" ng-controller="LoginCtrl as loginCtrl">
   <div class="sf-overlay"></div>
   <div class="auth-content">
-    <div class="header">
-      <h1>Welcome to Friendfies.</h1>
-      <div class="subtitle">
-        Connect with your friends — and other fascinating people. Get in-the-moment
-        updates on the things that interest you. And watch events unfold, in real time, from every angle.
-      </div>
-    </div>
-    <div class="form-wrap">
-      <div class="form-content">
-        <form novalidate name="loginForm" ng-submit="loginCtrl.login(user)">
-          <div class="form-group">
-            <input type="email" class="form-control" placeholder="Email"
-            ng-model="user.email" required>
+    <div class="auth-content-inner">
+      <div class="auth-content-wrap">
+        <div class="header">
+          <h1>Login to CoolZone</h1>
+          <div class="subtitle">
+            在这里让我们定义什么是酷，在这里展现你的魅力，分享你认为的酷瞬间。
+            让我们一起成长为cool kids!
           </div>
-          <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password"
-            ng-model="user.password" required>
-          </div>
-          <p class="forget-pass">
-            <a ui-sref="forgetpass">Forget Password?</a>
-          </p>
-          <button class="btn-success btn btn-block" type="submit" ng-disabled="loginForm.$invalid">Login</button>
-        </form>
-        <div class="auth-divider">
-          Login with social accounts below
         </div>
-        <ul class="list-inline third-auth-list">
-          <li class="third-auth-item facebook">
-            <a href=""><i class="ti-facebook"></i></a>
-          </li>
-          <li class="third-auth-item twitter">
-            <a href=""><i class="ti-twitter"></i></a>
-          </li>
-          <li class="third-auth-item google">
-            <a href=""><i class="ti-google"></i></a>
-          </li>
-        </ul>
-        <div class="no-account-tip">
-          Don’t have an account? <a ui-sref="signup">Sign up free now</a>
+        <div class="form-wrap">
+          <div class="form-content">
+            <form novalidate name="loginForm" ng-submit="loginCtrl.login(user)">
+              <div class="form-inputs">
+                <div class="form-group hasborder">
+                  <input type="email" class="sf-form-control" placeholder="Email"
+                  ng-model="user.email" required>
+                </div>
+                <div class="form-group">
+                  <input type="password" class="sf-form-control" placeholder="Password"
+                  ng-model="user.password" required>
+                </div>
+              </div>
+              <button class="btn-success btn btn-block form-flat-button" type="submit" ng-disabled="loginForm.$invalid">Login</button>
+              <p class="forget-pass">
+                <a ui-sref="forgetpass">忘记密码？</a>
+              </p>
+            </form>
+            <div class="auth-divider">
+              Login with social accounts below
+            </div>
+            <ul class="list-inline third-auth-list">
+              <li class="third-auth-item facebook">
+                <a href=""><i class="ti-facebook"></i></a>
+              </li>
+              <li class="third-auth-item twitter">
+                <a href=""><i class="ti-twitter"></i></a>
+              </li>
+              <li class="third-auth-item google">
+                <a href=""><i class="ti-google"></i></a>
+              </li>
+            </ul>
+            <div class="no-account-tip">
+              Don’t have an account? <a ui-sref="signup">Sign up free now</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

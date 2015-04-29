@@ -18,7 +18,6 @@
         UserService.getUserFollowees(name)
           .then(function(data) {
             self.user = data.user;
-            console.log(self.user)
           })
       }
     ])

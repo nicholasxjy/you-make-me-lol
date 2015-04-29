@@ -1,37 +1,45 @@
 <div class="full-page signup-page jumbotron" ng-controller="SignupCtrl as signCtrl">
   <div class="sf-overlay"></div>
   <div class="auth-content">
-    <div class="header">
-      <h1>Welcome to Friendfies.</h1>
-      <div class="subtitle">
-        Connect with your friends — and other fascinating people. Get in-the-moment
-        updates on the things that interest you. And watch events unfold, in real time, from every angle.
+    <div class="auth-content-inner">
+      <div class="auth-content-wrap">
+        <div class="header">
+          <h1>CoolZone - 酷的情怀地</h1>
+          <div class="subtitle">
+            在这里让我们定义什么是酷，在这里展现你的魅力，分享你认为的酷瞬间。
+            让我们一起成长为cool kids!
+          </div>
+        </div>
+        <div class="form-wrap">
+          <div class="form-content">
+            <form novalidate name="signForm" ng-submit="signCtrl.signUp(user)">
+              <div class="form-inputs">
+                <div class="form-group hasborder">
+                  <input type="text" class="sf-form-control" placeholder="Name"
+                  ng-model="user.name" ng-maxlength="20" ng-minlength="6" ng-focus="nameTipShow=true" required>
+                  <div class="input-tip" ng-show="nameTipShow">用户名长度至少6个字符</div>
+                </div>
+                <div class="form-group hasborder">
+                  <input type="email" class="sf-form-control" placeholder="Email"
+                  ng-model="user.email" required>
+                </div>
+                <div class="form-group">
+                  <input type="password" class="sf-form-control" placeholder="Password"
+                  ng-model="user.password" ng-minlength="6" ng-maxlength="30" ng-focus="passTipShow=true" required>
+                  <div class="input-tip" ng-show="passTipShow">密码长度至少6个字符</div>
+                </div>
+              </div>
+              <button class="btn-primary btn btn-block form-flat-button" type="submit" ng-disabled="signForm.$invalid">Sign Up</button>
+            </form>
+            <p class="account-tip">Already have an account? <a ui-sref="login" class="sf-auth-link">Login Now</a></p>
+          </div>
+        </div>
+        <div class="terms-policy-tip">
+          Creating an account means you’re okay with CoolZone's
+          <a ui-sref="terms" class="sf-auth-link">Terms of Service</a> and
+          <a ui-sref="policy" class="sf-auth-link">Privacy Policy</a>.
+        </div>
       </div>
-    </div>
-    <div class="form-wrap">
-      <div class="form-content">
-        <form novalidate name="signForm" ng-submit="signCtrl.signUp(user)">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Name"
-            ng-model="user.name" ng-maxlength="20" ng-minlength="6" required>
-          </div>
-          <div class="form-group">
-            <input type="email" class="form-control" placeholder="Email"
-            ng-model="user.email" required>
-          </div>
-          <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password"
-            ng-model="user.password" ng-minlength="6" ng-maxlength="30" required>
-          </div>
-          <button class="btn-primary btn btn-block" type="submit" ng-disabled="signForm.$invalid">Sign Up</button>
-        </form>
-        <p class="account-tip">Already have an account? <a ui-sref="login" class="sf-auth-link">Login Now</a></p>
-      </div>
-    </div>
-    <div class="terms-policy-tip">
-      Creating an account means you’re okay with Showfie's
-      <a ui-sref="terms" class="sf-auth-link">Terms of Service</a> and
-      <a ui-sref="policy" class="sf-auth-link">Privacy Policy</a>.
     </div>
   </div>
 </div>

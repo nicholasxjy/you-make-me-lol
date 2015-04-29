@@ -1,90 +1,91 @@
 <div class="sf-create-container" sf-upload-feed>
-  <div class="sf-overlay">
+  <div class="sf-backdrop">
   </div>
-  <div class="sf-create-wrap">
-    <div class="sf-create-inner">
-      <div class="sf-create-main">
-        <header class="sf-create-title">
-          Share your amazing work
-        </header>
-        <div class="sf-create-main-content">
-          <div class="user-wrap">
-            <img ng-src="{{current_user.avatar}}" class="img-responsive img-rounded create-avatar">
-          </div>
+  <div class="sf-create-inner-container">
+    <div class="sf-create-wrap">
+      <div class="sf-create-inner">
+        <div class="sf-create-main">
+          <header class="sf-create-title">
+            Share your amazing work
+          </header>
+          <div class="sf-create-main-content">
+            <div class="user-wrap">
+              <img ng-src="{{current_user.avatar}}" class="img-responsive img-rounded create-avatar">
+            </div>
 
-          <div class="create-content">
-            <div class="create-words-input">
-              <textarea class="form-control" placeholder="what's new..." mentio mentio-items="usersAt" ng-model="feedWords"></textarea>
-            </div>
-            <div class="create-add-actions" ng-hide="(images && images.length && images.length<=5) || audio || video">
-              <div class="add-actions-inner" ng-hide="spinnerShow">
-                <ul class="list-inline actions-list">
-                  <li class="action-item">
-                    <div class="add-button add-photo-button"
-                    ng-file-select
-                    ng-multiple="true"
-                    accept="image/*"
-                    ng-file-change="upload($files, 'image')"
-                    ng-accept="validateFile($file)">
-                      <i class="ti-camera"></i><span class="action-tip">photos</span>
-                    </div>
-                  </li>
-                  <li class="action-item audio">
-                    <div class="add-button add-audio-button" ng-file-select
-                    ng-file-change="upload($files, 'audio')"
-                    ng-multiple="false"
-                    accept="audio/*"
-                    ng-accept="validateFile($file)">
-                      <i class="ti-music-alt"></i><span class="action-tip">audio</span>
-                    </div>
-                  </li>
-                  <li class="action-item video">
-                    <div class="add-button add-video-button"
-                    ng-file-select
-                    ng-file-change="upload($files, 'video')"
-                    ng-multiple="false"
-                    accept="video/*"
-                    ng-accept="validateFile($file)">
-                      <i class="ti-video-clapper"></i><span class="action-tip">video</span>
-                    </div>
-                  </li>
-                </ul>
+            <div class="create-content">
+              <div class="create-words-input">
+                <textarea class="form-control" placeholder="what's new..." mentio mentio-items="usersAt" ng-model="feedWords"></textarea>
               </div>
-            </div>
-            <div class="upload-file-preview">
-              <div class="photos-container" ng-if="images && images.length && images.length<=5">
-                <div class="photo-preveiw-item" ng-repeat="image in images">
-                  <div ng-include="'template/spinner.html'" ng-show="!image.url"></div>
-                  <div class="photo-uploaded" ng-show="image.url">
-                    <img ng-src="{{image.url}}" alt="" width="100%">
-                    <div class="photo-caption">
-                      <input class="form-control" type="text" ng-model="image.caption" placeholder="Add a caption">
+              <div class="create-add-actions" ng-hide="(images && images.length && images.length<=5) || audio || video">
+                <div class="add-actions-inner" ng-hide="spinnerShow">
+                  <ul class="list-inline actions-list">
+                    <li class="action-item">
+                      <div class="add-button add-photo-button"
+                      ng-file-select
+                      ng-multiple="true"
+                      accept="image/*"
+                      ng-file-change="upload($files, 'image')"
+                      ng-accept="validateFile($file)">
+                        <i class="ti-camera"></i><span class="action-tip">photos</span>
+                      </div>
+                    </li>
+                    <li class="action-item audio">
+                      <div class="add-button add-audio-button" ng-file-select
+                      ng-file-change="upload($files, 'audio')"
+                      ng-multiple="false"
+                      accept="audio/*"
+                      ng-accept="validateFile($file)">
+                        <i class="ti-music-alt"></i><span class="action-tip">audio</span>
+                      </div>
+                    </li>
+                    <li class="action-item video">
+                      <div class="add-button add-video-button"
+                      ng-file-select
+                      ng-file-change="upload($files, 'video')"
+                      ng-multiple="false"
+                      accept="video/*"
+                      ng-accept="validateFile($file)">
+                        <i class="ti-video-clapper"></i><span class="action-tip">video</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="upload-file-preview">
+                <div class="photos-container" ng-if="images && images.length && images.length<=5">
+                  <div class="photo-preveiw-item" ng-repeat="image in images">
+                    <div ng-include="'template/spinner.html'" ng-show="!image.url"></div>
+                    <div class="photo-uploaded" ng-show="image.url">
+                      <img ng-src="{{image.url}}" alt="" width="100%">
+                      <div class="photo-caption">
+                        <input class="form-control" type="text" ng-model="image.caption" placeholder="Add a caption">
+                      </div>
+                      <a class="delete-link" ng-click="removeImage($index)">
+                        <i class="ti-close"></i>
+                      </a>
                     </div>
-                    <a class="delete-link" ng-click="removeImage($index)">
-                      <i class="ti-close"></i>
-                    </a>
                   </div>
                 </div>
-              </div>
-              <div class="audio-video-uploaded-tip" ng-if="mediaUploading">
-                <div class="media-uploaded" ng-if="mediaUploaded">
-                  <p>Cool, your file <strong>{{media.name}}</strong> has been uploaded!</p>
-                  <i class="ti-trash" ng-click="removeMedia(media)"></i>
+                <div class="audio-video-uploaded-tip" ng-if="mediaUploading">
+                  <div class="media-uploaded" ng-if="mediaUploaded">
+                    <p>Cool, your file <strong>{{media.name}}</strong> has been uploaded!</p>
+                    <i class="ti-trash" ng-click="removeMedia(media)"></i>
+                  </div>
+                  <div ng-include="'template/spinner.html'" ng-show="!mediaUploaded"></div>
                 </div>
-                <div ng-include="'template/spinner.html'" ng-show="!mediaUploaded"></div>
               </div>
-            </div>
 
-            <div class="add-tags">
-              <tags-input ng-model="tags">
-                <!-- <auto-complete source="loadTags($query)"></auto-complete> -->
-              </tags-input>
-            </div>
+              <div class="add-tags">
+                <tags-input ng-model="tags">
+                </tags-input>
+              </div>
 
-            <div class="create-submit">
-              <button class="btn btn-default cancel-create" ng-click="cancel(false)">Cancel</button>
-              <button class="btn btn-primary post-create" ng-disabled="!canPosted" ng-click="postShare()">Share</button>
-              <a class="pull-right" ng-click="getLocation()"><i class="ti-location-pin"></i>{{location || 'Add location'}}</a>
+              <div class="create-submit">
+                <button class="btn btn-default cancel-create" ng-click="cancel(false)">Cancel</button>
+                <button class="btn btn-primary post-create" ng-disabled="!canPosted" ng-click="postShare()">Share</button>
+                <a class="pull-right" ng-click="getLocation()"><i class="ti-location-pin"></i>{{location || 'Add location'}}</a>
+              </div>
             </div>
           </div>
         </div>

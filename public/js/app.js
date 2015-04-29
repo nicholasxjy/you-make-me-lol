@@ -14,12 +14,8 @@
       'ngGeo'
     ])
     .config(function($stateProvider, $urlRouterProvider) {
-      $urlRouterProvider.otherwise('/');
+      $urlRouterProvider.otherwise('/signup');
       $stateProvider
-        .state('welcome', {
-          url: '/',
-          templateUrl: 'template/welcome.html'
-        })
         .state('signup', {
           url: '/signup',
           templateUrl: 'template/signup.html'

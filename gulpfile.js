@@ -159,6 +159,7 @@ gulp.task('reload', function() {
 gulp.task('watch', function() {
   gulp.watch('public/scss/*.scss', ['concat']);
   gulp.watch(['public/js/*.js', 'public/js/**/*.js'], ['concat']);
+  gulp.watch('public/images/*',['dist:moveimage']);
   gulp.watch(['views/*.html', 'public/template/**/*.html', 'public/template/*.js'], ['reload']);
 })
 

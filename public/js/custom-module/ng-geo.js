@@ -56,7 +56,7 @@
                   data.icon = WEATHERICONS.SUN;
                 } else if (data.weather.indexOf('雨') > -1) {
                   data.icon = WEATHERICONS.RAINY;
-                } else if (data.weather.indexOf('阴') > -1) {
+                } else if (data.weather.indexOf('阴') > -1 || data.weather.indexOf('多云') > -1) {
                   data.icon = WEATHERICONS.CLOUNDY;
                 } else if (data.weather.indexOf('雪') > -1) {
                   data.icon = WEATHERICONS.SNOWY;
