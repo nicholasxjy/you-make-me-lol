@@ -13,7 +13,7 @@ var multer = require('multer');
 var routes = require('./routes/index');
 var user = require('./routes/user');
 var feed = require('./routes/feed');
-
+var file = require('./routes/file');
 var config = require('./config');
 
 var app = express();
@@ -48,7 +48,7 @@ app.use(multer());
 app.use('/', routes);
 app.use('/user', user);
 app.use('/feed', feed);
-
+app.use('/file', file);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

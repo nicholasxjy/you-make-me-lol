@@ -95,7 +95,9 @@ module.exports = {
           }
 
           if (audio_tag && audio_tag.comment && audio_tag.comment !== '') {
+            console.log(audio_tag.comment);
             var comment = JSON.parse(audio_tag.comment);
+            console.log(comment);
             if (typeof comment === 'object') {
               if (comment.hasOwnProperty('musicName')) {
                 audioInfo.title = comment['musicName'];

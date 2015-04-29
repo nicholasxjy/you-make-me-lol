@@ -68,72 +68,86 @@ module.exports = {
         data.location = location || 'Unknow';
 
         // format content if has at users
-        async.waterfall([
-          function(cb11) {
-            var regex = /@\w+\s/g;
-            var atUsers = data.content.match(regex);
-            if (atUsers && atUsers.length > 0) {
-              var userNames = atUsers.map(function(atUser) {
-                var arr = atUser.trim().split('@');
-                return arr[arr.length -1];
-              });
-              utils.formatCommentContentByUserNames(userNames, data.content, function(err, doc) {
-                if (err) return cb11(err);
-                return cb11(null, doc);
+        if (data.content !== '') {
+          async.waterfall([
+            function(cb11) {
+              var regex = /@\w+\s/g;
+              var atUsers = data.content.match(regex);
+              if (atUsers && atUsers.length > 0) {
+                var userNames = atUsers.map(function(atUser) {
+                  var arr = atUser.trim().split('@');
+                  return arr[arr.length -1];
+                });
+                utils.formatCommentContentByUserNames(userNames, data.content, function(err, doc) {
+                  if (err) return cb11(err);
+                  return cb11(null, doc);
+                })
+              } else {
+                cb11(null, null);
+              }
+            },
+            function (doc, cb12) {
+              if (doc && doc.users && doc.content) {
+                data.content = doc.content;
+                data.at_users = doc.users;
+              } else {
+                data.at_users = [];
+              }
+              feedProxy.create(userId, data, function(err, newFeed) {
+                if (err) return next(err);
+                UserProxy.addPost(userId, function(err) {
+                  if (err) return cb12(err);
+                  return cb12(null, newFeed);
+                })
               })
-            } else {
-              cb11(null, null);
-            }
-          },
-          function (doc, cb12) {
-            if (doc && doc.users && doc.content) {
-              data.content = doc.content;
-              data.at_users = doc.users;
-            } else {
-              data.at_users = [];
-            }
-            feedProxy.create(userId, data, function(err, newFeed) {
-              if (err) return next(err);
-              UserProxy.addPost(userId, function(err) {
-                if (err) return cb12(err);
-                return cb12(null, newFeed);
-              })
-            })
-          },
-          function(newfeed, cb13) {
-            if (newfeed.at_users && newfeed.at_users.length > 0) {
-              //create new notis
-              var noti_obj = {
-                type: 'AT',
-                text: '在Feed里@了你',
-                sender: userId,
-                feed: newfeed._id
-              };
-              NotiProxy.create(noti_obj, function(err, noti) {
-                if (err) return cb13(err);
-                return cb13(null, {newNoti: noti, newFeed: newfeed});
-              })
-            } else {
-              return cb13(null, {newFeed: newfeed});
-            }
-          },
-          function(doc, cb14) {
-            if (doc.newNoti) {
-              UserProxy.saveNewNotification(doc.newFeed.at_users, doc.newNoti._id, function(err) {
-                if (err) return cb14(err);
+            },
+            function(newfeed, cb13) {
+              if (newfeed.at_users && newfeed.at_users.length > 0) {
+                //create new notis
+                var noti_obj = {
+                  type: 'AT',
+                  text: '在Feed里@了你',
+                  sender: userId,
+                  feed: newfeed._id
+                };
+                NotiProxy.create(noti_obj, function(err, noti) {
+                  if (err) return cb13(err);
+                  return cb13(null, {newNoti: noti, newFeed: newfeed});
+                })
+              } else {
+                return cb13(null, {newFeed: newfeed});
+              }
+            },
+            function(doc, cb14) {
+              if (doc.newNoti) {
+                UserProxy.saveNewNotification(doc.newFeed.at_users, doc.newNoti._id, function(err) {
+                  if (err) return cb14(err);
+                  return cb14(null, doc.newFeed);
+                })
+              } else {
                 return cb14(null, doc.newFeed);
-              })
-            } else {
-              return cb14(null, doc.newFeed);
+              }
             }
-          }
-        ], function(err, result) {
-          if (err) return next(err);
-          res.json({
-            status: 'success',
-            new_feed_id: result._id
-          });
-        })
+          ], function(err, result) {
+            if (err) return next(err);
+            res.json({
+              status: 'success',
+              new_feed_id: result._id
+            });
+          })
+        } else {
+          data.at_users = [];
+          feedProxy.create(userId, data, function(err, newFeed) {
+            if (err) return next(err);
+            UserProxy.addPost(userId, function(err) {
+              if (err) return next(err);
+              return res.json({
+                status: 'success',
+                new_feed_id: newFeed._id
+              });
+            })
+          })
+        }
       })
     } else {
       async.waterfall([
@@ -175,74 +189,87 @@ module.exports = {
         data.tags = tags.map(function(tag) {
           return tag._id;
         });
-
-        // format content if has at users
-        async.waterfall([
-          function(cb11) {
-            var regex = /@\w+\s/g;
-            var atUsers = data.content.match(regex);
-            if (atUsers && atUsers.length > 0) {
-              var userNames = atUsers.map(function(atUser) {
-                var arr = atUser.trim().split('@');
-                return arr[arr.length -1];
-              });
-              utils.formatCommentContentByUserNames(userNames, data.content, function(err, doc) {
-                if (err) return cb11(err);
-                return cb11(null, doc);
-              })
-            } else {
-              cb11(null, null);
-            }
-          },
-          function (doc, cb12) {
-            if (doc && doc.users && doc.content) {
-              data.content = doc.content;
-              data.at_users = doc.users;
-            } else {
-              data.at_users = [];
-            }
-            feedProxy.create(userId, data, function(err, newFeed) {
-              if (err) return next(err);
-              UserProxy.addPost(userId, function(err) {
+        if (data.content !== '') {
+          // format content if has at users
+          async.waterfall([
+            function(cb11) {
+              var regex = /@\w+\s/g;
+              var atUsers = data.content.match(regex);
+              if (atUsers && atUsers.length > 0) {
+                var userNames = atUsers.map(function(atUser) {
+                  var arr = atUser.trim().split('@');
+                  return arr[arr.length -1];
+                });
+                utils.formatCommentContentByUserNames(userNames, data.content, function(err, doc) {
+                  if (err) return cb11(err);
+                  return cb11(null, doc);
+                })
+              } else {
+                cb11(null, null);
+              }
+            },
+            function (doc, cb12) {
+              if (doc && doc.users && doc.content) {
+                data.content = doc.content;
+                data.at_users = doc.users;
+              } else {
+                data.at_users = [];
+              }
+              feedProxy.create(userId, data, function(err, newFeed) {
                 if (err) return cb12(err);
-                return cb12(null, newFeed);
+                UserProxy.addPost(userId, function(err) {
+                  if (err) return cb12(err);
+                  return cb12(null, newFeed);
+                })
               })
-            })
-          },
-          function(newfeed, cb13) {
-            if (newfeed.at_users && newfeed.at_users.length > 0) {
-              //create new notis
-              var noti_obj = {
-                type: 'AT',
-                text: '在Feed里@了你',
-                sender: userId,
-                feed: newfeed._id
-              };
-              NotiProxy.create(noti_obj, function(err, noti) {
-                if (err) return cb13(err);
-                return cb13(null, {newNoti: noti, newFeed: newfeed});
-              })
-            } else {
-              return cb13(null, {newFeed: newfeed});
-            }
-          },
-          function(doc, cb14) {
-            if (doc.newNoti) {
-              UserProxy.saveNewNotification(doc.newFeed.at_users, doc.newNoti._id, function(err) {
-                if (err) return cb14(err);
+            },
+            function(newfeed, cb13) {
+              if (newfeed.at_users && newfeed.at_users.length > 0) {
+                //create new notis
+                var noti_obj = {
+                  type: 'AT',
+                  text: '在Feed里@了你',
+                  sender: userId,
+                  feed: newfeed._id
+                };
+                NotiProxy.create(noti_obj, function(err, noti) {
+                  if (err) return cb13(err);
+                  return cb13(null, {newNoti: noti, newFeed: newfeed});
+                })
+              } else {
+                return cb13(null, {newFeed: newfeed});
+              }
+            },
+            function(doc, cb14) {
+              if (doc.newNoti) {
+                UserProxy.saveNewNotification(doc.newFeed.at_users, doc.newNoti._id, function(err) {
+                  if (err) return cb14(err);
+                  return cb14(null, doc.newFeed);
+                })
+              } else {
                 return cb14(null, doc.newFeed);
-              })
-            } else {
-              return cb14(null, doc.newFeed);
+              }
             }
-          }
-        ], function(err, result) {
-          if (err) return next(err);
-          res.json({
-            status: 'success',
-            new_feed_id: result._id
-          });
-        })
+          ], function(err, result) {
+            if (err) return next(err);
+            res.json({
+              status: 'success',
+              new_feed_id: result._id
+            });
+          })
+        } else {
+          data.at_users = [];
+          feedProxy.create(userId, data, function(err, newFeed) {
+            if (err) return next(err);
+            UserProxy.addPost(userId, function(err) {
+              if (err) return next(err);
+              return res.json({
+                status: 'success',
+                new_feed_id: newFeed._id
+              });
+            })
+          })
+        }
       })
     }
   },

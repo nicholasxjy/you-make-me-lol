@@ -294,6 +294,7 @@
                 });
               }
               if (scope.audio) {
+                scope.category = 'audio';
                 var item = {
                   fileId: scope.audio.fileId,
                   url: scope.audio.url,
@@ -302,6 +303,7 @@
                 scope.share_files.push(item);
               }
               if (scope.video) {
+                scope.category = 'video';
                 var item = {
                   fileId: scope.video.fileId,
                   url: scope.video.url,
@@ -331,7 +333,7 @@
             scope.cancel = function(isPostDone) {
               if (!isPostDone) {
                 //abort upload
-                scope.upload_funs.forEach(function(fun) {
+                scope.uploading_funs.forEach(function(fun) {
                   fun.abort();
                 });
 
