@@ -6,6 +6,8 @@ public/dist
 public/lib
 public/media
 
+public/build
+
 .sass-cache
 config.js
 .git

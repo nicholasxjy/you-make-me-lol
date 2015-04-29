@@ -43,7 +43,7 @@ gulp.task('minify-css', function() {
 
 //copy fonts to build
 gulp.task('fonts', function() {
-  gulp.src('public/fonts/*.{ttf,woff,eof,eot,svg}')
+  gulp.src('public/fonts/*.{ttf,woff,eof,eot,svg,woff2}')
     .pipe($.changed('public/build/fonts'))
     .pipe(gulp.dest('public/build/fonts'))
 
@@ -68,8 +68,8 @@ var source_dir = {
     'public/lib/angular/angular.js',
     'public/lib/angular-sanitize/angular-sanitize.js',
     'public/lib/ui-router/release/angular-ui-router.js',
-    'public/lib/ng-file-upload/angular-file-upload-shim.js',
-    'public/lib/ng-file-upload/angular-file-upload.js',
+    'public/lib/ng-file-upload/ng-file-upload-shim.js',
+    'public/lib/ng-file-upload/ng-file-upload.js',
     'public/lib/ment.io/dist/mentio.js',
     'public/lib/ng-tags-input/ng-tags-input.js'
   ],
@@ -81,8 +81,10 @@ var source_dir = {
     'public/js/custom-module/ng-audio-tag.js',
     'public/js/custom-module/ng-geo.js',
     'public/js/app.js',
+    'public/js/services/base.query.js',
     'public/js/services/feed.service.js',
     'public/js/services/user.service.js',
+    'public/js/services/file.service.js',
     'public/js/filters/filters.js',
     'public/js/directives/directives.js',
     'public/js/controllers/welcome.ctrl.js',

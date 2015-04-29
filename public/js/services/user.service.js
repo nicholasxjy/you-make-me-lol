@@ -2,225 +2,70 @@
   angular
     .module('showfieApp')
     .factory('UserService', [
-      '$http',
-      '$q',
-      '$state',
-      '$timeout',
-      function($http, $q, $state, $timeout) {
+      'BaseQuery',
+      function(BaseQuery) {
         var current_user;
         function signUp(user) {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/user/new',
-            data: {
-              name: user.name,
-              email: user.email,
-              password: user.password
-            }
-          }).success(function(data, status, headers, config) {
-            current_user = data.new_user;
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          var data = {
+            name: user.name,
+            email: user.email,
+            password: user.password
+          };
+          return BaseQuery.post('/user/new', data);
         }
         function currentUser() {
-          var deferred = $q.defer();
-          if (current_user) {
-            deferred.resolve(current_user);
-          } else {
-            $http({
-              method: 'GET',
-              url: '/user/current'
-            }).success(function(data, status, headers, config) {
-              deferred.resolve(data.user);
-            }).error(function(data, status, headers, config) {
-              deferred.reject(data);
-            });
-          }
-          return deferred.promise;
+          return BaseQuery.get('/user/current');
         }
 
         function login(user) {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/user/login',
-            data: {
-              email: user.email,
-              password: user.password
-            }
-          }).success(function(data, status, headers, config) {
-            current_user = data.user;
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
+          return BaseQuery.post('/user/login', {
+            email: user.email,
+            password: user.password
           });
-          return deferred.promise;
         }
 
         function logout() {
-          var deferred = $q.defer();
-          $http({
-            method: 'GET',
-            url: '/user/logout',
-          }).success(function(data, status, headers, config) {
-            current_user = null;
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/user/logout');
         }
 
         function getUserInfo() {
-          var deferred = $q.defer();
-          $http({
-            method: 'GET',
-            url: '/user/info'
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/user/info');
         }
 
         function updateInfo(user) {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/user/update_info',
-            data: {
-              info: user
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.post('/user/update_info', {info: user});
         }
 
         function getUserInfoByName(name) {
-          var deferred = $q.defer();
-          $http({
-            method: 'GET',
-            url: '/user/info_name',
-            params: {
-              name: name
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/user/info_name', {name: name});
         }
 
         function getUserFollowersForAt() {
-          var deferred = $q.defer();
-          $http({
-            method: 'GET',
-            url: '/user/followers_at',
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/user/followers_at');
         }
 
         function follow(userId) {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/user/follow',
-            data: {
-              followId: userId
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          })
-          return deferred.promise;
+          return BaseQuery.post('/user/follow', {followId: userId});
         }
 
         function unfollow(userId) {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/user/unfollow',
-            data: {
-              unfollowId: userId
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          })
-          return deferred.promise;
+          return BaseQuery.post('/user/unfollow', {unfollowId: userId});
         }
 
         function getNotifications() {
-          var deferred = $q.defer();
-          $http({
-            method: 'GET',
-            url: '/user/notifications'
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/user/notifications');
         }
 
         function markAllNoti() {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/user/mark_notis',
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/user/mark_notis');
         }
 
         function getUserFollowers(name) {
-          var deferred = $q.defer();
-          $http({
-            method: 'GET',
-            url: '/user/followers',
-            params: {
-              name: name
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/user/followers', {name: name});
         }
 
         function getUserFollowees(name) {
-          var deferred = $q.defer();
-          $http({
-            method: 'GET',
-            url: '/user/followees',
-            params: {
-              name: name
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/user/followees', {name: name});
         }
 
         return {

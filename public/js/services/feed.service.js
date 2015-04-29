@@ -2,171 +2,47 @@
   angular
     .module('showfieApp')
     .factory('FeedService', [
-      '$http',
-      '$q',
-      function($http, $q) {
+      'BaseQuery',
+      function(BaseQuery) {
         function create(data) {
-          var deferred = $q.defer();
-          $http({
-            url: '/feed/create',
-            method: 'POST',
-            data: data
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.post('/feed/create', data);
         }
 
         function getFeeds(after) {
-          var deferred = $q.defer();
-          $http({
-            method: 'GET',
-            url: '/feed/getfeeds',
-            params: {
-              after: after
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/feed/getfeeds', {after: after});
         }
 
         function removeFile(file) {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/feed/remove_file',
-            data: {
-              fileId: file.fileId,
-              key: file.key
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.post('/feed/remove_file', {fileId: file.fileId, key: file.key});
         }
 
         function toggleLike(feed) {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/feed/toggle_like',
-            data: {
-              feedId: feed._id
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.post('/feed/toggle_like', {feedId: feed._id});
         }
 
         function addComment(feedId, words) {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/feed/add_comment',
-            data: {
-              feedId: feedId,
-              content: words
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.post('/feed/add_comment', {feedId: feedId, content: words});
         }
 
         function getFeedDetail(id) {
-          var deferred = $q.defer();
-          $http({
-            methond: 'GET',
-            url: '/feed/detail',
-            params: {
-              feedId: id
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/feed/detail', {feedid: id});
         }
 
         function getFeedsByUser(userId) {
-          var deferred = $q.defer();
-          $http({
-            method: 'GET',
-            url: '/feed/user_feeds',
-            params: {
-              userId: userId
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/feed/user_feeds', {userId: userId});
         }
 
         function deleteFeed(feedId) {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/feed/delete',
-            data: {
-              feedId: feedId
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.post('/feed/delete', {feedId: feedId});
         }
 
         function deleteComment(feedId, commentId) {
-          var deferred = $q.defer();
-          $http({
-            method: 'POST',
-            url: '/feed/delete_comment',
-            data: {
-              feedId: feedId,
-              commentId: commentId
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.post('/feed/delete_comment', {feedId: feedId, commentId: commentId});
         }
 
         function loadMoreComments(feedId, count) {
-          var deferred = $q.defer();
-          $http({
-            method: 'GET',
-            url: '/feed/more_comments',
-            params: {
-              feedId: feedId,
-              skip: count
-            }
-          }).success(function(data, status, headers, config) {
-            deferred.resolve(data);
-          }).error(function(data, status, headers, config) {
-            deferred.reject(data);
-          });
-          return deferred.promise;
+          return BaseQuery.get('/feed/more_comments', {feedId: feedId, skip: count});
         }
-
         return {
           create: create,
           getFeeds: getFeeds,

@@ -3,7 +3,7 @@
     .module('showfieApp', [
       'ngSanitize',
       'ui.router',
-      'angularFileUpload',
+      'ngFileUpload',
       'ngTagsInput',
       'mentio',
       'ngCoolNoti',

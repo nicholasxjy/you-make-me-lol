@@ -44,20 +44,31 @@
       '$http',
       '$rootScope',
       '$q',
-      '$upload',
+      'Upload',
       'ngCoolNoti',
       'FeedService',
       'ngAudioTag',
       'ngGeo',
-      function($document, $timeout, $http, $rootScope, $q, $upload, ngCoolNoti, FeedService, ngAudioTag, ngGeo) {
+      'FileService',
+      function($document, $timeout, $http, $rootScope, $q, Upload, ngCoolNoti, FeedService, ngAudioTag, ngGeo, FileService) {
         return {
           restrict: 'AE',
           controller: ['$scope', '$element', function($scope, $element) {
+            $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
+
+            $scope.canPosted = false;
+            //this store the uploading functions when user cancel uploading, then we abort this uploading
+            $scope.uploading_funs = [];
             $scope.mediaUploading = false;
             $scope.mediaUploaded = false;
-            $scope.canPosted = false;
-            $scope.upload_funs = [];
-            $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
+
+            $scope.$watch('post_text', function(val) {
+              if (val && val !== '') {
+                $scope.canPosted = true;
+              } else {
+                $scope.canPosted = false;
+              }
+            });
 
             $scope.$watch('file_count', function(val) {
               if ($scope.selectedFiles && $scope.selectedFiles.length) {
@@ -69,103 +80,116 @@
               }
             });
 
-            $scope.$watch('feedWords', function(val) {
-              if (val && val !== '') {
-                $scope.canPosted = true;
-              } else {
-                $scope.canPosted = false;
-              }
-            })
 
-            $scope.upload = function(files, type) {
-
-              $scope.selectedFiles = files;
+            $scope.uploadImages = function(files, type) {
               $scope.file_count = 0;
-              if (files && files.length > 0) {
-                if (type === 'image') {
-                  if (files && files.length > 3) {
-                    ngCoolNoti.create({
-                      message: 'Images length should not be more than 3',
-                      position: 'top-right',
-                      animation: 'jelly',
-                      type: 'warning'
-                    });
-                    return false;
-                  }
-                  $scope.images = files;
-                }
-                if (type === 'audio') {
-                  $scope.audio = files;
-                }
-                if (type === 'video') {
-                  $scope.video = files;
-                }
-              } else {
+              $scope.selectedFiles = files;
+              //set max images length 3
+              if (files && files.length > 3) {
+                ngCoolNoti.create({
+                  message: '图片一次最多上传3张',
+                  position: 'top-right',
+                  animation: 'jelly',
+                  type: 'warning'
+                });
                 return false;
               }
-              if (type === 'audio' || type === 'video') {
-                $scope.mediaUploading = true;
-              }
+              $scope.images = files;
+              angular.forEach($scope.images, function(image) {
+                var fun = Upload.upload({
+                  url: '/file/upload',
+                  file: image,
+                  fields: {
+                    category: type
+                  }
+                }).success(function(data, status, headers, config) {
+                  if (data.status === 'fail') {
+                    ngCoolNoti.create({
+                      message: data.msg,
+                      position: 'top-right',
+                      animation: 'jelly',
+                      type: 'danger'
+                    });
+                  } else {
+                    $scope.file_count += 1;
+                    image.url = data.file_info.url;
+                    image.fileId = data.file_info.fileId;
+                    image.key = data.file_info.key;
+                  }
+                })
+                $scope.uploading_funs.push(fun);
+              })
+            }
 
-              if (type === 'audio') {
-                ngAudioTag.getTag(files[0])
-                  .then(function(tagdata) {
+            $scope.uploadVideo = function(files, type) {
+              $scope.file_count = 0;
+              $scope.selectedFiles = files;
+              $scope.mediaUploading = true;
+              if (files && files.length > 0) {
+                $scope.video = files[0];
+                var fun = Upload.upload({
+                  url: '/file/upload',
+                  file: $scope.video,
+                  fields: {
+                    category: type
+                  }
+                }).success(function(data, status, headers, config) {
+                  if (data.status === 'fail') {
+                    ngCoolNoti.create({
+                      message: data.msg,
+                      position: 'top-right',
+                      animation: 'jelly',
+                      type: 'danger'
+                    });
+                  } else {
+                    $scope.file_count += 1;
+                    $scope.video.url = data.file_info.url;
+                    $scope.video.fileId = data.file_info.fileId;
+                    $scope.video.key = data.file_info.key;
+
+                    $scope.media = $scope.video;
+                    $scope.mediaUploaded = true;
+                  }
+                })
+                $scope.uploading_funs.push(fun);
+              }
+            };
+
+            $scope.uploadAudio = function(files, type) {
+              $scope.file_count = 0;
+              $scope.selectedFiles = files;
+              $scope.mediaUploading = true;
+              if (files && files.length > 0) {
+                $scope.audio = files[0];
+                ngAudioTag.getTag($scope.audio)
+                  .then(function(tag_info) {
                     var base64String = "";
-                    if( "picture" in tagdata ) {
-                      var image = tagdata.picture;
+                    var audio_tag = {};
+                    if( "picture" in tag_info ) {
+                      var image = tag_info.picture;
                       for (var i = 0; i < image.data.length; i++) {
                         base64String += String.fromCharCode(image.data[i]);
                       }
                     }
-                    var fields = {};
-                    fields.category = type;
-                    if (tagdata.title) {
-                      fields.title = tagdata.title;
+                    if (tag_info.title) {
+                      audio_tag.title = tag_info.title;
                     }
-                    if (tagdata.comment && tagdata.comment.text) {
-                      fields.comment = tagdata.comment.text.replace('music:', '');
+                    if (tag_info.comment && tag_info.comment.text) {
+                      audio_tag.comment = tag_info.comment.text.replace('music:', '');
                     }
-                    if (tagdata.artist) {
-                      fields.artist = tagdata.artist;
+                    if (tag_info.artist) {
+                      audio_tag.artist = tag_info.artist;
                     }
-                    fields.audio_data = window.btoa(base64String);
-                    angular.forEach(files, function(file) {
-                      if (file) {
-                        var fun = $upload.upload({
-                          url: '/feed/upload_file',
-                          file: file,
-                          fields: fields
-                        }).success(function(data, status, headers, config) {
-                          if (data.status === 'fail') {
-                            ngCoolNoti.create({
-                              message: data.msg,
-                              position: 'top-right',
-                              animation: 'jelly',
-                              type: 'danger'
-                            });
-                          } else {
-                            $scope.file_count += 1;
-                            file.url = data.file_info.url;
-                            file.fileId = data.file_info.fileId;
-                            file.key = data.file_info.key;
-                            if (type === 'audio' || type === 'video') {
-                              $scope.mediaUploaded = true;
-                              $scope.media = file;
-                            }
-                          }
-                        })
-                        $scope.upload_funs.push(fun);
-                      }
-                    });
+                    audio_tag.data = window.btoa(base64String);
+                    return audio_tag;
                   })
-              } else {
-                angular.forEach(files, function(file) {
-                  if (file) {
-                    var fun = $upload.upload({
-                      url: '/feed/upload_file',
-                      file: file,
+                  .then(function(audio_tag) {
+                    var fun = Upload.upload({
+                      url: '/file/upload',
+                      file: $scope.audio,
                       fields: {
-                        category: type
+                        category: type,
+                        audio_tag: audio_tag
                       }
                     }).success(function(data, status, headers, config) {
                       if (data.status === 'fail') {
@@ -177,23 +201,21 @@
                         });
                       } else {
                         $scope.file_count += 1;
-                        file.url = data.file_info.url;
-                        file.fileId = data.file_info.fileId;
-                        file.key = data.file_info.key;
-                        if (type === 'audio' || type === 'video') {
-                          $scope.mediaUploaded = true;
-                          $scope.media = file;
-                        }
+                        $scope.audio.url = data.file_info.url;
+                        $scope.audio.fileId = data.file_info.fileId;
+                        $scope.audio.key = data.file_info.key;
+
+                        $scope.media = $scope.audio;
+                        $scope.mediaUploaded = true;
                       }
                     })
-                    $scope.upload_funs.push(fun);
-                  }
-                });
+                    $scope.uploading_funs.push(fun);
+                  })
               }
-            };
+            }
 
             $scope.removeImage = function(index) {
-              FeedService.removeFile($scope.images[index])
+              FileService.removeFile($scope.images[index])
                 .then(function(data) {
                   $scope.images = $scope.images.filter(function(image, i) {
                     return i !== index;
@@ -204,7 +226,7 @@
             };
 
             $scope.removeMedia = function(media) {
-              FeedService.removeFile(media)
+              FileService.removeFile(media)
                 .then(function(data) {
                   if (media.type.indexOf('audio') > -1) {
                     $scope.audio = null;
@@ -221,9 +243,9 @@
             }
 
             $scope.validateFile = function(file, type) {
-              if (file.size > 50485760) {
+              if (file.size > 10485760) {
                 ngCoolNoti.create({
-                  message: 'Your file size too large!',
+                  message: '文件最大为10MB',
                   position: 'top-right',
                   animation: 'jelly',
                   type: 'warning'
@@ -242,85 +264,68 @@
               }
             };
 
-
             $scope.getLocation = function() {
               ngGeo.getLocationByIP()
                 .then(function(data) {
                   if (data.city !== '') {
                     $scope.location = data.city;
                   } else {
-                    $scope.location = 'Location Not Found';
+                    $scope.location = 'Unknow';
                   }
                 }, function(err) {
                   console.log(err);
+                  $scope.location = 'Unknow';
                 })
             }
-
           }],
           link: function(scope, ele, attrs) {
-
-            var checkContents = function() {
-              var hasContents = false;
-              if (scope.feedWords && scope.feedWords !== '') {
-                hasContents = true;
-              }
-              if (scope.images && scope.images.length > 0) {
+            function formatFeedInfo() {
+              scope.share_files = [];
+              if (scope.images) {
                 scope.category = 'image';
-                scope.share_files = scope.images.map(function(item) {
-                  var image = {
-                    fileId: item.fileId,
-                    url: item.url,
-                    caption: item.caption || '',
-                    key: item.key
-                  }
-                  return image;
+                scope.share_files = scope.images.map(function(image) {
+                  var item = {
+                    fileId: image.fileId,
+                    url: image.url,
+                    caption: image.caption || '',
+                    key: image.key
+                  };
+                  return item;
                 });
-                hasContents = true;
               }
-              if (scope.audio && scope.audio.length>0) {
-                scope.category = 'audio';
-                scope.share_files = scope.audio.map(function(item) {
-                  return {fileId: item.fileId,url: item.url, key:item.key}
-                })
-                hasContents = true;
+              if (scope.audio) {
+                var item = {
+                  fileId: scope.audio.fileId,
+                  url: scope.audio.url,
+                  key: scope.audio.key
+                }
+                scope.share_files.push(item);
               }
-              if (scope.video && scope.video.length>0) {
-                scope.category = 'video';
-                scope.share_files = scope.video.map(function(item) {
-                  return {fileId: item.fileId,url: item.url, key:item.key}
-                })
-                hasContents = true;
+              if (scope.video) {
+                var item = {
+                  fileId: scope.video.fileId,
+                  url: scope.video.url,
+                  key: scope.video.key
+                }
+                scope.share_files.push(item);
               }
-              return hasContents;
             }
-
-
-
             scope.postShare = function() {
-              if (!checkContents()) {
-                ngCoolNoti.create({
-                  message: 'You add nothing to share :(',
-                  position: 'top-right',
-                  animation: 'jelly',
-                  type: 'danger'
-                });
-                return false;
-              } else {
-                var feed = {
-                  text: scope.feedWords,
-                  category: scope.category,
-                  share_files: scope.share_files,
-                  tags: scope.tags,
-                  location: scope.location
-                };
-                FeedService.create(feed)
-                  .then(function(data) {
-                    scope.cancel(true);
-                    scope.$emit('feed:new', {new_feed_id: data.new_feed_id});
-                  }, function(err) {
-                    console.log(err);
-                  })
-              }
+              formatFeedInfo();
+              var feed = {
+                text: scope.post_text,
+                category: scope.category,
+                share_files: scope.share_files,
+                tags: scope.tags,
+                location: scope.location
+              };
+              FeedService.create(feed)
+                .then(function(data) {
+                  scope.cancel(true);
+                  scope.$emit('feed:new', {new_feed_id: data.new_feed_id});
+                }, function(err) {
+                  console.log(err);
+                })
             };
 
             scope.cancel = function(isPostDone) {
@@ -330,15 +335,12 @@
                   fun.abort();
                 });
 
-                checkContents();
+                formatFeedInfo();
 
                 if(scope.share_files && scope.share_files.length > 0) {
                   scope.share_files.forEach(function(file) {
                     if (file.fileId && file.key) {
-                      FeedService.removeFile(file)
-                        .then(function(data) {
-                          console.log(data);
-                        })
+                      FileService.removeFile(file);
                     }
                   })
                 }
@@ -347,7 +349,6 @@
               $(ele).find('.sf-create-main').addClass('jelley-out');
               $timeout(function() {
                 scope.spinnerShow = false;
-                scope.mediaReady = false;
                 scope.mediaUploading = false;
                 scope.mediaUploaded = false;
                 scope.file_count = null;
@@ -358,7 +359,7 @@
                 scope.video = null;
                 scope.category = null;
                 scope.share_files = null;
-                scope.feedWords = '';
+                scope.post_text = '';
                 scope.location = null;
                 scope.tags = null;
 
