@@ -36,7 +36,7 @@ exports.checkFollowRelation = function(feeds, userId, cb) {
   })
 };
 
-exports.formatCommentContentByUserNames = function(names, content, cb) {
+exports.formatContentByUserNames = function(names, content, cb) {
   async.map(names, function(name, callback) {
     UserProxy.getUserByName(name, '_id name', function(err, user) {
       if (err) callback(err);

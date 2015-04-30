@@ -9,618 +9,476 @@ var utils = require('../services/utils');
 var id3 = require('id3js');
 var NotiProxy = require('../proxy/notification');
 
-module.exports = {
-  create: function(req, res, next) {
-    var userId = req.session.user;
-    //first update every file caption if category is image
+exports.create = function(req, res, next) {
+  var userId = req.session.user;
+  //first update every file caption if category is image
 
-    var category = req.body.category;
-    var files = req.body.share_files;
-    var text = req.body.text;
-    var tags = req.body.tags;
-    var location = req.body.location;
+  var category = req.body.category;
+  var files = req.body.share_files;
+  var text = req.body.text;
+  var tags = req.body.tags;
+  var location = req.body.location;
 
-    if (category === 'image') {
-      async.parallel({
-        images: function(cb1) {
-          async.map(files, function(image, callback) {
-            if (image.caption && image.caption !== '') {
-              fileProxy.updateCaptionById(image.fileId, image.caption, function(err) {
-                if (err) return callback(err);
-                return callback(null);
-              })
-            } else {
-              return callback(null);
-            }
-          }, function(err) {
-            if (err) return cb1(err);
-            return cb1(null);
-          })
-        },
-        tags: function(cb2) {
-          //create all tags
-          if (tags && tags.length > 0) {
-            async.map(tags, function(tag, callback) {
-              tagProxy.create(tag.text, function(err, newtag) {
-                if (err) return callback(err);
-                return callback(null, newtag);
-              })
-            }, function(err, results) {
-              if (err) return cb2(err);
-              return cb2(null, results)
-            })
-          } else {
-            return cb2(null, []);
-          }
-        }
-      }, function(err, result) {
-        if (err) return next(err);
-        var data = {};
-        data.content = text;
-        data.files = files.map(function(image) {
-          return image.fileId;
-        });
-        data.tags = result.tags.map(function(tag) {
-          return tag._id;
-        });
-        data.category = category;
+  var feedData = {};
 
-        data.location = location || 'Unknow';
+  feedData.category = category;
+  feedData.content = text;
+  feedData.location = location;
 
-        // format content if has at users
-        if (data.content !== '') {
-          async.waterfall([
-            function(cb11) {
-              var regex = /@\w+\s/g;
-              var atUsers = data.content.match(regex);
-              if (atUsers && atUsers.length > 0) {
-                var userNames = atUsers.map(function(atUser) {
-                  var arr = atUser.trim().split('@');
-                  return arr[arr.length -1];
-                });
-                utils.formatCommentContentByUserNames(userNames, data.content, function(err, doc) {
-                  if (err) return cb11(err);
-                  return cb11(null, doc);
-                })
-              } else {
-                cb11(null, null);
-              }
-            },
-            function (doc, cb12) {
-              if (doc && doc.users && doc.content) {
-                data.content = doc.content;
-                data.at_users = doc.users;
-              } else {
-                data.at_users = [];
-              }
-              feedProxy.create(userId, data, function(err, newFeed) {
-                if (err) return next(err);
-                UserProxy.addPost(userId, function(err) {
-                  if (err) return cb12(err);
-                  return cb12(null, newFeed);
-                })
-              })
-            },
-            function(newfeed, cb13) {
-              if (newfeed.at_users && newfeed.at_users.length > 0) {
-                //create new notis
-                var noti_obj = {
-                  type: 'AT',
-                  text: '在Feed里@了你',
-                  sender: userId,
-                  feed: newfeed._id
-                };
-                NotiProxy.create(noti_obj, function(err, noti) {
-                  if (err) return cb13(err);
-                  return cb13(null, {newNoti: noti, newFeed: newfeed});
-                })
-              } else {
-                return cb13(null, {newFeed: newfeed});
-              }
-            },
-            function(doc, cb14) {
-              if (doc.newNoti) {
-                UserProxy.saveNewNotification(doc.newFeed.at_users, doc.newNoti._id, function(err) {
-                  if (err) return cb14(err);
-                  return cb14(null, doc.newFeed);
-                })
-              } else {
-                return cb14(null, doc.newFeed);
-              }
-            }
-          ], function(err, result) {
-            if (err) return next(err);
-            res.json({
-              status: 'success',
-              new_feed_id: result._id
-            });
-          })
-        } else {
-          data.at_users = [];
-          feedProxy.create(userId, data, function(err, newFeed) {
-            if (err) return next(err);
-            UserProxy.addPost(userId, function(err) {
-              if (err) return next(err);
-              return res.json({
-                status: 'success',
-                new_feed_id: newFeed._id
-              });
-            })
-          })
-        }
-      })
-    } else {
-      async.waterfall([
-        function(cb1) {
-          //create all tags
-          if (tags && tags.length > 0) {
-            async.map(tags, function(tag, callback) {
-              tagProxy.create(tag.text, function(err, newtag) {
-                if (err) return callback(err);
-                return callback(null, newtag);
-              })
-            }, function(err, results) {
-              if (err) return cb1(err);
-              return cb1(null, results)
-            })
-          } else {
-            return cb1(null, []);
-          }
-        }
-      ], function(err, tags) {
-        if (err) return next(err);
-        var data = {};
-        data.content = text;
-        data.category = 'text';
-        if (category === 'audio') {
-          data.category = 'audio';
-        }
-        if (category === 'video') {
-          data.category = 'video';
-        }
-        if (files && files.length) {
-          data.files = files.map(function(item) {
-            return item.fileId;
-          })
-        } else {
-          data.files = [];
-        }
+  //check file
+  feedData.files = files.map(function(file) {
+    return file.fileId;
+  })
 
-        data.tags = tags.map(function(tag) {
-          return tag._id;
-        });
-        if (data.content !== '') {
-          // format content if has at users
-          async.waterfall([
-            function(cb11) {
-              var regex = /@\w+\s/g;
-              var atUsers = data.content.match(regex);
-              if (atUsers && atUsers.length > 0) {
-                var userNames = atUsers.map(function(atUser) {
-                  var arr = atUser.trim().split('@');
-                  return arr[arr.length -1];
-                });
-                utils.formatCommentContentByUserNames(userNames, data.content, function(err, doc) {
-                  if (err) return cb11(err);
-                  return cb11(null, doc);
-                })
-              } else {
-                cb11(null, null);
-              }
-            },
-            function (doc, cb12) {
-              if (doc && doc.users && doc.content) {
-                data.content = doc.content;
-                data.at_users = doc.users;
-              } else {
-                data.at_users = [];
-              }
-              feedProxy.create(userId, data, function(err, newFeed) {
-                if (err) return cb12(err);
-                UserProxy.addPost(userId, function(err) {
-                  if (err) return cb12(err);
-                  return cb12(null, newFeed);
-                })
-              })
-            },
-            function(newfeed, cb13) {
-              if (newfeed.at_users && newfeed.at_users.length > 0) {
-                //create new notis
-                var noti_obj = {
-                  type: 'AT',
-                  text: '在Feed里@了你',
-                  sender: userId,
-                  feed: newfeed._id
-                };
-                NotiProxy.create(noti_obj, function(err, noti) {
-                  if (err) return cb13(err);
-                  return cb13(null, {newNoti: noti, newFeed: newfeed});
-                })
-              } else {
-                return cb13(null, {newFeed: newfeed});
-              }
-            },
-            function(doc, cb14) {
-              if (doc.newNoti) {
-                UserProxy.saveNewNotification(doc.newFeed.at_users, doc.newNoti._id, function(err) {
-                  if (err) return cb14(err);
-                  return cb14(null, doc.newFeed);
-                })
-              } else {
-                return cb14(null, doc.newFeed);
-              }
-            }
-          ], function(err, result) {
-            if (err) return next(err);
-            res.json({
-              status: 'success',
-              new_feed_id: result._id
-            });
+  async.waterfall([
+    function(cb1) {
+      //create tags
+      //create all tags
+      if (tags && tags.length > 0) {
+        async.map(tags, function(tag, callback) {
+          tagProxy.create(tag.text, function(err, newtag) {
+            if (err) return callback(err);
+            return callback(null, newtag);
           })
-        } else {
-          data.at_users = [];
-          feedProxy.create(userId, data, function(err, newFeed) {
-            if (err) return next(err);
-            UserProxy.addPost(userId, function(err) {
-              if (err) return next(err);
-              return res.json({
-                status: 'success',
-                new_feed_id: newFeed._id
-              });
-            })
-          })
-        }
-      })
-    }
-  },
-  delete: function(req, res, next) {
-    var userId = req.session.user;
-    var feedId = req.body.feedId;
-    if (!feedId) {
-      return res.sendStatus(403);
-    }
-    async.waterfall([
-      function(cb1) {
-        feedProxy.getFeedById(feedId, function(err, feed) {
+        }, function(err, results) {
           if (err) return cb1(err);
-          if (userId.toString() !== feed.creator.toString()) {
-            return res.sendStatus(403);
-          }
-          feed.remove(function(err) {
-            if (err) return cb1(err);
-            return cb1(null);
-          })
-        })
-      },
-      function(cb2) {
-        UserProxy.getUserById(userId, 'post_count', function(err, user) {
-          if (err) return cb2(err);
-          user.post_count -= 1;
-          if (user.post_count < 0) {
-            user.post_count = 0;
-          }
-          user.save(function(err) {
-            if (err) return cb2(err);
-            return cb2(null);
-          })
-        })
-      }
-    ], function(err) {
-      if (err) return next(err);
-      return res.json({
-        status: 'success'
-      })
-    })
-  },
-  deleteComment: function(req, res, next) {
-    var userId = req.session.user;
-    var feedId = req.body.feedId;
-    var commentId = req.body.commentId;
-
-    if (!feedId || !commentId) {
-      return res.sendStatus(403);
-    }
-    async.waterfall([
-      function(cb1) {
-        commentProxy.findById(commentId, function(err, comment) {
-          if (err) return cb1(err);
-          if (userId.toString() !== comment.creator.toString()) {
-            return res.sendStatus(403);
-          }
-          return cb1(null, comment);
-        })
-      },
-      function(comment, cb2) {
-        feedProxy.getFeedById(feedId, function(err, feed) {
-          if (err) return cb2(err);
-          feed.comments.pull(comment._id);
-          feed.save(function(err) {
-            if (err) return cb2(err);
-            return cb2(null, comment);
-          })
-        })
-      },
-      function(comment, cb3) {
-        comment.remove(function(err) {
-          if (err) return cb3(err);
-          return cb3(null);
-        })
-      }
-    ], function(err) {
-      if (err) return next(err);
-      return res.json({
-        status: 'success'
-      })
-    })
-  },
-  getFeeds: function(req, res, next) {
-    var after = req.query.after;
-    var query = null;
-    if (after) {
-      query = {
-        createdAt: {$lt: after}
-      };
-    }
-    var options = {
-      sort: {
-        createdAt: '-1'
-      },
-      limit: 10
-    }
-
-    feedProxy.getFeeds(query, options, function(err, feeds) {
-      if (err) return next(err);
-
-      if (req.session && req.session.user) {
-        var userId = req.session.user;
-        // check user like feed or not and slice likes 5 : slice(-5) for display
-        feeds = utils.checkFeedsLike(feeds, userId);
-        // check user and feed follow relation
-        feeds = utils.checkFollowRelation(feeds, userId, function(err, f_feeds) {
-          if (err) return next(err);
-            res.json({
-              status: 'success',
-              feeds: f_feeds
-            })
+          return cb1(null, results)
         })
       } else {
-        res.json({
-          status: 'success',
-          feeds: feeds
-        })
+        return cb1(null, []);
       }
-    })
-  },
-  getDetail: function(req, res, next) {
-    var feedId = req.query.feedId;
-    if (!feedId) {
-      return res.sendStatus(404);
-    }
-    feedProxy.getDetail(feedId, function(err, feed) {
-      if (err) return next(err);
-      if (!feed) {
-        return res.sendStatus(404);
-      }
-      feed = feed.toObject();
-      if (req.session && req.session.user) {
-        feed = utils.checkFeedLike(feed, req.session.user);
-        feed.creator = utils.checkFollowRelationByFollowees(feed.creator, req.session.user);
-      }
-      feed.likes_count = feed.likes.length;
-      feed.likes = feed.likes.slice(-10);
-      res.json(feed);
-    })
-  },
-  toggleLike: function(req, res, next) {
-    var userId = req.session.user;
-    var feedId = req.body.feedId;
-
-
-    if (!feedId) {
-      return res.sendStatus(403);
-    }
-    async.waterfall([
-      function(cb1) {
-        feedProxy.getFeedById(feedId, function(err, feed) {
-          if (err) return cb1(err);
-          var isLike = feed.likes.some(function(likeId) {
-            return userId.toString() === likeId.toString();
-          });
-          return cb1(null, {feed: feed, isLike: isLike});
-        })
-      },
-      function(doc, cb2) {
-        var likeUsers = [];
-        if (doc.isLike) {
-          doc.feed.likes.pull(userId);
-        } else {
-          doc.feed.likes.unshift(userId);
-        }
-        doc.feed.save(function(err, new_feed) {
-          if (err) return cb2(err);
-          return cb2(null, {new_feed: new_feed, isLike: doc.isLike});
-        });
-      },
-      function(doc, cb3) {
-        if (!doc.isLike) {
-          var ids = [];
-          ids.push(userId);
-          ids.push(doc.new_feed.creator);
-          UserProxy.findUsersByIds(ids, '_id name avatar notifications', function(err, docs) {
-            if (err) return cb3(err);
-            if (docs && docs.length === 2) {
-              cb3(null, {c_user: docs[0], f_user: docs[1], feed: doc.new_feed})
-            } else {
-              cb3(new Error('users length not right...'))
-            }
-          })
-        } else {
-          cb3(null, null);
-        }
-      },
-      function(noti, cb4) {
-        if (noti && noti.c_user && noti.f_user && noti.feed) {
-          var noti_obj = {
-            type: 'LIKE',
-            feed: noti.feed._id,
-            text: ' liked your feed!',
-            sender: userId
-          }
-          NotiProxy.create(noti_obj, function(err, new_noti) {
-            if (err) return cb4(err);
-            noti.f_user.notifications.unshift(new_noti._id);
-            noti.f_user.save(function(err) {
-              if (err) return cb4(err);
-              return cb4(null);
-            })
-          })
-        } else {
-          cb4(null);
-        }
-      }
-    ], function(err) {
-      if (err) return next(err);
-      return res.json({
-        status: 'success'
+    },
+    function(tags, cb2) {
+      feedData.tags = tags.map(function(tag) {
+        return tag._id;
       });
-    })
-  },
-  addComment: function(req, res, next) {
-    var feedId = req.body.feedId;
-    var content = req.body.content;
-    var userId = req.session.user;
+      feedProxy.create(userId, feedData, function(err, newFeed) {
+        if (err) return cb2(err);
+        UserProxy.addPost(userId, function(err) {
+          if (err) return cb2(err);
+          return cb2(null, newFeed);
+        })
+      })
+    },
+    function(newFeed, cb4) {
+      //handle content send notification to at users
+      NotiProxy.sendNotiToAtUsers(newFeed, function(err, doc) {
+        if (err) return cb4(err);
+        if (!doc) return cb4(null, {feed: newFeed});
+        var noti = {
+          type: 'AT',
+          text: '在post里@了你',
+          sender: userId,
+          feed: newFeed._id
+        };
 
-    if (!feedId) {
-      return res.sendStatus(404);
+        NotiProxy.create(noti, function(err, noti) {
+          if (err) return cb4(err);
+          return cb4(null, {at_users: doc.users, noti: noti, feed: newFeed});
+        })
+      })
+    },
+    function(doc, cb5) {
+      if (doc && doc.noti) {
+        var at_ids = doc.at_users.map(function(user) {
+          if (user && user._id) {
+            return user._id;
+          }
+        })
+        if (at_ids && at_ids.length > 0) {
+          UserProxy.saveNewNotification(at_ids, doc.noti._id, function(err) {
+            if (err) return cb5(err);
+            return cb5(null, doc.feed);
+          })
+        } else {
+          return cb5(null, doc.feed);
+        }
+      } else {
+        return cb5(null, doc.feed);
+      }
     }
-
-    if (!content) {
+  ], function(err, result) {
+    if (err) return next(err);
+    if (category === 'image') {
+      async.map(files, function(image, callback) {
+        if (image.caption && image.caption !== '') {
+          fileProxy.updateCaptionById(image.fileId, image.caption, function(err) {
+            if (err) return callback(err);
+            return callback(null);
+          })
+        } else {
+          return callback(null);
+        }
+      }, function(err) {
+        if (err) return next(err);
+        return res.json({
+          status: 'success',
+          new_feed_id: result._id
+        })
+      })
+    } else {
       return res.json({
-        status: 'fail',
-        msg: 'Nothing to comment!'
+        status: 'success',
+        new_feed_id: result._id
+      })  
+    }
+  })
+};
+
+exports.delete = function(req, res, next) {
+  var userId = req.session.user;
+  var feedId = req.body.feedId;
+  if (!feedId) {
+    return res.sendStatus(403);
+  }
+  async.waterfall([
+    function(cb1) {
+      feedProxy.getFeedById(feedId, function(err, feed) {
+        if (err) return cb1(err);
+        if (userId.toString() !== feed.creator.toString()) {
+          return res.sendStatus(403);
+        }
+        feed.remove(function(err) {
+          if (err) return cb1(err);
+          return cb1(null);
+        })
+      })
+    },
+    function(cb2) {
+      UserProxy.getUserById(userId, 'post_count', function(err, user) {
+        if (err) return cb2(err);
+        user.post_count -= 1;
+        if (user.post_count < 0) {
+          user.post_count = 0;
+        }
+        user.save(function(err) {
+          if (err) return cb2(err);
+          return cb2(null);
+        })
       })
     }
+  ], function(err) {
+    if (err) return next(err);
+    return res.json({
+      status: 'success'
+    })
+  })
+};
 
-    async.waterfall([
-      function(cb1) {
-        feedProxy.getFeedById(feedId, function(err, feed) {
-          if (err) return cb1(err);
-          if (!feed) return res.sendStatus(404);
-          return cb1(null, feed);
-        })
-      },
-      function(feed, cb2) {
-        // here handle the comment to users
-        // create html for comment content
-        var regex = /@\w+\s/g;
-        var atUsers = content.match(regex);
-        if (atUsers && atUsers.length > 0) {
-          var userNames = atUsers.map(function(atUser) {
-            var arr = atUser.trim().split('@');
-            return arr[arr.length -1];
-          });
-          utils.formatCommentContentByUserNames(userNames, content, function(err, doc) {
-            if (err) return cb2(err);
-            doc.feed = feed;
-            return cb2(null, doc);
-          })
-        } else {
-          var users = [];
-          users.push(feed.creator);
-          return cb2(null, {feed: feed, content: content, users: users});
+exports.deleteComment = function(req, res, next) {
+  var userId = req.session.user;
+  var feedId = req.body.feedId;
+  var commentId = req.body.commentId;
+
+  if (!feedId || !commentId) {
+    return res.sendStatus(403);
+  }
+  async.waterfall([
+    function(cb1) {
+      commentProxy.findById(commentId, function(err, comment) {
+        if (err) return cb1(err);
+        if (userId.toString() !== comment.creator.toString()) {
+          return res.sendStatus(403);
         }
-      },
-      function(doc, cb3) {
-        commentProxy.create(doc.feed._id, userId, doc.users, doc.content, function(err, comment) {
-          if (err) return cb3(err);
-          doc.feed.comments.push(comment._id);
-          var _comment = {
-            _id: comment._id,
-            creator: comment.creator,
-            to_users: comment.to_users,
-            content: comment.content,
-            createdAt: comment.createdAt
-          }
-          doc.feed.save(function(err) {
-            if (err) return cb3(err);
-            return cb3(null, {new_comment: _comment, feed: doc.feed});
-          })
+        return cb1(null, comment);
+      })
+    },
+    function(comment, cb2) {
+      feedProxy.getFeedById(feedId, function(err, feed) {
+        if (err) return cb2(err);
+        feed.comments.pull(comment._id);
+        feed.save(function(err) {
+          if (err) return cb2(err);
+          return cb2(null, comment);
         })
-      },
-      function(doc, cb4) {
+      })
+    },
+    function(comment, cb3) {
+      comment.remove(function(err) {
+        if (err) return cb3(err);
+        return cb3(null);
+      })
+    }
+  ], function(err) {
+    if (err) return next(err);
+    return res.json({
+      status: 'success'
+    })
+  })
+};
+
+exports.getFeeds = function(req, res, next) {
+  var after = req.query.after;
+  var query = null;
+  if (after) {
+    query = {
+      createdAt: {$lt: after}
+    };
+  }
+  var options = {
+    sort: {
+      createdAt: '-1'
+    },
+    limit: 10
+  }
+
+  feedProxy.getFeeds(query, options, function(err, feeds) {
+    if (err) return next(err);
+
+    if (req.session && req.session.user) {
+      var userId = req.session.user;
+      // check user like feed or not and slice likes 5 : slice(-5) for display
+      feeds = utils.checkFeedsLike(feeds, userId);
+      // check user and feed follow relation
+      feeds = utils.checkFollowRelation(feeds, userId, function(err, f_feeds) {
+        if (err) return next(err);
+          res.json({
+            status: 'success',
+            feeds: f_feeds
+          })
+      })
+    } else {
+      res.json({
+        status: 'success',
+        feeds: feeds
+      })
+    }
+  })
+};
+
+exports.getDetail = function(req, res, next) {
+  var feedId = req.query.feedId;
+  if (!feedId) {
+    return res.sendStatus(404);
+  }
+  feedProxy.getDetail(feedId, function(err, feed) {
+    if (err) return next(err);
+    if (!feed) {
+      return res.sendStatus(404);
+    }
+    feed = feed.toObject();
+    if (req.session && req.session.user) {
+      feed = utils.checkFeedLike(feed, req.session.user);
+      feed.creator = utils.checkFollowRelationByFollowees(feed.creator, req.session.user);
+    }
+    feed.likes_count = feed.likes.length;
+    feed.likes = feed.likes.slice(-10);
+    res.json(feed);
+  })
+};
+
+exports.toggleLike = function(req, res, next) {
+  var userId = req.session.user;
+  var feedId = req.body.feedId;
+
+
+  if (!feedId) {
+    return res.sendStatus(403);
+  }
+  async.waterfall([
+    function(cb1) {
+      feedProxy.getFeedById(feedId, function(err, feed) {
+        if (err) return cb1(err);
+        var isLike = feed.likes.some(function(likeId) {
+          return userId.toString() === likeId.toString();
+        });
+        return cb1(null, {feed: feed, isLike: isLike});
+      })
+    },
+    function(doc, cb2) {
+      var likeUsers = [];
+      if (doc.isLike) {
+        doc.feed.likes.pull(userId);
+      } else {
+        doc.feed.likes.unshift(userId);
+      }
+      doc.feed.save(function(err, new_feed) {
+        if (err) return cb2(err);
+        return cb2(null, {new_feed: new_feed, isLike: doc.isLike});
+      });
+    },
+    function(doc, cb3) {
+      if (!doc.isLike) {
+        var ids = [];
+        ids.push(userId);
+        ids.push(doc.new_feed.creator);
+        UserProxy.findUsersByIds(ids, '_id name avatar notifications', function(err, docs) {
+          if (err) return cb3(err);
+          if (docs && docs.length === 2) {
+            cb3(null, {c_user: docs[0], f_user: docs[1], feed: doc.new_feed})
+          } else {
+            cb3(new Error('users length not right...'))
+          }
+        })
+      } else {
+        cb3(null, null);
+      }
+    },
+    function(noti, cb4) {
+      if (noti && noti.c_user && noti.f_user && noti.feed) {
         var noti_obj = {
-          type: 'COMMENT',
-          text: doc.new_comment.content,
-          sender: userId,
-          feed: doc.feed._id
-        };
+          type: 'LIKE',
+          feed: noti.feed._id,
+          text: ' liked your feed!',
+          sender: userId
+        }
         NotiProxy.create(noti_obj, function(err, new_noti) {
           if (err) return cb4(err);
-          doc.new_comment.to_users.push(doc.feed.creator);
-          return cb4(null, {noti: new_noti, comment: doc.new_comment});
+          noti.f_user.notifications.unshift(new_noti._id);
+          noti.f_user.save(function(err) {
+            if (err) return cb4(err);
+            return cb4(null);
+          })
         })
-      },
-      function(doc, cb5) {
-        UserProxy.saveNewNotification(doc.comment.to_users, doc.noti._id,function(err) {
-          if (err) return cb5(err);
-          return cb5(null, doc.comment);
-        })
+      } else {
+        cb4(null);
       }
-    ], function(err, result) {
-      if (err) return next(err);
-      return res.json({
-        status: 'success',
-        new_comment: result
-      })
-    })
-  },
-  getUserFeeds: function(req, res, next) {
-    var userId = req.query.userId;
-    if (!userId) {
-      return res.sendStatus(404);
     }
-    async.waterfall([
-      function(cb1) {
-        UserProxy.getUserById(userId, null, function(err, user) {
-          if (err) return cb1(err);
-          if (!user) return res.sendStatus(404);
-          return cb1(null, user);
-        })
-      },
-      function(user, cb2) {
-        feedProxy.getUserFeeds(user._id, function(err, feeds) {
-          if (err) return cb2(err);
-          return res.json(feeds);
-        })
-      }
-    ])
-  },
-  moreComments: function(req, res, next) {
-    var feedId = req.query.feedId;
-    var skip = req.query.skip;
-    if (!feedId) {
-      return res.sendStatus(404);
-    }
-    async.waterfall([
-      function(cb1) {
-        feedProxy.getFeedById(feedId, function(err, feed) {
-          if (err) return cb1(err);
-          if (!feed) return res.sendStatus(404);
-          return cb1(null, feed);
-        })
-      },
-      function(feed, cb2) {
-        feedProxy.moreComments(feed, skip, function(err, pfeed) {
-          if (err) return cb2(err);
-          return cb2(null, pfeed.comments);
-        })
-      }
-    ], function(err, results) {
-      if (err) return next(err);
-      return res.json({
-        status: 'success',
-        comments: results
-      })
+  ], function(err) {
+    if (err) return next(err);
+    return res.json({
+      status: 'success'
+    });
+  })
+};
+
+exports.addComment = function(req, res, next) {
+  var feedId = req.body.feedId;
+  var content = req.body.content;
+  var userId = req.session.user;
+
+  if (!feedId) {
+    return res.sendStatus(404);
+  }
+
+  if (!content) {
+    return res.json({
+      status: 'fail',
+      msg: 'Nothing to comment!'
     })
   }
-}
+
+  async.waterfall([
+    function(cb1) {
+      feedProxy.getFeedById(feedId, function(err, feed) {
+        if (err) return cb1(err);
+        if (!feed) return res.sendStatus(404);
+        return cb1(null, feed);
+      })
+    },
+    function(feed, cb2) {
+      // here handle the comment to users
+      // create html for comment content
+      var regex = /@\w+\s/g;
+      var atUsers = content.match(regex);
+      if (atUsers && atUsers.length > 0) {
+        var userNames = atUsers.map(function(atUser) {
+          var arr = atUser.trim().split('@');
+          return arr[arr.length -1];
+        });
+        utils.formatContentByUserNames(userNames, content, function(err, doc) {
+          if (err) return cb2(err);
+          doc.feed = feed;
+          return cb2(null, doc);
+        })
+      } else {
+        var users = [];
+        users.push(feed.creator);
+        return cb2(null, {feed: feed, content: content, users: users});
+      }
+    },
+    function(doc, cb3) {
+      commentProxy.create(doc.feed._id, userId, doc.users, doc.content, function(err, comment) {
+        if (err) return cb3(err);
+        doc.feed.comments.push(comment._id);
+        var _comment = {
+          _id: comment._id,
+          creator: comment.creator,
+          to_users: comment.to_users,
+          content: comment.content,
+          createdAt: comment.createdAt
+        }
+        doc.feed.save(function(err) {
+          if (err) return cb3(err);
+          return cb3(null, {new_comment: _comment, feed: doc.feed});
+        })
+      })
+    },
+    function(doc, cb4) {
+      var noti_obj = {
+        type: 'COMMENT',
+        text: doc.new_comment.content,
+        sender: userId,
+        feed: doc.feed._id
+      };
+      NotiProxy.create(noti_obj, function(err, new_noti) {
+        if (err) return cb4(err);
+        doc.new_comment.to_users.push(doc.feed.creator);
+        return cb4(null, {noti: new_noti, comment: doc.new_comment});
+      })
+    },
+    function(doc, cb5) {
+      UserProxy.saveNewNotification(doc.comment.to_users, doc.noti._id,function(err) {
+        if (err) return cb5(err);
+        return cb5(null, doc.comment);
+      })
+    }
+  ], function(err, result) {
+    if (err) return next(err);
+    return res.json({
+      status: 'success',
+      new_comment: result
+    })
+  })
+};
+
+exports.getUserFeeds = function(req, res, next) {
+  var userId = req.query.userId;
+  if (!userId) {
+    return res.sendStatus(404);
+  }
+  async.waterfall([
+    function(cb1) {
+      UserProxy.getUserById(userId, null, function(err, user) {
+        if (err) return cb1(err);
+        if (!user) return res.sendStatus(404);
+        return cb1(null, user);
+      })
+    },
+    function(user, cb2) {
+      feedProxy.getUserFeeds(user._id, function(err, feeds) {
+        if (err) return cb2(err);
+        return res.json(feeds);
+      })
+    }
+  ])
+};
+
+exports.moreComments = function(req, res, next) {
+  var feedId = req.query.feedId;
+  var skip = req.query.skip;
+  if (!feedId) {
+    return res.sendStatus(404);
+  }
+  async.waterfall([
+    function(cb1) {
+      feedProxy.getFeedById(feedId, function(err, feed) {
+        if (err) return cb1(err);
+        if (!feed) return res.sendStatus(404);
+        return cb1(null, feed);
+      })
+    },
+    function(feed, cb2) {
+      feedProxy.moreComments(feed, skip, function(err, pfeed) {
+        if (err) return cb2(err);
+        return cb2(null, pfeed.comments);
+      })
+    }
+  ], function(err, results) {
+    if (err) return next(err);
+    return res.json({
+      status: 'success',
+      comments: results
+    })
+  })
+};

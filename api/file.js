@@ -9,6 +9,8 @@ module.exports = {
     var category = req.body.category;
     var audio_tag = req.body.audio_tag;
 
+    audio_tag = JSON.parse(audio_tag);
+
     if (file === null || file === undefined) {
       return res.json({
         status: 'fail',
@@ -75,8 +77,9 @@ module.exports = {
 
           if (audio_tag && audio_tag.data && audio_tag.data !== '') {
             var key = ret.key.split('.')[0]+'_cover'+'.png';
-            var bufData = new Buffer(audio_data.data, 'base64');
-            qiniuService.uploadFileBuf(uptoken, key, audio_tag.data, extra, function(err, tag_ret) {
+            var bufData = new Buffer(audio_tag.data, 'base64');
+            var uptoken = qiniuService.generateUpToken();
+            qiniuService.uploadFileBuf(uptoken, key, bufData, null, function(err, tag_ret) {
               if (err) return cb2(err);
               audioInfo.cover_url = tag_ret.url;
               return cb2(null, audioInfo);
@@ -88,16 +91,14 @@ module.exports = {
         function(audioInfo, cb3) {
           // get other audio singer album etc... and create audio file
           if (audio_tag && audio_tag.title && audio_tag.title !== '') {
-            audioInfo.title = audio_tag.title;
+            audioInfo.title = audio_tag['title'];
           }
           if (audio_tag && audio_tag.artist && audio_tag.artist !== '') {
-            audioInfo.singer_name = audio_tag.artist;
+            audioInfo.singer_name = audio_tag['artist'];
           }
 
-          if (audio_tag && audio_tag.comment && audio_tag.comment !== '') {
-            console.log(audio_tag.comment);
-            var comment = JSON.parse(audio_tag.comment);
-            console.log(comment);
+          if (audio_tag && audio_tag['comment'] && audio_tag['comment'] !== '') {
+            var comment = JSON.parse(audio_tag['comment']);
             if (typeof comment === 'object') {
               if (comment.hasOwnProperty('musicName')) {
                 audioInfo.title = comment['musicName'];
