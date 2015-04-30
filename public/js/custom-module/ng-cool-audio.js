@@ -12,7 +12,38 @@
 						source: '=source'
 					},
 					replace: true,
-					template: '<div class="ng-cool-audio-container"><audio>Your browser seems to be upgraded! :)</audio><div class="ng-cool-audio-preview"><div class="ncv-audio-left"><div class="ncv-img-container"><div class="ncv-audio-cover" style="background-image: url(\'{{audio.cover}}\')"></div></div></div><div class="ncv-audio-right"><div class="ncv-audio-right-top"><div class="ncv-header"><div class="ncv-header-title">{{audio.author}}</div><div class="ncv-header-subtitle">{{audio.name}}</div></div></div><div class="ncv-audio-right-bottom"><div class="ncv-audio-controls"><i class="ti-control-backward" ng-click="playBackward()"></i><i class="ti-control-pause" ng-click="pause()" ng-show="isPlaying"></i><i class="ti-control-play" ng-click="play()" ng-show="!isPlaying"></i><i class="ti-control-forward" ng-click="playForward()"></i></div><div class="ncv-audio-progress"><progress class="ncv-audio-progress-bar" ng-click="skipProgress($event)" max="100" value="{{progressValue}}"></progress></div><div class="ncv-time"><span>{{currentTime}}</span></div></div></div></div></div>',
+					template: '<div class="ng-cool-audio-container">\
+					  <audio>Your browser seems to be upgraded! :)</audio>\
+					  <div class="ng-cool-audio-preview">\
+					    <div class="ncv-audio-left">\
+					      <div class="ncv-img-container">\
+					        <div class="ncv-audio-cover" style="background-image: url(\'{{audio.cover}}\')"></div>\
+					      </div>\
+					    </div>\
+					    <div class="ncv-audio-right">\
+					      <div class="ncv-audio-right-top">\
+					        <div class="ncv-header">\
+					          <div class="ncv-header-title">{{audio.author}}</div>\
+					          <div class="ncv-header-subtitle">{{audio.name}}</div>\
+					        </div>\
+					      </div>\
+					      <div class="ncv-audio-right-bottom">\
+					        <div class="ncv-audio-controls">\
+					          <i class="fa fa-backward" ng-click="playBackward()"></i>\
+					          <i class="fa fa-pause" ng-click="pause()" ng-show="isPlaying"></i>\
+					          <i class="fa fa-play" ng-click="play()" ng-show="!isPlaying"></i>\
+					          <i class="fa fa-forward" ng-click="playForward()"></i>\
+					        </div>\
+					        <div class="ncv-audio-progress">\
+					          <progress class="ncv-audio-progress-bar" ng-click="skipProgress($event)" max="100" value="{{progressValue}}"></progress>\
+					        </div>\
+					        <div class="ncv-time">\
+					          <span>{{currentTime}}</span>\
+					        </div>\
+					      </div>\
+					    </div>\
+					  </div>\
+					</div>',
 					controller: ['$scope', '$element', function($scope, $element) {
 						//check source file
 						if (!$scope.source || !$scope.source.audio) {

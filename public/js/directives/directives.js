@@ -461,7 +461,13 @@
             usersAt: '=usersAt'
           },
           transclude: true,
-          template: '<div class="feed-add-comment"><div class="feed-add-comment-inner"><form class="comment-form"><input type="text" class="form-control" placeholder="Add a comment" mentio mentio-items="usersAt" ng-model="commentWord"></form></div></div>',
+          template: '<div class="feed-add-comment">\
+            <div class="feed-add-comment-inner">\
+              <form class="comment-form">\
+                <input type="text" class="form-control" placeholder="Add a comment" mentio mentio-items="usersAt" ng-model="commentWord">\
+              </form>\
+            </div>\
+          </div>',
           link: function(scope, ele, attrs) {
             var form = ele[0].querySelector('form.comment-form');
             form.addEventListener('submit', function() {
@@ -497,7 +503,13 @@
             feed: '=feed',
             current_image_index: '@currentImageIndex'
           },
-          template: '<div class="feed-detail-image-preview"><img ng-show="imageReady" ng-src="{{current_image.url}}" alt="Photo"><i class="ti-angle-left" ng-click="preImage()"></i><i class="ti-angle-right" ng-click="nextImage()"></i><div class="image-caption">{{current_image.caption}}</div><div ng-show="!imageReady" ng-include="\'template/spinner.html\'"></div></div>',
+          template: '<div class="feed-detail-image-preview">\
+            <img ng-show="imageReady" ng-src="{{current_image.url}}" alt="Photo">\
+            <i class="fa fa-angle-left" ng-click="preImage()"></i>\
+            <i class="fa fa-angle-right" ng-click="nextImage()"></i>\
+            <div class="image-caption">{{current_image.caption}}</div>\
+            <div ng-show="!imageReady" ng-include="\'template/spinner.html\'"></div>\
+          </div>',
           link: function(scope, ele, attrs) {
             //calculate image for displaying
             scope.imageReady = false;
@@ -645,7 +657,30 @@
           scope: {
             current_user: '=currentUser'
           },
-          template: '<div class="sf-map-card"><div id="map-container"><div class="weather-city"><i class="ti-location-pin"></i><span>{{weather.city}}</span></div></div><div class="sf-weathers"><div ng-bind-html="weather.icon" class="weather-icon"></div><div class="weather-info"><div class="weather-weather"><span>天气: </span><span>{{weather.weather}}</span></div><div class="weather-temperature"><span>温度: </span><span>{{weather.temperature}}&#176;C</span></div><div class="weather-time"><span>发布时间: </span><span>{{weather.reportTime}}</span></div></div></div></div>',
+          template: '<div class="sf-map-card">\
+            <div id="map-container">\
+              <div class="weather-city"><i class="fa fa-map-marker"></i>\
+                <span>{{weather.city}}</span>\
+              </div>\
+            </div>\
+            <div class="sf-weathers">\
+              <div ng-bind-html="weather.icon" class="weather-icon"></div>\
+              <div class="weather-info">\
+                <div class="weather-weather">\
+                  <span>天气: </span>\
+                  <span>{{weather.weather}}</span>\
+                </div>\
+                <div class="weather-temperature">\
+                  <span>温度: </span>\
+                  <span>{{weather.temperature}}&#176;C</span>\
+                </div>\
+                <div class="weather-time">\
+                  <span>发布时间: </span>\
+                  <span>{{weather.reportTime}}</span>\
+                </div>\
+              </div>\
+            </div>\
+          </div>',
           controller: ['$scope', function($scope) {
 
           }],

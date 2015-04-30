@@ -16,7 +16,31 @@
         },
         transclude: true,
         replace: true,
-        template: '<div class="ng-cool-video"><div class="ng-cool-video-container"><video width="100%"></video><div class="ng-cool-video-controls"><div class="ncv-actions"><i class="ti-control-backward" ng-click="playBackward()"></i><i class="ti-control-pause" ng-click="pause()" ng-show="isPlaying"></i><i class="ti-control-play" ng-click="play()" ng-show="!isPlaying"></i><i class="ti-control-forward" ng-click="playForward()"></i></div><div class="ncv-progress"><progress class="ncv-progress-bar" max="100" value="{{progressValue}}" ng-click="skipProgress($event)"></progress></div><div class="ncv-current-time"><span class="ncv-video-duration">{{playingTime}}</span></div><div class="ncv-mute"><i class="ti-volume" ng-click="toggleVolume()"></i></div><div class="ncv-sound-range"><input class="ncv-volume" type="range" max="10" min="0" value="5" ng-model="video.volume"></div></div></div></div></div>',
+        template: '<div class="ng-cool-video">\
+          <div class="ng-cool-video-container">\
+            <video width="100%"></video>\
+            <div class="ng-cool-video-controls">\
+              <div class="ncv-actions">\
+                <i class="fa fa-backward" ng-click="playBackward()"></i>\
+                <i class="fa fa-pause" ng-click="pause()" ng-show="isPlaying"></i>\
+                <i class="fa fa-play" ng-click="play()" ng-show="!isPlaying"></i>\
+                <i class="fa fa-forward" ng-click="playForward()"></i>\
+              </div>\
+              <div class="ncv-progress">\
+                <progress class="ncv-progress-bar" max="100" value="{{progressValue}}" ng-click="skipProgress($event)"></progress>\
+              </div>\
+              <div class="ncv-current-time">\
+                <span class="ncv-video-duration">{{playingTime}}</span>\
+              </div>\
+              <div class="ncv-mute">\
+                <i class="fa fa-volume-up" ng-click="toggleVolume()"></i>\
+              </div>\
+              <div class="ncv-sound-range">\
+                <input class="ncv-volume" type="range" max="10" min="0" value="5" ng-model="video.volume">\
+              </div>\
+            </div>\
+          </div>\
+        </div>',
         controller: ['$scope', '$element', function($scope, $element) {
 
           //check source first
