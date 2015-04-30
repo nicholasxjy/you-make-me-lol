@@ -52,8 +52,8 @@
           })
 
         UserService.currentUser()
-          .then(function(user) {
-            self.current_user = user;
+          .then(function(res) {
+            self.current_user = res.user;
             self.isAuthenticated = true;
           })
       }

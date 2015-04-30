@@ -5,8 +5,8 @@
     .controller('SettingCtrl', [
       'UserService',
       'ngCoolNoti',
-      '$upload',
-      function(UserService, ngCoolNoti, $upload) {
+      'Upload',
+      function(UserService, ngCoolNoti, Upload) {
         var self = this;
         self.user = {};
         UserService.getUserInfo()
@@ -15,8 +15,7 @@
             angular.copy(self.current_user, self.user);
             self.isAuthticated = true;
           })
-
-
+        
         self.submitSetting = function(user) {
           UserService.updateInfo(user)
             .then(function(data) {
@@ -64,7 +63,7 @@
             self.uploadBgDone = false;
             self.bgUploading = true;
           }
-          $upload.upload({
+          Upload.upload({
             url: '/user/upload_image',
             file: file,
             fields: {

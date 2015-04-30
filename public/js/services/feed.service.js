@@ -25,7 +25,7 @@
         }
 
         function getFeedDetail(id) {
-          return BaseQuery.get('/feed/detail', {feedid: id});
+          return BaseQuery.get('/feed/detail', {feedId: id});
         }
 
         function getFeedsByUser(userId) {

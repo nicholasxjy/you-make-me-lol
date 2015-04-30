@@ -608,13 +608,13 @@
         },
         template: '<div class="feed-actions">\
                     <a ng-click="toggleFeedLike()" class="toggle-like-link">\
-                      <svg ng-show="!feed.isLike" width="24px" height="23px" viewBox="0 0 24 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"><defs></defs><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"><g id="detail" sketch:type="MSArtboardGroup" transform="translate(-617.000000, -373.000000)" fill="#CCCCCC"><path d="M629,395.488889 L627.32,393.777778 C621.08,388.155556 617,384.366667 617,379.722222 C617,375.933333 619.88,373 623.6,373 C625.64,373 627.68,373.977778 629,375.566667 C630.32,373.977778 632.36,373 634.4,373 C638.12,373 641,375.933333 641,379.722222 C641,384.366667 636.92,388.155556 630.68,393.777778 L629,395.488889 L629,395.488889 Z" id="Shape" sketch:type="MSShapeGroup"></path></g></g></svg><svg ng-show="feed.isLike" width="24px" height="23px" viewBox="0 0 24 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"><defs></defs><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"><g id="detail" sketch:type="MSArtboardGroup" transform="translate(-617.000000, -373.000000)" fill="#FF5252"><path d="M629,395.488889 L627.32,393.777778 C621.08,388.155556 617,384.366667 617,379.722222 C617,375.933333 619.88,373 623.6,373 C625.64,373 627.68,373.977778 629,375.566667 C630.32,373.977778 632.36,373 634.4,373 C638.12,373 641,375.933333 641,379.722222 C641,384.366667 636.92,388.155556 630.68,393.777778 L629,395.488889 L629,395.488889 Z" id="Shape" sketch:type="MSShapeGroup"></path></g></g></svg>\
+                      <i class="fa fa-heart" ng-class="{\'islike\': feed.isLike}"></i>\
                       <span class="likes-count" ng-if="feed.likes_count > 0">{{feed.likes_count | formatCount}}</span>\
                     </a>\
                     <ul class="list-inline likes-list" ng-if="feed.likes && feed.likes.length > 0">\
                       <li ng-repeat="liker in feed.likes">\
                         <a ui-sref="user({name: liker.name})">\
-                          <img ng-src="{{liker.avatar}}" class="img-rounded" alt="" ng-cool-tooltip="{{liker.name}}">\
+                          <img ng-src="{{liker.avatar}}" class="img-rounded" alt="" ng-cool-tooltip tooltip-placement="top" title="{{liker.name}}">\
                         </a>\
                       </li>\
                     </ul>\
@@ -630,6 +630,7 @@
                       scope.feed.likes = scope.feed.likes.filter(function(liker) {
                         return liker._id !== scope.current_user._id;
                       })
+                      scope.feed.likes_count -= 1;
                     } else {
                       scope.feed.likes.unshift({
                         _id: scope.current_user._id,

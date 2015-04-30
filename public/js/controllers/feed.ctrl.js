@@ -14,10 +14,10 @@
           $state.go('404');
         }
         UserService.currentUser()
-          .then(function(user) {
-            self.current_user = user;
+          .then(function(res) {
+            self.current_user = res.user;
             self.isAuthticated = true;
-            return user;
+            return res.user;
           })
           .then(function(user) {
             if (user) {

@@ -13,7 +13,7 @@
                 <div class="sf-feed-inner">
                   <div class="feed-top">
                     <div class="user-avatar">
-                      <img ng-src="{{ctrl.feed.creator.avatar}}" class="img-circle" sf-user-card-popover user="ctrl.feed.creator" current-user="ctrl.current_user">
+                      <img ng-src="{{ctrl.feed.creator.avatar}}" class="img-circle">
                     </div>
                     <div class="user-other">
                       <div class="user-name">
@@ -21,11 +21,11 @@
                         <div sf-feed-action-more feed="ctrl.feed" current-user="ctrl.current_user" class="pull-right"></div>
                       </div>
                       <div class="feed-time-location">
-                        <span class="time" ng-cool-tooltip="{{ctrl.feed.createdAt | date: 'yyyy-MM-dd HH:mm'}}">
+                        <span class="time" ng-cool-tooltip tooltip-placement="top" title="{{ctrl.feed.createdAt | date: 'yyyy-MM-dd HH:mm'}}">
                           Shared on - {{ctrl.feed.createdAt | sinceTime}}
                         </span>
                         <span class="location">
-                          <i class="ti-location-pin"></i>
+                          <i class="fa fa-map-marker"></i>
                           {{ctrl.feed.location}}
                         </span>
                       </div>
