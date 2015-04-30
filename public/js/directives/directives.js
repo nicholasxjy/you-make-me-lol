@@ -717,7 +717,7 @@
             current_user: '=currentUser'
           },
           template: '<div class="dropdown feed-right-dropdown">\
-                      <a class="dropdown-toggle ti-angle-down" data-toggle="dropdown" role="button" aria-expanded="false"></a>\
+                      <a class="dropdown-toggle fa fa-angle-down" data-toggle="dropdown" role="button" aria-expanded="false"></a>\
                       <ul class="dropdown-menu" role="menu">\
                         <li class="dropdown-arrow feed-drop-arrow"></li>\
                         <li ng-if="(current_user._id != feed.creator._id) && feed.creator.hasFollowed"><a ng-click="unfollow(feed)">unfollow {{feed.creator.name}}</a></li>\
@@ -881,4 +881,20 @@
         }
       }
     ])
+    .directive('ngCoolTooltip', function() {
+      return {
+        restrict: 'AE',
+        link: function(scope, ele, attrs) {
+          var placement = attrs.tooltipPlacement;
+          attrs.$observe('title', function(val) {
+            if (val !== '') {
+              $(ele[0]).tooltip({
+                title: val,
+                placement: placement
+              })
+            }
+          })
+        }
+      }
+    })
 })();
