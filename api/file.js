@@ -126,7 +126,7 @@ exports.upload = function(req, res, next) {
   }
 };
 
-exports.delete = delete: function(req, res, next) {
+exports.delete = function(req, res, next) {
   //should check the authority
   var key = req.body.key;
   var userId = req.session.user;
