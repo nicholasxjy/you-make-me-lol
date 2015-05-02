@@ -818,7 +818,7 @@
             <div class="comment-content">\
               <div class="top">\
                 <a class="comment-user-name" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a>\
-                <span class="comment-time" ng-cool-tooltip tooltip-placement="top" title="{{comment.createdAt | date: \'yyyy-MM-dd HH:mm\'}}">{{comment.createdAt | sinceTime}}</span>\
+                <span class="comment-time" ng-cool-tooltip="{{comment.createdAt | date: \'yyyy-MM-dd HH:mm\'}}">{{comment.createdAt | sinceTime}}</span>\
                 <i class="fa fa-trash-o pull-right" ng-if="comment.creator._id == current_user._id" ng-click="deleteComment(comment)"></i>\
               </div>\
               <div class="comment-words" ng-bind-html="comment.content">\
