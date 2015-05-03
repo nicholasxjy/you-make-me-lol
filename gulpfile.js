@@ -74,28 +74,13 @@ var source_dir = {
     'public/lib/ng-tags-input/ng-tags-input.js'
   ],
   jscus: [
-    'public/js/custom-module/ng-cool-noti.js',
-    'public/js/custom-module/ng-cool-video.js',
-    'public/js/custom-module/ng-cool-audio.js',
-    'public/js/custom-module/ng-cool-components.js',
-    'public/js/custom-module/ng-audio-tag.js',
-    'public/js/custom-module/ng-geo.js',
+    'public/js/custom-module/*.js',
     'public/js/app.js',
     'public/js/services/base.query.js',
-    'public/js/services/feed.service.js',
-    'public/js/services/user.service.js',
-    'public/js/services/file.service.js',
+    'public/js/services/*.js',
     'public/js/filters/filters.js',
-    'public/js/directives/directives.js',
-    'public/js/controllers/welcome.ctrl.js',
-    'public/js/controllers/auth.ctrl.js',
-    'public/js/controllers/feed.ctrl.js',
-    'public/js/controllers/home.ctrl.js',
-    'public/js/controllers/user.ctrl.js',
-    'public/js/controllers/setting.ctrl.js',
-    'public/js/controllers/message.ctrl.js',
-    'public/js/controllers/follow.ctrl.js',
-    'public/js/controllers/followee.ctrl.js'
+    'public/js/directives/*.js',
+    'public/js/controllers/*.js',
   ]
 }
 //concat js css
