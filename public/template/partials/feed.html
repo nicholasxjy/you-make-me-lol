@@ -16,6 +16,7 @@
           <div class="post-top-other">
             <div class="creator-link">
               <a ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
+              <div ck-feed-action-more feed="feed" current-user="ctrl.current_user"></div>
             </div>
             <div class="time-location">
               <span class="time">Shared on - {{feed.createdAt | sinceTime}}</span>
@@ -35,51 +36,9 @@
           </div>
           <div class="video-view" ng-if="feed.category == 'video'" ng-cool-video source="feed.source"></div>
         </div>
-        <div class="post-action">
-          <div class="like-action">
-            <svg class="icon icon-heart"><use xlink:href="#icon-heart"></use></svg>
-            <span class="like-tip">
-              <a href="">nicholas</a>, and <a href="">12 others</a> liked this
-            </span>
-          </div>
-          <div class="likes-list">
-            <a ng-repeat="liker in feed.likes" ui-sref="user({name: liker.name})">
-              <img ng-src="{{liker.avatar}}" alt="avatar" class="img-rounded">
-            </a>
-          </div>
-        </div>
+        <div ck-feed-action feed="feed" current-user="ctrl.current_user"></div>
       </div>
-      <div class="post-comments">
-        <div class="load-more-comment" ng-if="feed.comments.length > 3">
-          <a href="">More comments</a>
-        </div>
-        <div class="comments-list">
-          <div class="comment-item" ng-repeat="comment in feed.comments">
-            <div class="comment-avatar">
-              <img ng-src="{{comment.creator.avatar}}" alt="avatar" class="img-rounded">
-            </div>
-            <div class="comment-body">
-              <div class="comment-text">
-                <a class="creator-link" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a>
-                <span ng-bind-html="comment.content"></span>
-              </div>
-              <div class="comment-action">
-                <span class="time">{{comment.createdAt | date: 'yyyy-MM-dd hh:mm'}}</span>
-                <svg class="icon icon-reply"><use xlink:href="#icon-reply"></use></svg>
-                <svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="add-comment comment-item">
-          <div class="comment-avatar">
-            <img ng-src="{{ctrl.current_user.avatar}}" alt="avatar" class="img-rounded">
-          </div>
-          <div class="comment-body">
-            <input type="text" class="form-control" placeholder="写评论...">
-          </div>
-        </div>
-      </div>
+      <div ck-feed-comments feed="feed" current-user="ctrl.current_user"></div>
     </div>
   </div>
 </div>

@@ -448,51 +448,6 @@
         }
       }
     ])
-    .directive('sfFeedAddComment', [
-      '$document',
-      '$timeout',
-      'FeedService',
-      'UserService',
-      function($document, $timeout, FeedService, UserService) {
-        return {
-          restrict: 'AE',
-          scope: {
-            feed: '=feed',
-            usersAt: '=usersAt'
-          },
-          transclude: true,
-          template: '<div class="feed-add-comment">\
-            <div class="feed-add-comment-inner">\
-              <form class="comment-form">\
-                <input type="text" class="form-control" placeholder="Add a comment" mentio mentio-items="usersAt" ng-model="commentWord">\
-              </form>\
-            </div>\
-          </div>',
-          link: function(scope, ele, attrs) {
-            var form = ele[0].querySelector('form.comment-form');
-            form.addEventListener('submit', function() {
-              if (scope.commentWord === '') {
-                return;
-              } else {
-                FeedService.addComment(scope.feed._id, scope.commentWord)
-                  .then(function(data) {
-                    if (data.status === 'success') {
-                      var new_c = data.new_comment;
-                      console.log(new_c)
-                      scope.feed.comments.unshift(new_c);
-
-                      //remove input
-                      scope.commentWord = '';
-                    }
-                  }, function(err) {
-                    console.log(err);
-                  })
-              }
-            })
-          }
-        }
-      }
-    ])
     .directive('sfFeedGallery', [
       '$timeout',
       '$document',
@@ -599,26 +554,32 @@
         }
       }
     ])
-    .directive('sfFeedAction', function(FeedService) {
+    .directive('ckFeedAction', function(FeedService) {
       return {
         restrict: 'AE',
         scope: {
           feed: '=feed',
           current_user: '=currentUser'
         },
-        template: '<div class="feed-actions">\
-                    <a ng-click="toggleFeedLike()" class="toggle-like-link">\
-                      <i class="fa fa-heart" ng-class="{\'islike\': feed.isLike}"></i>\
-                      <span class="likes-count" ng-if="feed.likes_count > 0">{{feed.likes_count | formatCount}}</span>\
+        template: '<div class="post-action">\
+                  <div class="like-action">\
+                    <i class="fa fa-heart" ng-class="{\'isLike\': feed.isLike}" ng-click="toggleFeedLike()"></i>\
+                    <span class="like-tip" ng-if="feed.likes_count == 1">\
+                      <a ui-sref="user({name: feed.likes[0].name})">{{feed.likes[0].name}}</a> liked this\
+                    </span>\
+                    <span class="like-tip" ng-if="feed.likes_count == 2">\
+                      <a ui-sref="user({name: feed.likes[0].name})">{{feed.likes[0].name}}</a> and <a ui-sref="user({name: feed.likes[1].name})">{{feed.likes[1].name}}</a> liked this\
+                    </span>\
+                    <span class="like-tip" ng-if="feed.likes_count > 2">\
+                      <a ui-sref="user({name: feed.likes[0].name})">{{feed.likes[0].name}}</a> and <a >{{feed.likes_count - 1}} others</a> liked this\
+                    </span>\
+                  </div>\
+                  <div class="likes-list" ng-if="feed.likes && feed.likes.length > 0">\
+                    <a ng-repeat="liker in feed.likes" ui-sref="user({name: liker.name})">\
+                      <img ng-src="{{liker.avatar}}" alt="avatar" class="img-rounded" ng-cool-tooltip tooltip-placement="top" title="{{liker.name}}">\
                     </a>\
-                    <ul class="list-inline likes-list" ng-if="feed.likes && feed.likes.length > 0">\
-                      <li ng-repeat="liker in feed.likes">\
-                        <a ui-sref="user({name: liker.name})">\
-                          <img ng-src="{{liker.avatar}}" class="img-rounded" alt="" ng-cool-tooltip tooltip-placement="top" title="{{liker.name}}">\
-                        </a>\
-                      </li>\
-                    </ul>\
-                  </div>',
+                  </div>\
+                </div>',
         link: function(scope, ele, attrs) {
           scope.toggleFeedLike = function() {
             if (scope.feed) {
@@ -706,7 +667,7 @@
         }
       }
     ])
-    .directive('sfFeedActionMore', [
+    .directive('ckFeedActionMore', [
       'FeedService',
       'UserService',
       'ngCoolNoti',
@@ -720,7 +681,6 @@
           template: '<div class="dropdown feed-right-dropdown">\
                       <a class="dropdown-toggle fa fa-angle-down" data-toggle="dropdown" role="button" aria-expanded="false"></a>\
                       <ul class="dropdown-menu" role="menu">\
-                        <li class="dropdown-arrow feed-drop-arrow"></li>\
                         <li ng-if="(current_user._id != feed.creator._id) && feed.creator.hasFollowed"><a ng-click="unfollow(feed)">unfollow {{feed.creator.name}}</a></li>\
                         <li ng-if="(current_user._id != feed.creator._id) && !feed.creator.hasFollowed"><a ng-click="follow(feed)">follow {{feed.creator.name}}</a></li>\
                         <li ng-if="current_user._id == feed.creator._id"><a ng-click="delete(feed)">delete post</a></li>\
@@ -797,7 +757,7 @@
         }
       }
     ])
-    .directive('sfFeedComments', [
+    .directive('ckFeedComments', [
       'FeedService',
       function(FeedService) {
         return {
@@ -806,25 +766,39 @@
             feed: '=feed',
             current_user: '=currentUser'
           },
-          template: '<div class="comments-more" ng-if="feed.comments.length > 0">\
-            <a ng-click="loadMoreComments()">More Comments</a>\
-          </div>\
-          <div class="feed-comment-item" ng-repeat="comment in feed.comments">\
-            <div class="comment-user-avatar">\
-              <a ui-sref="user({name: comment.creator.name})">\
-                <img ng-src="{{comment.creator.avatar}}" alt="" class="img-rounded">\
-              </a>\
-            </div>\
-            <div class="comment-content">\
-              <div class="top">\
-                <a class="comment-user-name" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a>\
-                <span class="comment-time" ng-cool-tooltip="{{comment.createdAt | date: \'yyyy-MM-dd HH:mm\'}}">{{comment.createdAt | sinceTime}}</span>\
-                <i class="fa fa-trash-o pull-right" ng-if="comment.creator._id == current_user._id" ng-click="deleteComment(comment)"></i>\
-              </div>\
-              <div class="comment-words" ng-bind-html="comment.content">\
-              </div>\
-            </div>\
-          </div>',
+          template: '<div class="post-comments">\
+                  <div class="load-more-comment" ng-if="feed.comments.length > 3">\
+                    <a href="">More comments</a>\
+                  </div>\
+                  <div class="comments-list">\
+                    <div class="comment-item" ng-repeat="comment in feed.comments">\
+                      <div class="comment-avatar">\
+                        <img ng-src="{{comment.creator.avatar}}" alt="avatar" class="img-rounded">\
+                      </div>\
+                      <div class="comment-body">\
+                        <div class="comment-text">\
+                          <a class="creator-link" ui-sref="user({name: comment.creator.name})">{{comment.creator.name}}</a>\
+                          <span ng-bind-html="comment.content"></span>\
+                        </div>\
+                        <div class="comment-action">\
+                          <span class="time">{{comment.createdAt | date: \'yyyy-MM-dd hh:mm\'}}</span>\
+                          <i class="fa fa-reply" ng-cool-tooltip tooltip-placement="top" title="reply"></i>\
+                          <i class="fa fa-trash-o" ng-if="comment.creator._id == current_user._id" ng-click="deleteComment(comment)" ng-cool-tooltip tooltip-placement="top" title="delete"></i>\
+                        </div>\
+                      </div>\
+                    </div>\
+                  </div>\
+                  <div class="add-comment comment-item">\
+                    <div class="comment-avatar">\
+                      <img ng-src="{{current_user.avatar}}" alt="avatar" class="img-rounded">\
+                    </div>\
+                    <div class="comment-body">\
+                      <form class="comment-form">\
+                        <input type="text" class="form-control" placeholder="写评论..." ng-model="commentWord">\
+                      </form>\
+                    </div>\
+                  </div>\
+                </div>',
           link: function(scope, ele, attrs) {
 
             function checkCommentsExist(comment) {
@@ -833,6 +807,27 @@
               });
               return isExist;
             }
+
+            var form = ele[0].querySelector('form.comment-form');
+            form.addEventListener('submit', function() {
+              if (scope.commentWord === '') {
+                return;
+              } else {
+                FeedService.addComment(scope.feed._id, scope.commentWord)
+                  .then(function(data) {
+                    if (data.status === 'success') {
+                      var new_c = data.new_comment;
+                      console.log(new_c)
+                      scope.feed.comments.unshift(new_c);
+
+                      //remove input
+                      scope.commentWord = '';
+                    }
+                  }, function(err) {
+                    console.log(err);
+                  })
+              }
+            })
 
             scope.deleteComment = function(comment) {
               FeedService.deleteComment(scope.feed._id, comment._id)
