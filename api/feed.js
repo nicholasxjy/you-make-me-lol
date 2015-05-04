@@ -120,7 +120,7 @@ exports.create = function(req, res, next) {
       return res.json({
         status: 'success',
         new_feed_id: result._id
-      })  
+      })
     }
   })
 };
@@ -219,7 +219,7 @@ exports.getFeeds = function(req, res, next) {
     sort: {
       createdAt: '-1'
     },
-    limit: 10
+    limit: 30
   }
 
   feedProxy.getFeeds(query, options, function(err, feeds) {

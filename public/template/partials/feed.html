@@ -1,4 +1,4 @@
-<div class="ck-post-item" ng-repeat="feed in ctrl.feeds" ng-if="feed.category=='image'">
+<div class="ck-post-item" ng-repeat="feed in ctrl.feeds" ng-if="feed.category!='text'">
   <div class="post-item-left">
     <div class="post-creator">
       <div class="creator-name">
@@ -19,6 +19,9 @@
         <div class="image-view" ng-if="feed.category=='image'">
           <img ng-src="{{feed.attach_files[0].url}}" alt="photo">
         </div>
+        <div class="audio-view" ng-if="feed.category=='audio'" ng-cool-audio source="feed.source">
+        </div>
+        <div class="video-view" ng-if="feed.category == 'video'" ng-cool-video source="feed.source"></div>
       </div>
       <div class="post-action">
         <div class="like-action">
@@ -26,8 +29,6 @@
           <span class="like-tip">
             <a href="">nicholas</a>, and <a href="">12 others</a> liked this
           </span>
-          <svg class="icon icon-ribbon"><use xlink:href="#icon-ribbon"></use></svg>
-          <svg class="icon icon-upload"><use xlink:href="#icon-upload"></use></svg>
         </div>
         <div class="likes-list">
           <a ng-repeat="liker in feed.likes" ui-sref="user({name: liker.name})">
@@ -60,12 +61,15 @@
                 <span ng-bind-html="comment.content"></span>
               </div>
               <div class="comment-action">
-                <span class="time">{{comment.createdAt | date: 'yyyy-mm-dd hh:MM'}}</span>
+                <span class="time">{{comment.createdAt | date: 'yyyy-MM-dd hh:mm'}}</span>
                 <svg class="icon icon-reply"><use xlink:href="#icon-reply"></use></svg>
                 <svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg>
               </div>
             </div>
           </div>
+        </div>
+        <div class="add-comment">
+          <input type="text" class="form-control" placeholder="写评论...">
         </div>
       </div>
     </div>
