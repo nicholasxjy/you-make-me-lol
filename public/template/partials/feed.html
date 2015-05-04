@@ -1,51 +1,54 @@
-<div class="ck-post-item" ng-repeat="feed in ctrl.feeds" ng-if="feed.category!='text'">
-  <div class="post-item-left">
-    <div class="post-creator">
-      <div class="creator-name">
-        <a ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
-      </div>
-      <div class="post-time-location">
-        <span class="time">{{feed.createdAt | sinceTime}}</span>
-        <i class="fa fa-map-marker"></i><span>{{feed.location}}</span>
-      </div>
-    </div>
+<div class="ck-post-item row" ng-repeat="feed in ctrl.feeds" ng-if="feed.category!='text'">
+  <div class="post-item-left col-md-3">
     <div class="post-creator-avatar">
       <img ng-src="{{feed.creator.avatar}}" alt="avatar" class="img-rounded">
     </div>
   </div>
-  <div class="post-item-right">
+  <div class="post-item-right col-md-6">
     <div class="ck-post-card">
-      <div class="post-top">
-        <div class="image-view" ng-if="feed.category=='image'">
-          <img ng-src="{{feed.attach_files[0].url}}" alt="photo">
+      <div class="card-body">
+        <div class="post-top">
+          <div class="creator-avatar">
+            <a ui-sref="user({name: feed.creator.name})">
+              <img ng-src="{{feed.creator.avatar}}" alt="avatar" class="img-rounded">
+            </a>
+          </div>
+          <div class="post-top-other">
+            <div class="creator-link">
+              <a ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
+            </div>
+            <div class="time-location">
+              <span class="time">Shared on - {{feed.createdAt | sinceTime}}</span>
+              <i class="fa fa-map-marker"></i><span>{{feed.location}}</span>
+            </div>
+          </div>
         </div>
-        <div class="audio-view" ng-if="feed.category=='audio'" ng-cool-audio source="feed.source">
+        <div class="post-text" ng-if="feed.content != ''">
+          <div class="text-wrap" ng-bind-html="feed.content">
+          </div>
         </div>
-        <div class="video-view" ng-if="feed.category == 'video'" ng-cool-video source="feed.source"></div>
+        <div class="post-view">
+          <div class="image-view" ng-if="feed.category=='image'">
+            <img ng-src="{{feed.attach_files[0].url}}" alt="photo">
+          </div>
+          <div class="audio-view" ng-if="feed.category=='audio'" ng-cool-audio source="feed.source">
+          </div>
+          <div class="video-view" ng-if="feed.category == 'video'" ng-cool-video source="feed.source"></div>
+        </div>
+        <div class="post-action">
+          <div class="like-action">
+            <svg class="icon icon-heart"><use xlink:href="#icon-heart"></use></svg>
+            <span class="like-tip">
+              <a href="">nicholas</a>, and <a href="">12 others</a> liked this
+            </span>
+          </div>
+          <div class="likes-list">
+            <a ng-repeat="liker in feed.likes" ui-sref="user({name: liker.name})">
+              <img ng-src="{{liker.avatar}}" alt="avatar" class="img-rounded">
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="post-action">
-        <div class="like-action">
-          <svg class="icon icon-heart"><use xlink:href="#icon-heart"></use></svg>
-          <span class="like-tip">
-            <a href="">nicholas</a>, and <a href="">12 others</a> liked this
-          </span>
-        </div>
-        <div class="likes-list">
-          <a ng-repeat="liker in feed.likes" ui-sref="user({name: liker.name})">
-            <img ng-src="{{liker.avatar}}" alt="avatar" class="img-rounded">
-          </a>
-        </div>
-      </div>
-      <div class="post-text" ng-if="feed.content != ''">
-        <div class="creator-avatar">
-          <img ng-src="{{feed.creator.avatar}}" alt="avatar" class="img-rounded">
-        </div>
-        <div class="text-wrap">
-          <a class="creator-link" ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
-          <span ng-bind-html="feed.content"></span>
-        </div>
-      </div>
-
       <div class="post-comments">
         <div class="load-more-comment" ng-if="feed.comments.length > 3">
           <a href="">More comments</a>
@@ -68,8 +71,13 @@
             </div>
           </div>
         </div>
-        <div class="add-comment">
-          <input type="text" class="form-control" placeholder="写评论...">
+        <div class="add-comment comment-item">
+          <div class="comment-avatar">
+            <img ng-src="{{ctrl.current_user.avatar}}" alt="avatar" class="img-rounded">
+          </div>
+          <div class="comment-body">
+            <input type="text" class="form-control" placeholder="写评论...">
+          </div>
         </div>
       </div>
     </div>
