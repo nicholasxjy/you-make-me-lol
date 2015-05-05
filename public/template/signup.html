@@ -15,16 +15,16 @@
             <form novalidate name="signForm" ng-submit="signCtrl.signUp(user)">
               <div class="form-inputs">
                 <div class="form-group hasborder">
-                  <input type="text" class="sf-form-control" placeholder="Name"
+                  <input type="text" class="sf-form-control" placeholder="昵称"
                   ng-model="user.name" ng-maxlength="20" ng-minlength="6" ng-focus="nameTipShow=true" required>
                   <div class="input-tip" ng-show="nameTipShow">用户名长度至少6个字符</div>
                 </div>
                 <div class="form-group hasborder">
-                  <input type="email" class="sf-form-control" placeholder="Email"
+                  <input type="email" class="sf-form-control" placeholder="电子邮件"
                   ng-model="user.email" required>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="sf-form-control" placeholder="Password"
+                  <input type="password" class="sf-form-control" placeholder="密码"
                   ng-model="user.password" ng-minlength="6" ng-maxlength="30" ng-focus="passTipShow=true" required>
                   <div class="input-tip" ng-show="passTipShow">密码长度至少6个字符</div>
                 </div>

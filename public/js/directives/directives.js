@@ -806,4 +806,23 @@
         }
       }
     })
+    .directive('ckTitle', [
+      '$rootScope',
+      '$timeout',
+      function($rootScope, $timeout) {
+        return {
+          restrict: 'AE',
+          link: function(scope, ele, attrs) {
+            var listener = function(evt, toState) {
+              $timeout(function() {
+                $rootScope.title = (toState.data && toState.data.pageTitle) ? toState.data.pageTitle : 'Cool Zone';
+              });
+            };
+
+            $rootScope.$on('$stateChangeSuccess', listener);
+          }
+        }
+      }
+
+    ])
 })();

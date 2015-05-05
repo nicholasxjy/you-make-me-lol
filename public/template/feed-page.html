@@ -2,67 +2,43 @@
   <div ng-include="'template/partials/navbar.html'"></div>
   <div class="main-content">
     <div class="main-content-inner">
-      <div class="main-container">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-3">
-              <div ng-include="'template/partials/side-bar-left.html'"></div>
-            </div>
-            <div class="col-md-7">
-              <div class="sf-feed">
-                <div class="sf-feed-inner">
-                  <div class="feed-top">
-                    <div class="user-avatar">
-                      <img ng-src="{{ctrl.feed.creator.avatar}}" class="img-circle">
-                    </div>
-                    <div class="user-other">
-                      <div class="user-name">
-                        <a class="user-name-link" ui-sref="user({name: ctrl.feed.creator.name})">{{ctrl.feed.creator.name}}</a>
-                        <div sf-feed-action-more feed="ctrl.feed" current-user="ctrl.current_user" class="pull-right"></div>
-                      </div>
-                      <div class="feed-time-location">
-                        <span class="time" ng-cool-tooltip tooltip-placement="top" title="{{ctrl.feed.createdAt | date: 'yyyy-MM-dd HH:mm'}}">
-                          Shared on - {{ctrl.feed.createdAt | sinceTime}}
-                        </span>
-                        <span class="location">
-                          <i class="fa fa-map-marker"></i>
-                          {{ctrl.feed.location}}
-                        </span>
-                      </div>
-                    </div>
+      <div class="feed-page container">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2">
+            <div class="ck-post-card">
+              <div class="card-body">
+                <div class="post-top">
+                  <div class="creator-avatar">
+                    <a ui-sref="user({name: ctrl.feed.creator.name})">
+                      <img ng-src="{{ctrl.feed.creator.avatar}}" alt="avatar" class="img-rounded">
+                    </a>
                   </div>
-
-                  <div class="feed-content">
-                    <div class="feed-text-words" ng-if="ctrl.feed.content">
-                      <div ng-bind-html="ctrl.feed.content"></div>
+                  <div class="post-top-other">
+                    <div class="creator-link">
+                      <a ui-sref="user({name: ctrl.feed.creator.name})">{{ctrl.feed.creator.name}}</a>
+                      <div ck-feed-action-more feed="ctrl.feed" current-user="ctrl.current_user"></div>
                     </div>
-
-                    <div class="feed-images" ng-if="ctrl.feed.category =='image'">
-                      <div class="feed-image-container" ng-repeat="image in ctrl.feed.attach_files">
-                        <img ng-src="{{image.url}}" alt="" class="img-responsive" width="100%"
-                        sf-feed-detail-show current-user="ctrl.current_user" users-at="ctrl.usersAt" feed-id="ctrl.feed._id" current-image-index="{{$index}}">
-                      </div>
+                    <div class="time-location">
+                      <span class="time">Shared on - {{ctrl.feed.createdAt | sinceTime}}</span>
+                      <i class="fa fa-map-marker"></i><span>{{ctrl.feed.location}}</span>
                     </div>
-
-                    <div class="feed-video-container" ng-if="ctrl.feed.category == 'video'">
-                      <ng-cool-video source="ctrl.feed.source"></ng-cool-video>
-                    </div>
-
-                    <div class="feed-audio-container" ng-if="ctrl.feed.category == 'audio'">
-                      <ng-cool-audio source="ctrl.feed.source"></ng-cool-audio>
-                    </div>
-                  </div>
-
-                  <div class="feed-tags" ng-if="feed.tags && feed.tags.length> 0">
-                    <a class="tag-item" ng-repeat="tag in ctrl.feed.tags">{{tag.text}}</a>
-                  </div>
-                  <div sf-feed-action feed="ctrl.feed" current-user="ctrl.current_user"></div>
-                  <div class="feed-comments">
-                    <div sf-feed-comments feed="ctrl.feed" current-user="ctrl.current_user"></div>
-                    <div class="feed-add-comment-wrap" sf-feed-add-comment feed="ctrl.feed" users-at="ctrl.usersAt"></div>
                   </div>
                 </div>
+                <div class="post-text" ng-if="ctrl.feed.content != ''">
+                  <div class="text-wrap" ng-bind-html="ctrl.feed.content">
+                  </div>
+                </div>
+                <div class="post-view">
+                  <div class="image-view" ng-if="ctrl.feed.category=='image'">
+                    <img ng-src="{{ctrl.feed.attach_files[0].url}}" alt="photo" ck-lightbox>
+                  </div>
+                  <div class="audio-view" ng-if="ctrl.feed.category=='audio'" ng-cool-audio source="ctrl.feed.source">
+                  </div>
+                  <div class="video-view" ng-if="ctrl.feed.category == 'video'" ng-cool-video source="ctrl.feed.source"></div>
+                </div>
+                <div ck-feed-action feed="ctrl.feed" current-user="ctrl.current_user"></div>
               </div>
+              <div ck-feed-comments feed="ctrl.feed" current-user="ctrl.current_user"></div>
             </div>
           </div>
         </div>

@@ -13,16 +13,28 @@
       'ngAudioTag',
       'ngGeo'
     ])
-    .config(function($stateProvider, $urlRouterProvider) {
+    .constant('APPCONF', {
+      Title: {
+        signup: 'Cool Zone | Sign Up',
+        login: 'Cool Zone | Login'
+      }
+    })
+    .config(function($stateProvider, $urlRouterProvider, APPCONF) {
       $urlRouterProvider.otherwise('/signup');
       $stateProvider
         .state('signup', {
           url: '/signup',
-          templateUrl: 'template/signup.html'
+          templateUrl: 'template/signup.html',
+          data: {
+            pageTitle: APPCONF.Title.signup
+          }
         })
         .state('login', {
           url: '/login',
-          templateUrl: 'template/login.html'
+          templateUrl: 'template/login.html',
+          data: {
+            pageTitle: APPCONF.Title.login
+          }
         })
         .state('forgetpass', {
           url: '/forgetpass',

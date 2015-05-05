@@ -90,7 +90,7 @@ module.exports = {
         var options = [
           {path: 'attach_files', model: 'File', select: 'caption url title singer_name cover_url'},
           {path: 'creator', model: 'User', select: '_id name avatar followers followees'},
-          {path: 'comments', model: 'Comment', options: {sort: {'createdAt': -1}, limit: 9}, select:'_id creator to_user content createdAt'},
+          {path: 'comments', model: 'Comment', options: {sort: {'createdAt': -1}}, select:'_id creator to_user content createdAt'},
           {path: 'likes', model: 'User', select: '_id name avatar'},
           {path: 'tags', model: 'Tag', select: 'text'}
         ];

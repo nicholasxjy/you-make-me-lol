@@ -263,6 +263,8 @@ exports.getDetail = function(req, res, next) {
     }
     feed.likes_count = feed.likes.length;
     feed.likes = feed.likes.slice(-10);
+    feed.comments_count = feed.comments.length;
+    feed.comments = feed.comments.slice(0, 10);
     res.json(feed);
   })
 };
