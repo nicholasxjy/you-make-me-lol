@@ -7,8 +7,10 @@ exports.checkFeedsLike = function(feeds, userId) {
     });
     feed = feed.toObject();
     feed.likes_count = feed.likes.length;
+    feed.comments_count = feed.comments.length;
     feed.isLike = isLike;
     feed.likes = feed.likes.slice(-6);
+    feed.comments = feed.comments.slice(0, 3);
     return feed;
   });
   return _feeds;

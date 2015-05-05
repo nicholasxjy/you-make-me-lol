@@ -8,8 +8,9 @@ exports.upload = function(req, res, next) {
   var category = req.body.category;
   var audio_tag = req.body.audio_tag;
   //here should json parse
-  audio_tag = JSON.parse(audio_tag);
-
+  if (audio_tag && audio_tag !== '') {
+    audio_tag = JSON.parse(audio_tag);
+  }
   if (file === null || file === undefined) {
     return res.json({
       status: 'fail',

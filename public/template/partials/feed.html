@@ -30,7 +30,7 @@
         </div>
         <div class="post-view">
           <div class="image-view" ng-if="feed.category=='image'">
-            <img ng-src="{{feed.attach_files[0].url}}" alt="photo">
+            <img ng-src="{{feed.attach_files[0].url}}" alt="photo" ck-lightbox>
           </div>
           <div class="audio-view" ng-if="feed.category=='audio'" ng-cool-audio source="feed.source">
           </div>

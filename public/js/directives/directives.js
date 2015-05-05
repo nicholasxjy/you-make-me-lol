@@ -373,105 +373,49 @@
         }
       }
     ])
-    .directive('sfFeedDetailShow', [
+    .directive('ckLightbox', [
       '$document',
+      '$timeout',
       '$compile',
-      '$http',
-      '$q',
-      '$timeout',
-      function($document, $compile, $http, $q, $timeout) {
+      function($document, $timeout, $compile) {
         return {
           restrict: 'AE',
           scope: {
-            feedId: '=feedId',
-            usersAt: '=usersAt',
-            current_user: '=currentUser'
+            imageUrl: '@ngSrc'
           },
           link: function(scope, ele, attrs) {
             var body = $document.find('body');
-            attrs.$observe('currentImageIndex', function(val) {
-              if (val) {
-                scope.current_image_index = parseInt(val, 10);
-              }
-            });
-            ele.on('click', function() {
-              var all = [];
-              var feedPromise = $http({
-                method: 'GET',
-                url: '/feed/detail',
-                params: {feedId: scope.feedId}
-              });
 
-              var tplPromise = $http.get('template/partials/feed-detail.html');
+            var tpl = '';
+            tpl += '<div class="ck-lightbox">';
+            tpl += '<div class="ck-lightbox-overlay"></div>';
+            tpl += '<div class="lightbox-body">';
+            tpl += '<div class="lightbox-content">';
+            tpl += '<img ng-src="{{imageUrl}}" alt="photo" class="img-rounded" ng-show="imageReady">';
+            tpl += '<div class="spinner" ng-show="!imageReady"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>';
+            tpl += '</div></div></div>';
 
-              all.push(feedPromise);
-              all.push(tplPromise);
-              $q.all(all)
-                .then(function(res) {
-                  if (res && res.length === 2) {
-                    scope.feed = res[0].data;
-                    var tpl = $compile(res[1].data)(scope);
-                    $timeout(function() {
-                      body.append(angular.element(tpl));
-
-                      var detail_con = body[0].querySelector('.sf-feed-detail');
-                      body.addClass('sf-feed-detail-open');
-                      $('.feed-detail-container').addClass('in');
-                    })
-                  }
-                }, function(err) {
-                  console.log(err);
-                })
-            })
-          }
-        }
-      }
-    ])
-    .directive('sfFeedDetail', [
-      '$document',
-      '$timeout',
-      'FeedService',
-      'ngCoolNoti',
-      function($document, $timeout, FeedService, ngCoolNoti) {
-        return {
-          restrict: 'AE',
-          link: function(scope, ele, attrs) {
-            var body = $document.find('body');
-            scope.closeFeedDetail = function() {
-              $('.feed-detail-container').removeClass('in').addClass('out');
+            $(ele[0]).on('click', function() {
+              var templ = $compile(tpl)(scope);
               $timeout(function() {
-                ele.remove();
-                body.removeClass('sf-feed-detail-open');
-              }, 1000);
-            };
-          }
-        }
-      }
-    ])
-    .directive('sfFeedGallery', [
-      '$timeout',
-      '$document',
-      function($timeout, $document) {
-        return {
-          restrict: 'AE',
-          scope: {
-            feed: '=feed',
-            current_image_index: '@currentImageIndex'
-          },
-          template: '<div class="feed-detail-image-preview">\
-            <img ng-show="imageReady" ng-src="{{current_image.url}}" alt="Photo">\
-            <i class="fa fa-angle-left" ng-click="preImage()"></i>\
-            <i class="fa fa-angle-right" ng-click="nextImage()"></i>\
-            <div class="image-caption">{{current_image.caption}}</div>\
-            <div ng-show="!imageReady" ng-include="\'template/spinner.html\'"></div>\
-          </div>',
-          link: function(scope, ele, attrs) {
-            //calculate image for displaying
-            scope.imageReady = false;
-            var $img = ele.find('img');
+                body.addClass('ck-lightbox-open');
+                body.append(templ);
+                var container = document.querySelector('.lightbox-content');
+                var rect = container.getBoundingClientRect();
+                setImageDimension(rect);
+
+                $('.ck-lightbox').on('click', function() {
+                  $(this).remove();
+                  body.removeClass('ck-lightbox-open');
+                })
+              });
+            });
+
             var setImageDimension = function(rect) {
+              scope.imageReady = false;
+              var $img = $('.ck-lightbox').find('img');
               var image = new Image();
-              image.src = scope.current_image.url;
+              image.src = scope.imageUrl;
               image.onload = function() {
                 var real = {};
                 var img_width = image.width;
@@ -487,6 +431,7 @@
                   real.width = img_width * width_radio;
                   real.height = img_height * width_radio;
                 }
+
                 $img.css('width', real.width + 'px');
                 $img.css('height', real.height + 'px');
                 $img.css('margin-top', (-real.height/2)+'px');
@@ -497,42 +442,13 @@
               }
             }
 
-            scope.current_image = scope.feed.attach_files[scope.current_image_index];
-            $timeout(function() {
-              var rect = scope.rect = ele[0].getBoundingClientRect();
-              setImageDimension(rect);
-            }, 500);
-
-            scope.preImage = function() {
-              var current_index = 0;
-              angular.forEach(scope.feed.attach_files, function(item, index) {
-                if (item._id === scope.current_image._id) {
-                  current_index = index;
-                }
-              });
-              current_index = current_index - 1;
-              if (current_index < 0) {
-                current_index = scope.feed.attach_files.length - 1;
-              }
-              scope.current_image = scope.feed.attach_files[current_index];
-              setImageDimension(scope.rect);
+            scope.closeFeedDetail = function() {
+              $('.feed-detail-container').removeClass('in').addClass('out');
+              $timeout(function() {
+                ele.remove();
+                body.removeClass('sf-feed-detail-open');
+              }, 1000);
             };
-
-            scope.nextImage = function() {
-              var current_index = 0;
-              angular.forEach(scope.feed.attach_files, function(item, index) {
-                if (item._id === scope.current_image._id) {
-                  current_index = index;
-                }
-              });
-              current_index = current_index + 1;
-              if (current_index > scope.feed.attach_files.length -1) {
-                current_index = 0;
-              }
-              scope.current_image = scope.feed.attach_files[current_index];
-              setImageDimension(scope.rect);
-            };
-
           }
         }
       }
@@ -671,7 +587,8 @@
       'FeedService',
       'UserService',
       'ngCoolNoti',
-      function(FeedService, UserService, ngCoolNoti) {
+      '$timeout',
+      function(FeedService, UserService, ngCoolNoti,$timeout) {
         return {
           retrict: 'AE',
           scope: {
@@ -696,6 +613,12 @@
                   if (data.status === 'success') {
                     scope.current_user.followers.push(feed.creator._id);
                     feed.creator.hasFollowed = true;
+                    ngCoolNoti.create({
+                      message: '成功关注了'+feed.creator.name,
+                      position: 'top-right',
+                      type: 'success',
+                      animation: 'jelly'
+                    })
                   }
                 })
             };
@@ -704,10 +627,16 @@
               UserService.unfollow(feed.creator._id)
                 .then(function(data) {
                   if (data.status === 'success') {
-                    feed.creator.followees = feed.creator.followees.filter(function(item) {
-                      return item._id != scope.current_user._id;
+                    feed.creator.followees = feed.creator.followees.filter(function(id) {
+                      return id != scope.current_user._id;
                     });
                     feed.creator.hasFollowed = false;
+                    ngCoolNoti.create({
+                      message: '成功取消关注了'+feed.creator.name,
+                      position: 'top-right',
+                      type: 'success',
+                      animation: 'jelly'
+                    })
                   }
                 })
             };
@@ -721,34 +650,13 @@
                 .then(function(data) {
                   // cound down post count of currentUser
                   scope.current_user.post_count -= 1;
-
                   //here modify the dom
-
-                  var $sfFeed = $(ele[0]).parents('.sf-feed');
-                  var tpl = '<div class="feed-delete-overlay">\
-                    <div class="delete-wrap">\
-                    <div class="delete-icon">\
-                      <i class="ti-check"></i>\
-                    </div>\
-                    <div class="delete-tip">\
-                      Post deleted\
-                    </div>\
-                    <div class="remove-feed">\
-                      <a class="remove-feed-link">dismiss</a>\
-                    </div>\
-                    </div>\
-                  </div>';
-                  $sfFeed.prepend(tpl);
-                  var $wrap = $sfFeed.find('.delete-wrap');
-                  var height = $wrap.height();
-                  var width = $wrap.width();
-                  $wrap.css('margin-top', (-height/2) + 'px');
-                  $wrap.css('margin-left', (-width/2) + 'px');
-                  var $removelink = $sfFeed.find('.remove-feed-link');
-                  $removelink.on('click', function() {
-                    $sfFeed.remove();
-                  });
-
+                  var $post = $(ele[0]).parents('.ck-post-item');
+                  var $postcard = $post.find('.ck-post-card');
+                  $postcard.addClass('bounceOut');
+                  $timeout(function() {
+                    $post.remove();
+                  }, 1000);
                 }, function(err) {
                   console.log(err);
                 })
@@ -767,8 +675,9 @@
             current_user: '=currentUser'
           },
           template: '<div class="post-comments">\
-                  <div class="load-more-comment" ng-if="feed.comments.length > 3">\
-                    <a href="">More comments</a>\
+                  <div class="comments-scroll">\
+                  <div class="load-more-comment" ng-if="feed.comments_count > 3">\
+                    <a ng-click="loadMoreComments()">More comments</a>\
                   </div>\
                   <div class="comments-list">\
                     <div class="comment-item" ng-repeat="comment in feed.comments">\
@@ -782,11 +691,12 @@
                         </div>\
                         <div class="comment-action">\
                           <span class="time">{{comment.createdAt | date: \'yyyy-MM-dd hh:mm\'}}</span>\
-                          <i class="fa fa-reply" ng-cool-tooltip tooltip-placement="top" title="reply"></i>\
+                          <i class="fa fa-reply" ng-cool-tooltip tooltip-placement="top" title="reply" ng-click="replyComment(comment)"></i>\
                           <i class="fa fa-trash-o" ng-if="comment.creator._id == current_user._id" ng-click="deleteComment(comment)" ng-cool-tooltip tooltip-placement="top" title="delete"></i>\
                         </div>\
                       </div>\
                     </div>\
+                  </div>\
                   </div>\
                   <div class="add-comment comment-item">\
                     <div class="comment-avatar">\
@@ -828,7 +738,10 @@
                   })
               }
             })
-
+            scope.replyComment = function(comment) {
+              scope.commentWord = '@'+comment.creator.name + ' ';
+              $(form).find('input').focus();
+            }
             scope.deleteComment = function(comment) {
               FeedService.deleteComment(scope.feed._id, comment._id)
                 .then(function(data) {
