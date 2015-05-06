@@ -1,43 +1,41 @@
-<nav class="navbar navbar-default">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" ui-sref="home">Coolkidszone</a>
-    </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li ui-sref-active="active">
-          <a ui-sref="home">Home</a>
-        </li>
-        <li ui-sref-active="active">
-          <a ui-sref="explore">Explore</a>
-        </li>
-        <li ui-sref-active="active">
-          <a ui-sref="messages">Messages
-            <span class="badge noti-badge" ng-if="ctrl.current_user.notifications.length > 0">{{ctrl.current_user.notifications.length}}</span>
-          </a>
-        </li>
+<header class="navbar navbar-default navbar-fixed-top" id="top" role="banner">
+<div class="container">
+<div class="navbar-header">
+  <a ui-sref="home" class="navbar-brand">Friendfie</a>
+</div>
+<nav class="collapse navbar-collapse bs-navbar-collapse">
+  <ul class="nav navbar-nav">
+    <li class="nav-link" ui-sref-active="active">
+      <a ui-sref="home">Home</a>
+    </li>
+    <li class="nav-link" ui-sref-active="active">
+      <a ui-sref="explore">Explore</a>
+    </li>
+    <li class="nav-link" ui-sref-active="active">
+      <a ui-sref="messages">Messages<span class="badge">42</span></a>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <li class="navbar-action-item">
+      <a class="navbar-action-link"><i class="fa fa-search"></i></a>
+    </li>
+    <li class="navbar-action-item">
+      <a class="navbar-action-link" sf-create-feed current-user="ctrl.current_user" users-at="ctrl.usersAt"><i class="fa fa-pencil-square-o"></i></a>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle navbar-user-dropdown" data-toggle="dropdown" role="button" aria-expanded="false">
+        <img ng-src="{{ctrl.current_user.avatar}}" alt="" class="img-responsive img-circle">
+      </a>
+      <ul class="dropdown-menu" role="menu">
+        <li class="dropdown-arrow user-arrow"></li>
+        <li><a ui-sref="user({name: ctrl.current_user.name})">{{ctrl.current_user.name}}</a></li>
+        <li><a ui-sref="setting">Settings</a></li>
+        <li><a ui-sref="bookmarks">Bookmarks</a></li>
+        <li class="divider"></li>
+        <li sf-logout></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li class="navbar-action-item">
-          <a class="navbar-action-link"><i class="fa fa-search"></i></a>
-        </li>
-        <li class="navbar-action-item">
-          <a class="navbar-action-link" sf-create-feed current-user="ctrl.current_user" users-at="ctrl.usersAt"><i class="fa fa-pencil-square-o"></i></a>
-        </li>
-        <li class="dropdown">
-          <a class="dropdown-toggle navbar-user-dropdown" data-toggle="dropdown" role="button" aria-expanded="false">
-            <img ng-src="{{ctrl.current_user.avatar}}" alt="" class="img-responsive img-circle">
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li class="dropdown-arrow user-arrow"></li>
-            <li><a ui-sref="user({name: ctrl.current_user.name})">{{ctrl.current_user.name}}</a></li>
-            <li><a ui-sref="setting">Settings</a></li>
-            <li><a ui-sref="bookmarks">Bookmarks</a></li>
-            <li class="divider"></li>
-            <li sf-logout></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
+    </li>
+  </ul>
 </nav>
+</div>
+</header>

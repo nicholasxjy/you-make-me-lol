@@ -50,8 +50,10 @@
                 data.source = source;
               }
               self.feed = data;
-            }, function(err) {
-              console.log(err);
+            }, function(err) {              
+              if (err === 'Not Found') {
+                $state.go('404');
+              }
             })
 
       }

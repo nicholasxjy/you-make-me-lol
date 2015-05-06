@@ -15,11 +15,11 @@
           </div>
           <div class="post-top-other">
             <div class="creator-link">
-              <a ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
+              <a class="name-link" ui-sref="user({name: feed.creator.name})">{{feed.creator.name}}</a>
               <div ck-feed-action-more feed="feed" current-user="ctrl.current_user"></div>
             </div>
             <div class="time-location">
-              <span class="time">Shared on - {{feed.createdAt | sinceTime}}</span>
+              <span class="time" ng-cool-tooltip tooltip-placement="top" title="{{feed.createdAt | date: 'yyyy-MM-dd hh:mm'}}">Shared on - {{feed.createdAt | sinceTime}}</span>
               <i class="fa fa-map-marker"></i><span>{{feed.location}}</span>
             </div>
           </div>
