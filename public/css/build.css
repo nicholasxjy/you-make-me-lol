@@ -258,13 +258,9 @@ a {
   background-clip: padding-box; }
 
 /**** noti *****/
-.noti-badge {
+.badge {
   background-color: #F34235;
-  color: #ffffff;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  line-height: 20px; }
+  color: #ffffff; }
 
 /***** placeholder ********/
 ::-webkit-input-placeholder {
@@ -774,17 +770,45 @@ body.ck-lightbox-open {
 .ck-post-item {
   margin-bottom: 20px; }
 
-.ck-post-card.bounceOut {
-  -webkit-animation-duration: 1s;
-  -moz-animation-duration: 1s;
-  -ms-animation-duration: 1s;
-  -o-animation-duration: 1s; }
-
 .post-item-left .post-creator-avatar {
-  text-align: right; }
+  text-align: right;
+  position: relative;
+  height: 64px; }
   .post-item-left .post-creator-avatar img {
     width: 64px;
     height: 64px; }
+.post-item-left .user-card-popover {
+  position: absolute;
+  top: 70px;
+  left: 100%;
+  margin-left: -50%;
+  width: 240px;
+  text-align: center;
+  z-index: 2000;
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important; }
+
+.user-card-popover.ng-hide-remove {
+  -webkit-animation: slideInDown;
+  -moz-animation: slideInDown;
+  -ms-animation: slideInDown;
+  -o-animation: slideInDown;
+  animation: slideInDown;
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  -ms-animation-duration: 0.5s;
+  -o-animation-duration: 0.5s; }
+
+.user-card-popover.ng-hide-add {
+  -webkit-animation: slideOutUp;
+  -moz-animation: slideOutUp;
+  -ms-animation: slideOutUp;
+  -o-animation: slideOutUp;
+  animation: slideOutUp;
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  -ms-animation-duration: 0.5s;
+  -o-animation-duration: 0.5s; }
 
 .ck-post-card {
   background-color: #ffffff;
@@ -809,7 +833,7 @@ body.ck-lightbox-open {
   .ck-post-card .card-body .post-top {
     display: table;
     width: 100%;
-    padding: 13px 15px 15px; }
+    padding: 10px; }
   .ck-post-card .card-body .post-top-other {
     display: table-cell;
     vertical-align: top;
@@ -872,7 +896,7 @@ body.ck-lightbox-open {
         height: 26px; }
 
 .post-text .text-wrap {
-  padding: 0 15px 10px;
+  padding: 0 10px 10px;
   font-size: 13px;
   line-height: 1.4;
   color: #404040;
@@ -1005,6 +1029,46 @@ body.ck-lightbox-open {
   -webkit-animation-name: bounceOut;
   animation-name: bounceOut; }
 
+@-webkit-keyframes slideInDown {
+  0% {
+    -webkit-transform: translate3d(0, -54px, 0);
+    transform: translate3d(0, -54px, 0);
+    visibility: visible; }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); } }
+
+@keyframes slideInDown {
+  0% {
+    -webkit-transform: translate3d(0, -54px, 0);
+    transform: translate3d(0, -54px, 0);
+    visibility: visible; }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); } }
+
+@-webkit-keyframes slideOutUp {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); }
+
+  100% {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, -54px, 0);
+    transform: translate3d(0, -54px, 0); } }
+
+@keyframes slideOutUp {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); }
+
+  100% {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, -54px, 0);
+    transform: translate3d(0, -54px, 0); } }
+
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3));
@@ -1043,8 +1107,8 @@ body.ck-lightbox-open {
 }
  */
 body {
-  background-color: #022330;
-  background-image: url('../images/bg.png');
+  background-color: #0099B9;
+  /*   background-image: url('../images/bg.png'); */
   background-repeat: no-repeat;
   background-attachment: fixed;
   font-family: 'Roboto', sans-serif; }
@@ -1357,7 +1421,7 @@ body {
   background-color: #ffffff; }
 
 .ng-cool-video-controls {
-  padding: 1px 0 10px; }
+  padding: 1px 10px 5px; }
 
 /***** controls style ******/
 .ncv-actions {
@@ -2504,152 +2568,6 @@ border: none;
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards; }
 
-/* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
-    background-color: $default;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3));
-    background-image: -webkit-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
-    background-image: -moz-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
-    background-image: -ms-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
-    background-image: -o-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
-    background-image: linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3);
-}
-@mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3,$color4,$stop4) {
-    background-color: $default;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3), color-stop($stop4 $color4));
-    background-image: -webkit-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
-    background-image: -moz-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
-    background-image: -ms-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
-    background-image: -o-linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
-    background-image: linear-gradient(top, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
-} */
-/* @mixin linear-gradient-left($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
-    background-color: $default;
-    background-image: -webkit-gradient(linear, left top, left top, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3));
-    background-image: -webkit-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
-    background-image: -moz-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
-    background-image: -ms-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
-    background-image: -o-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
-    background-image: linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3);
-}
-@mixin linear-gradient-left($default,$color1,$stop1,$color2,$stop2,$color3,$stop3,$color4,$stop4) {
-    background-color: $default;
-    background-image: -webkit-gradient(linear, left top, left top, color-stop($stop1, $color1), color-stop($stop2 $color2), color-stop($stop3 $color3), color-stop($stop4 $color4));
-    background-image: -webkit-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
-    background-image: -moz-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
-    background-image: -ms-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
-    background-image: -o-linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
-    background-image: linear-gradient(left, $color1 $stop1, $color2 $stop2, $color3 $stop3, $color4 $stop4);
-}
- */
-/* .ng-cool-tooltip {
-  padding: 5px 8px;
-  max-width: 300px;
-  height: auto;
-  background-color: rgba(0,0,0,.9);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 18px;
-  @include border-radius(3px);
-  text-align: center;
-  text-decoration: none;
-  position: relative;
-  z-index: 4000;
-}
-.ng-cool-tooltip .ng-cool-arrow {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  left: 50%;
-  margin-left: -5px;
-}
-.ng-cool-tooltip .ng-cool-arrow.top {
-  border-width: 5px 5px 0;
-  border-top-color: rgba(0,0,0,.9);
-  bottom: -5px;
-}
-.ng-cool-tooltip .ng-cool-arrow.bottom {
-  border-width: 0 5px 5px;
-  border-bottom-color: rgba(0,0,0,.9);
-  top: -5px;
-}
-.ng-cool-tooltip.in {
-  -webkit-animation: fadeIn 0.3s;
-  animation: fadeIn 0.3s;
-}
-
-.ng-cool-tooltip.out {
-  -webkit-animation: fadeOut 0.3s;
-  animation: fadeOut 0.3s;
-}
-
-@-webkit-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@-webkit-keyframes slideInUp {
-  0% {
-    -webkit-transform: translate3d(0, 100%, 0);
-    transform: translate3d(0, 100%, 0);
-    visibility: visible;
-  }
-
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes slideInUp {
-  0% {
-    -webkit-transform: translate3d(0, 100%, 0);
-    transform: translate3d(0, 100%, 0);
-    visibility: visible;
-  }
-
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@-webkit-keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-} */
 /****** ng-cool-popover ********/
 .ng-cool-popover {
   width: 340px;
@@ -2726,119 +2644,6 @@ border: none;
   font-size: 12px;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.4); }
-
-/***** user card popover *******/
-.user-card-popover {
-  width: 240px;
-  text-align: center;
-  position: absolute;
-  z-index: 4000;
-  -webkit-animation: flipInY;
-  -moz-animation: flipInY;
-  -ms-animation: flipInY;
-  -o-animation: flipInY;
-  animation: flipInY;
-  -webkit-animation-duration: 1s;
-  -moz-animation-duration: 1s;
-  -ms-animation-duration: 1s;
-  -o-animation-duration: 1s;
-  -webkit-backface-visibility: visible !important;
-  backface-visibility: visible !important; }
-
-.user-card-popover.out {
-  -webkit-animation: flipOutY;
-  -moz-animation: flipOutY;
-  -ms-animation: flipOutY;
-  -o-animation: flipOutY;
-  animation: flipOutY;
-  -webkit-animation-duration: 0.5s;
-  -moz-animation-duration: 0.5s;
-  -ms-animation-duration: 0.5s;
-  -o-animation-duration: 0.5s; }
-
-@-webkit-keyframes flipOutY {
-  0% {
-    -webkit-transform: perspective(400px);
-    transform: perspective(400px); }
-
-  30% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
-    opacity: 1; }
-
-  100% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-    opacity: 0; } }
-
-@keyframes flipOutY {
-  0% {
-    -webkit-transform: perspective(400px);
-    transform: perspective(400px); }
-
-  30% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
-    opacity: 1; }
-
-  100% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-    opacity: 0; } }
-
-@-webkit-keyframes flipInY {
-  0% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-    -webkit-transition-timing-function: ease-in;
-    transition-timing-function: ease-in;
-    opacity: 0; }
-
-  40% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
-    -webkit-transition-timing-function: ease-in;
-    transition-timing-function: ease-in; }
-
-  60% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
-    opacity: 1; }
-
-  80% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, -5deg); }
-
-  100% {
-    -webkit-transform: perspective(400px);
-    transform: perspective(400px); } }
-
-@keyframes flipInY {
-  0% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-    -webkit-transition-timing-function: ease-in;
-    transition-timing-function: ease-in;
-    opacity: 0; }
-
-  40% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
-    -webkit-transition-timing-function: ease-in;
-    transition-timing-function: ease-in; }
-
-  60% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
-    opacity: 1; }
-
-  80% {
-    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
-    transform: perspective(400px) rotate3d(0, 1, 0, -5deg); }
-
-  100% {
-    -webkit-transform: perspective(400px);
-    transform: perspective(400px); } }
 
 /* @mixin linear-gradient-top($default,$color1,$stop1,$color2,$stop2,$color3,$stop3) {
     background-color: $default;
@@ -3290,15 +3095,13 @@ tags-input .autocomplete .suggestion-item em {
 }
  */
 .sf-card {
-  background-color: #ffffff;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   background-clip: padding-box;
   padding-bottom: 10px;
   margin-bottom: 20px;
-  border: 1px solid #d3d3d3;
-  border-bottom-width: 2px; }
+  background-color: #ffffff; }
 
 .user-card .card-top {
   margin-bottom: 20px; }

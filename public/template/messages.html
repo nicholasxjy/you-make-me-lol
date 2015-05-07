@@ -11,13 +11,13 @@
             <div class="col-md-6">
               <div class="panel panel-default noti-panel">
                 <div class="panel-heading">
-                  <h3 class="panel-title">Your unread messages
+                  <h3 class="panel-title">未读信息
                     <i ng-if="ctrl.notifications.length > 0" class="fa fa-check-square-o pull-right"
                     ng-cool-tooltip tooltip-placement="top" title="marked all" ng-click="ctrl.markAllNoti()"></i>
                   </h3>
                 </div>
                 <div class="panel-body">
-                  <p ng-if="ctrl.notifications.length <= 0">No unread notifications!</p>
+                  <p ng-if="ctrl.notifications.length <= 0">暂时没有未读通知!</p>
                   <ul class="list-group" ng-if="ctrl.notifications.length > 0">
                     <li class="list-group-item" ng-class="{'hasRead': ctrl.markedAll}" ng-repeat="noti in ctrl.notifications">
                       <a ui-sref="feed({id: noti.to_feed})" ng-if="noti.noti_type != 'FOLLOW'" class="noti-link"></a>

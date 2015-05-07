@@ -1,6 +1,7 @@
 (function() {
   angular
     .module('showfieApp', [
+      'ngAnimate',
       'ngSanitize',
       'ui.router',
       'ngFileUpload',

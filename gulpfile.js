@@ -67,6 +67,7 @@ var source_dir = {
     'public/js/custom-module/id3-minimized.js',
     'public/lib/angular/angular.js',
     'public/lib/angular-sanitize/angular-sanitize.js',
+    'public/lib/angular-animate/angular-animate.js',
     'public/lib/ui-router/release/angular-ui-router.js',
     'public/lib/ng-file-upload/ng-file-upload-shim.js',
     'public/lib/ng-file-upload/ng-file-upload.js',
