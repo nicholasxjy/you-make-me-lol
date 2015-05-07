@@ -22,7 +22,7 @@ exports.markAllNoti = function(user, cb) {
 exports.sendNotiToAtUsers = function(feed, cb) {
   if (feed && feed.content && feed.content !== '') {
     var regex = /@\w+\s/g;
-    var atUsers = data.content.match(regex);
+    var atUsers = feed.content.match(regex);
     if (atUsers && atUsers.length > 0) {
       var usernames = atUsers.map(function(atuser) {
         var arr = atuser.trim().split('@');
