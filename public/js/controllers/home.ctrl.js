@@ -12,9 +12,7 @@
         var self = this;
         self.feeds = [];
 
-        $rootScope.$on('feed:new', function(evt, newFeed) {
-          loadFeeds();
-        })
+        
 
         var loadFeeds = function(after) {
           self.loadMoreSpinnerShow = true;

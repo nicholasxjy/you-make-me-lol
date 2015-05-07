@@ -68,10 +68,6 @@
                   <ng-cool-audio source="feed.source"></ng-cool-audio>
                 </div>
               </div>
-              <div class="feed-tags" ng-if="feed.tags && feed.tags.length> 0">
-                <a class="tag-item" ng-repeat="tag in feed.tags">{{tag.text}}</a>
-              </div>
-
               <div class="feed-bottom">
                 <span class="time">
                   Shared on {{feed.createdAt | date: 'yyyy-MM-dd HH:mm'}}

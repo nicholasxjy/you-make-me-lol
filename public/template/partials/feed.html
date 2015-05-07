@@ -1,7 +1,8 @@
 <div class="ck-post-item row" ng-repeat="feed in ctrl.feeds" ng-if="feed.category!='text'">
   <div class="post-item-left col-md-3">
     <div class="post-creator-avatar">
-      <img ng-src="{{feed.creator.avatar}}" alt="avatar" class="img-rounded">
+      <img ng-src="{{feed.creator.avatar}}" alt="avatar" class="img-rounded"
+      sf-user-card-popover user="feed.creator" current-user="ctrl.current_user">
     </div>
   </div>
   <div class="post-item-right col-md-6">

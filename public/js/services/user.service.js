@@ -57,7 +57,7 @@
         }
 
         function markAllNoti() {
-          return BaseQuery.get('/user/mark_notis');
+          return BaseQuery.post('/user/mark_notis');
         }
 
         function getUserFollowers(name) {

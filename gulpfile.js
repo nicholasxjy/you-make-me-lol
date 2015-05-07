@@ -101,7 +101,6 @@ gulp.task('concat', ['sass'], function() {
 //sass task
 gulp.task('sass', function() {
   return gulp.src('./public/scss/build.scss')
-    .pipe($.sourcemaps.init())
     .pipe($.sass({
       style: 'expanded'
     }))
@@ -109,7 +108,6 @@ gulp.task('sass', function() {
       title: 'Sass failed',
       message: 'Error compile scss'
     }))
-    .pipe($.sourcemaps.write())
     .pipe(gulp.dest('public/css'))
     .pipe(reload({
       stream: true

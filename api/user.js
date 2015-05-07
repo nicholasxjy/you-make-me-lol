@@ -225,7 +225,7 @@ module.exports = {
       },
       image: function(cb2) {
         var uptoken = qiniuService.generateUpToken();
-        qiniuService.uploadFileLocalFile(file.mimetype, file.path, file.name, uptoken, null, function(err, file_info) {
+        qiniuService.uploadLocalFile(uptoken, file.name, file.path, null, function(err, file_info) {
           if (err) return cb2(err);
           cb2(null, file_info);
         });

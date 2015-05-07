@@ -3,7 +3,7 @@
   <div class="main-content">
     <div class="main-content-inner">
       <div class="feed-page container">
-        <div class="row">
+        <div class="row ck-post-item">
           <div class="col-md-8 col-md-offset-2">
             <div class="ck-post-card">
               <div class="card-body">
@@ -15,11 +15,11 @@
                   </div>
                   <div class="post-top-other">
                     <div class="creator-link">
-                      <a ui-sref="user({name: ctrl.feed.creator.name})">{{ctrl.feed.creator.name}}</a>
+                      <a class="name-link" ui-sref="user({name: ctrl.feed.creator.name})">{{ctrl.feed.creator.name}}</a>
                       <div ck-feed-action-more feed="ctrl.feed" current-user="ctrl.current_user"></div>
                     </div>
                     <div class="time-location">
-                      <span class="time">Shared on - {{ctrl.feed.createdAt | sinceTime}}</span>
+                      <span class="time" ng-cool-tooltip tooltip-placement="top" title="{{ctrl.feed.createdAt | date: 'yyyy-MM-dd hh:mm'}}">Shared on - {{ctrl.feed.createdAt | sinceTime}}</span>
                       <i class="fa fa-map-marker"></i><span>{{ctrl.feed.location}}</span>
                     </div>
                   </div>

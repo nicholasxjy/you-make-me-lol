@@ -12,17 +12,21 @@
       <a ui-sref="explore">Explore</a>
     </li>
     <li class="nav-link" ui-sref-active="active">
-      <a ui-sref="messages">Messages<span class="badge">42</span></a>
+      <a ui-sref="messages">Messages<span class="badge" ng-if="ctrl.current_user.notifications.length > 0">{{ctrl.current_user.notifications.length}}</span></a>
     </li>
   </ul>
   <ul class="nav navbar-nav navbar-right">
     <li class="navbar-action-item">
-      <a class="navbar-action-link"><i class="fa fa-search"></i></a>
+      <a class="navbar-action-link">
+        <svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg>
+      </a>
     </li>
     <li class="navbar-action-item">
-      <a class="navbar-action-link" sf-create-feed current-user="ctrl.current_user" users-at="ctrl.usersAt"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="navbar-action-link" sf-create-feed current-user="ctrl.current_user" users-at="ctrl.usersAt">
+        <svg class="icon icon-circle-plus"><use xlink:href="#icon-circle-plus"></use></svg>
+      </a>
     </li>
-    <li class="dropdown">
+    <li class="dropdown user-dropdown">
       <a class="dropdown-toggle navbar-user-dropdown" data-toggle="dropdown" role="button" aria-expanded="false">
         <img ng-src="{{ctrl.current_user.avatar}}" alt="" class="img-responsive img-circle">
       </a>
