@@ -4,7 +4,7 @@ var reload = browserSync.reload;
 var $ = require('gulp-load-plugins')();
 var del = require('del');
 var runSquence = require('run-sequence');
-
+var ngAnnotate = require('gulp-ng-annotate');
 
 // optimize images
 gulp.task('images', function() {
@@ -28,6 +28,7 @@ gulp.task('browser-sync', function() {
 // minify js
 gulp.task('minify-js', function() {
   gulp.src('public/dist/js/*.js')
+    .pipe(ngAnnotate())
     .pipe($.uglify())
     .pipe($.rename({suffix: '.min'}))
     .pipe(gulp.dest('public/build/js'));
