@@ -5,8 +5,6 @@
       'ngSanitize',
       'ui.router',
       'ngFileUpload',
-      'ngTagsInput',
-      'mentio',
       'ngCoolNoti',
       'ngCoolVideo',
       'ngCoolAudio',

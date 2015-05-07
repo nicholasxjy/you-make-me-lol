@@ -70,9 +70,7 @@ var source_dir = {
     'public/lib/angular-animate/angular-animate.js',
     'public/lib/ui-router/release/angular-ui-router.js',
     'public/lib/ng-file-upload/ng-file-upload-shim.js',
-    'public/lib/ng-file-upload/ng-file-upload.js',
-    'public/lib/ment.io/dist/mentio.js',
-    'public/lib/ng-tags-input/ng-tags-input.js'
+    'public/lib/ng-file-upload/ng-file-upload.js'
   ],
   jscus: [
     'public/js/custom-module/*.js',
