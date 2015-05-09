@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="showfieApp">
   <head>
+    <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title ck-title>{{title}}</title>
-    <link rel="stylesheet" href="dist/css/build.css">
+    <link rel="stylesheet" href="build/css/build.min.css">
   </head>
   <body>
     <div ui-view>
@@ -53,9 +53,8 @@
       </symbol>
       </defs>
     </svg>
-    <!-- lib -->
     <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=250674f3ce7303fc11d8ac3e73025314"></script>
-    <script src="dist/js/common.js"></script>
-    <script src="dist/js/custom.js"></script>
+    <script src="build/js/common.min.js"></script>
+    <script src="build/js/custom.min.js"></script>
   </body>
 </html>
